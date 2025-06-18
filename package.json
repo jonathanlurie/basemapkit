@@ -1,0 +1,20 @@
+{
+  "name": "pmstyles",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "@protomaps/basemaps": "^5.4.1",
+    "maplibre-gl": "^5.6.0",
+    "pmtiles": "^4.3.0"
+  }
+}
