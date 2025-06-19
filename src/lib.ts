@@ -1,6 +1,4 @@
 import type { StyleSpecification, LayerSpecification } from 'maplibre-gl';
-// import versatileStyle from "./assets/versatile.json";
-import versatileLayers from "./assets/versatile-layers.json";
 import versatileLayersRaw from "./assets/versatile-layers-raw.txt?raw";
 import { get_country_name, get_multiline_name, language_script_pairs } from '@protomaps/basemaps';
 
@@ -13,17 +11,52 @@ export type MakeStyleOptions = {
 };
 
 
-export function makeStyle(options: MakeStyleOptions): StyleSpecification {
-  let lang = "en";
+function isLanguageSupported(lang:string, script: string | undefined, verbose: boolean): boolean {
+  const candidates = language_script_pairs.filter(l => l.lang === lang);
 
-  if (typeof options.lang === "string") {
-    const candidates = language_script_pairs.filter(l => l.lang === options.lang);
+  if (candidates.length === 0) {
+    verbose && console.warn(`The language "${lang}". The languages available are: ${language_script_pairs.map(l => l.lang).join(", ")}.`);
+    return false;
+  }
 
-    if (candidates.length === 0) {
-      throw new Error(`The lang ${options.lang} is not available.`)
+  if (script) {
+    const candidatesWithScript = candidates.filter(l => l.script === script);
+
+    if (candidatesWithScript.length) {
+      return true;
     }
 
-    lang = options.lang;
+    verbose && console.warn(`The script "${script}" for the language "${lang}" is unsupported. Script available for this language: ${candidates.map(l => l.script).join(", ")}.`);
+    return false;
+  }
+
+  return true;
+}
+
+
+function getDefaultLanguage(): string {
+  const systemLang = Intl.DateTimeFormat().resolvedOptions().locale.split("-")[0];
+  if (isLanguageSupported(systemLang, undefined, false)) {
+    return systemLang;
+  }
+  return "en"
+}
+
+
+
+
+
+export function makeStyle(options: MakeStyleOptions): StyleSpecification {
+  let lang = getDefaultLanguage();
+
+  if (typeof options.lang === "string") {
+    const isSupported = isLanguageSupported(options.lang, options.script, true);
+
+    if (isSupported) {
+      lang = options.lang;
+    } else {
+      console.warn(`Using language "${lang}" as fallback.`)
+    }
   }
   
   const countryTextField = get_country_name(lang, options.script);
@@ -44,7 +77,6 @@ export function makeStyle(options: MakeStyleOptions): StyleSpecification {
         attribution: "<a href='https://openstreetmap.org/copyright'>© OpenStreetMap Contributors</a>"
       },
     },
-    // layers: basemaps.layers("example_source",  basemaps.LIGHT, {lang:"english"})
     layers: JSON.parse(translatedLayersStr) as unknown as LayerSpecification[],
   }
 

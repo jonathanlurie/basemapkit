@@ -22,7 +22,7 @@ import { makeStyle } from "./lib";
       pmtiles: "https://fsn1.your-objectstorage.com/public-map-data/pmtiles/planet.pmtiles",
       sprite: "https://raw.githubusercontent.com/jonathanlurie/phosphor-mlgl-sprite/refs/heads/main/sprite/phosphor-diecut",
       glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf",
-      lang: "fr"
+      lang: "dep"
     }),
     center: [0, 0],
     zoom: 3,
