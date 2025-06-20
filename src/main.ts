@@ -1,11 +1,11 @@
 import "maplibre-gl/dist/maplibre-gl.css";
-import './style.css'
-import maplibregl from 'maplibre-gl';
-import { Protocol } from 'pmtiles';
-import { makeStyle } from "./lib";
+import "./style.css";
+import maplibregl from "maplibre-gl";
+import { Protocol } from "pmtiles";
+import { makeStyle } from "./lib/pmbm";
 
 (() => {
-  const appDiv = document.querySelector<HTMLDivElement>('#app');
+  const appDiv = document.querySelector<HTMLDivElement>("#app");
 
   if (!appDiv) {
     return;
@@ -20,29 +20,19 @@ import { makeStyle } from "./lib";
     hash: true,
     style: makeStyle({
       pmtiles: "https://fsn1.your-objectstorage.com/public-map-data/pmtiles/planet.pmtiles",
-      sprite: "https://raw.githubusercontent.com/jonathanlurie/phosphor-mlgl-sprite/refs/heads/main/sprite/phosphor-diecut",
+      sprite:
+        "https://raw.githubusercontent.com/jonathanlurie/phosphor-mlgl-sprite/refs/heads/main/sprite/phosphor-diecut",
       glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf",
-      lang: "dep"
+      lang: "fr",
     }),
     center: [0, 0],
     zoom: 3,
   });
 
   // Enable globe view
-  map.on('style.load', () => {
+  map.on("style.load", () => {
     map.setProjection({
-      // type: 'mercator',
-      type: [
-        "interpolate",
-        ["linear"],
-        ["zoom"],
-        7,
-        "vertical-perspective",
-        8,
-        "mercator"
-      ]
+      type: ["interpolate", ["linear"], ["zoom"], 7, "vertical-perspective", 8, "mercator"],
     });
   });
-
-
-})()
+})();

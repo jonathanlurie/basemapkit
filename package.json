@@ -3,14 +3,25 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/pmbm.js",
+      "types": "./dist/pmbm.d.ts"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build-lib": "rm -rf ./dist/* && tsc && vite build -c vite.config-lib.ts",
+    "biome": "biome check --max-diagnostics=1000",
+    "biome:fix": "biome check --max-diagnostics=1000 --write"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.0.0",
     "typescript": "~5.8.3",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vite-plugin-dts": "^4.5.4"
   },
   "dependencies": {
     "@protomaps/basemaps": "^5.4.1",
