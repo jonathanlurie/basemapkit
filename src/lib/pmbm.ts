@@ -6,7 +6,8 @@ export type MakeStyleOptions = {
   pmtiles: string;
   sprite: string;
   glyphs: string;
-  lang?: string;
+
+  lang?: undefined | "none" | "ar" | "cs" | "bg" | "da" | "de" | "el" | "en" | "es" | "et" | "fa" | "fi" | "fr" | "ga" | "he" | "hi" | "hr" | "hu" | "id" | "it" | "ja" | "ko" | "lt" | "lv" | "ne" | "nl" | "no" | "mr" | "mt" | "pl" | "pt" | "ro" | "ru" | "sk" | "sl" | "sv" | "tr" | "uk" | "ur" | "vi" | "zh-Hans" | "zh-Hant",
   script?: string;
 };
 
@@ -47,31 +48,38 @@ export function getDefaultLanguage(): string {
 }
 
 export function makeStyle(options: MakeStyleOptions): StyleSpecification {
-  let lang = getDefaultLanguage();
+  let countryTextField: string;
+  let otherTranslatedTextField: string;
 
-  if (typeof options.lang === "string") {
-    const isSupported = isLanguageSupported(options.lang, options.script, true);
-
-    if (isSupported) {
-      lang = options.lang;
-    } else {
-      console.warn(`Using language "${lang}" as fallback.`);
-    }
+  // Not displaying any label
+  if (options.lang === "none") {
+    countryTextField = '""';
+    otherTranslatedTextField = '""';
   }
 
-  const countryTextField = get_country_name(lang, options.script);
-  const otherTranslatedTextField = get_multiline_name(lang, options.script);
+  // Displaying a label that is supported
+  else if (typeof options.lang === "string" && isLanguageSupported(options.lang, options.script, true)) {
+    countryTextField = JSON.stringify(get_country_name(options.lang, options.script));
+    otherTranslatedTextField = JSON.stringify(get_multiline_name(options.lang, options.script));
+  }
+
+  // Not providing any language: using platform language
+  else {
+    const lang = getDefaultLanguage();
+    countryTextField = JSON.stringify(get_country_name(lang));
+    otherTranslatedTextField = JSON.stringify(get_multiline_name(lang));
+  }
 
   const translatedLayersStr = versatileLayersRaw
-    .replaceAll('"<LANG>"', JSON.stringify(otherTranslatedTextField))
-    .replaceAll('"<LANG_COUNTRY>"', JSON.stringify(countryTextField));
+    .replaceAll('"<LANG>"', otherTranslatedTextField)
+    .replaceAll('"<LANG_COUNTRY>"', countryTextField);
 
   const style: StyleSpecification = {
     version: 8,
     sprite: options.sprite,
     glyphs: options.glyphs,
     sources: {
-      protomaps_planet: {
+      pmbm_protomaps_planet: {
         type: "vector",
         url: `pmtiles://${options.pmtiles}`,
         attribution: "<a href='https://openstreetmap.org/copyright'>© OpenStreetMap Contributors</a>",
