@@ -19,7 +19,13 @@ import { makeStyle } from "./lib/pmbm";
     maxPitch: 89,
     hash: true,
     style: makeStyle({
+      // If tiles are fetched directly on a public bucket as a single pmtiles file:
       pmtiles: "https://fsn1.your-objectstorage.com/public-map-data/pmtiles/planet.pmtiles",
+
+      // If pmtiles tiles are served as single MVT (using pmtiles CLI or Maplibre Martin) and referenced
+      // with a tileJSON file:
+      // tilejson: "http://localhost:8080/pmtiles/planet.json",
+
       sprite:
         "https://raw.githubusercontent.com/jonathanlurie/phosphor-mlgl-sprite/refs/heads/main/sprite/phosphor-diecut",
       glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf",

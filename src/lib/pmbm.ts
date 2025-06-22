@@ -3,10 +3,19 @@ import versatileLayersRaw from "./assets/versatile-layers-raw.txt?raw";
 import type { StyleSpecification, LayerSpecification } from "maplibre-gl";
 
 export type MakeStyleOptions = {
-  pmtiles: string;
+  /**
+   * The public URL of a pmtiles files. To use if sourcing tiles directly with
+   * range-request using the `pmtiles`'s protocol. Alternatively, the option `tileJson` can be used and will take precedence.
+   */
+  pmtiles?: string;
+
+  /**
+   * The public URL to a tile JSON file. To use if classic z/x/y MVT tiles are served through
+   * Maplibre's Martin or the pmtiles CLI. Will take precedence on the option `pmtiles` if both are provided.
+   */
+  tilejson?: string;
   sprite: string;
   glyphs: string;
-
   lang?: undefined | "none" | "ar" | "cs" | "bg" | "da" | "de" | "el" | "en" | "es" | "et" | "fa" | "fi" | "fr" | "ga" | "he" | "hi" | "hr" | "hu" | "id" | "it" | "ja" | "ko" | "lt" | "lv" | "ne" | "nl" | "no" | "mr" | "mt" | "pl" | "pt" | "ro" | "ru" | "sk" | "sl" | "sv" | "tr" | "uk" | "ur" | "vi" | "zh-Hans" | "zh-Hant",
   script?: string;
 };
@@ -74,6 +83,15 @@ export function makeStyle(options: MakeStyleOptions): StyleSpecification {
     .replaceAll('"<LANG>"', otherTranslatedTextField)
     .replaceAll('"<LANG_COUNTRY>"', countryTextField);
 
+  let sourceUrl: string;
+  if (typeof options.tilejson === "string") {
+    sourceUrl = options.tilejson
+  } else if (typeof options.pmtiles === "string") {
+    sourceUrl = `pmtiles://${options.pmtiles}`
+  } else {
+    throw new Error(`At least one option of "tilejson" or "pmtiles" must be provided as data source.`)
+  }
+
   const style: StyleSpecification = {
     version: 8,
     sprite: options.sprite,
@@ -81,7 +99,7 @@ export function makeStyle(options: MakeStyleOptions): StyleSpecification {
     sources: {
       pmbm_protomaps_planet: {
         type: "vector",
-        url: `pmtiles://${options.pmtiles}`,
+        url: sourceUrl,
         attribution: "<a href='https://openstreetmap.org/copyright'>© OpenStreetMap Contributors</a>",
       },
     },
