@@ -1,6 +1,7 @@
 import { get_country_name, get_multiline_name, language_script_pairs } from "@protomaps/basemaps";
 import versatileLayersRaw from "./assets/versatile-layers-raw.txt?raw";
 import type { StyleSpecification, LayerSpecification } from "maplibre-gl";
+import Color from "color";
 
 export type MakeStyleOptions = {
   /**
@@ -14,10 +15,18 @@ export type MakeStyleOptions = {
    * Maplibre's Martin or the pmtiles CLI. Will take precedence on the option `pmtiles` if both are provided.
    */
   tilejson?: string;
+
+
   sprite: string;
   glyphs: string;
   lang?: undefined | "none" | "ar" | "cs" | "bg" | "da" | "de" | "el" | "en" | "es" | "et" | "fa" | "fi" | "fr" | "ga" | "he" | "hi" | "hr" | "hu" | "id" | "it" | "ja" | "ko" | "lt" | "lv" | "ne" | "nl" | "no" | "mr" | "mt" | "pl" | "pt" | "ro" | "ru" | "sk" | "sl" | "sv" | "tr" | "uk" | "ur" | "vi" | "zh-Hans" | "zh-Hant",
   script?: string;
+
+  brightness?: number;
+  hueRotation?: number;
+  contrast?: number;
+  contrastMidPoint?: number;
+  saturation?: number;
 };
 
 export function isLanguageSupported(lang: string, script: string | undefined, verbose: boolean): boolean {
@@ -92,6 +101,23 @@ export function makeStyle(options: MakeStyleOptions): StyleSpecification {
     throw new Error(`At least one option of "tilejson" or "pmtiles" must be provided as data source.`)
   }
 
+  let layers = JSON.parse(translatedLayersStr) as unknown as LayerSpecification[];
+
+  const brightness = options.brightness ?? 0;
+  const hueRotation = options.hueRotation ?? 0;
+  const contrast = options.contrast ?? 0;
+  const contrastMidPoint = options.contrast ?? 127;
+  const saturation = options.saturation ?? 0;
+
+  const applyColorTransform = brightness !== 0 || hueRotation !== 0 || contrast !== 0 || saturation !== 0;
+
+  const colorTransformation = (color: string) => {
+    const inputColor = Color(color);
+    const rgb = inputColor.rgb();
+
+    
+  }
+
   const style: StyleSpecification = {
     version: 8,
     sprite: options.sprite,
@@ -103,7 +129,7 @@ export function makeStyle(options: MakeStyleOptions): StyleSpecification {
         attribution: "<a href='https://openstreetmap.org/copyright'>© OpenStreetMap Contributors</a>",
       },
     },
-    layers: JSON.parse(translatedLayersStr) as unknown as LayerSpecification[],
+    layers: layers,
   };
 
   return style;
