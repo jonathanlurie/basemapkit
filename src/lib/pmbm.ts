@@ -2,6 +2,7 @@ import { get_country_name, get_multiline_name, language_script_pairs } from "@pr
 import versatileLayersRaw from "./assets/versatile-layers-raw.txt?raw";
 import type { StyleSpecification, LayerSpecification } from "maplibre-gl";
 import Color from "color";
+import { applyBrightnessRGB, applyContrastRGB, applyMultiplicationRGB, findColor, type RGBArray } from "./colorchange";
 
 export type MakeStyleOptions = {
   /**
@@ -24,9 +25,11 @@ export type MakeStyleOptions = {
 
   brightness?: number;
   hueRotation?: number;
-  contrast?: number;
-  contrastMidPoint?: number;
+  // contrast?: number;
+  // contrastMidpoint?: number;
   saturation?: number;
+  multiplyColor?: [string, number];
+  mixColor?: [string, number];
 };
 
 export function isLanguageSupported(lang: string, script: string | undefined, verbose: boolean): boolean {
@@ -105,17 +108,76 @@ export function makeStyle(options: MakeStyleOptions): StyleSpecification {
 
   const brightness = options.brightness ?? 0;
   const hueRotation = options.hueRotation ?? 0;
-  const contrast = options.contrast ?? 0;
-  const contrastMidPoint = options.contrast ?? 127;
+  // const contrast = options.contrast ?? 0;
+  // const contrastMidpoint = options.contrastMidpoint ?? 127;
   const saturation = options.saturation ?? 0;
 
-  const applyColorTransform = brightness !== 0 || hueRotation !== 0 || contrast !== 0 || saturation !== 0;
+  
 
-  const colorTransformation = (color: string) => {
-    const inputColor = Color(color);
-    const rgb = inputColor.rgb();
+  const shouldApplyColorTransform = brightness !== 0 || 
+    hueRotation !== 0 || 
+    // contrast !== 0 || 
+    saturation !== 0 || 
+    options.multiplyColor !== undefined ||
+    options.mixColor !== undefined;
 
-    
+
+  if (shouldApplyColorTransform) {
+    findColor(layers, (color: string) => {
+      // Using the Color lib for saturation and hue rotation
+      let inputColor = Color(color)
+        .saturate(saturation)
+        .rotate(hueRotation);
+
+      if (brightness >= 0) {
+        inputColor = inputColor.lighten(brightness);
+      } else {
+        inputColor = inputColor.darken(brightness * -1);
+      }
+
+      // if (Array.isArray(options.mixColor) && typeof options.mixColor[0] === "string" && typeof options.mixColor[1] === "number") {
+      //   console.log("mixing");
+        
+      //   inputColor = inputColor.mix(Color(options.mixColor[0]), options.mixColor[1]);
+      // }
+        
+
+      const rgbColorInstance = inputColor.rgb();
+      const alpha = rgbColorInstance.alpha();
+      let rgbArr = [
+        rgbColorInstance.red(),
+        rgbColorInstance.green(),
+        rgbColorInstance.blue()
+      ] as RGBArray;
+  
+      // Apply brightness
+      // rgbArr = applyBrightnessRGB(rgbArr, brightness);
+  
+      // // Apply contrast
+      // rgbArr = applyContrastRGB(rgbArr, contrast, contrastMidpoint);
+
+      if (Array.isArray(options.multiplyColor) && typeof options.multiplyColor[0] === "string" && typeof options.multiplyColor[1] === "number") {
+        const multiplyColor = Color(options.multiplyColor[0]);
+
+        rgbArr = applyMultiplicationRGB(rgbArr, [multiplyColor.red(), multiplyColor.green(), multiplyColor.blue()], options.multiplyColor[1])
+      }
+
+      
+  
+      
+      const outputColor = Color({r: rgbArr[0], g: rgbArr[1], b: rgbArr[2], alpha: alpha})
+        
+  
+      if (color.startsWith("rgba(") || color.startsWith("rgb(")) {
+        return outputColor.rgb().toString()
+      }
+  
+      if (color.startsWith("hsl(") || color.startsWith("hsla(")) {
+        return outputColor.hsl().toString()
+      }
+  
+      return outputColor.hexa();
+    });
   }
 
   const style: StyleSpecification = {

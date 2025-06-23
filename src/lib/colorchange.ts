@@ -99,3 +99,11 @@ export function applyContrastSingle(input: number, contrast: number, midpoint = 
 export function applyContrastRGB(input: RGBArray, contrast: number, midpoint = 127): RGBArray {
   return input.map(chan => applyContrastSingle(chan, contrast, midpoint)) as RGBArray;
 }
+
+export function applyMultiplicationSingle(input1: number, input2: number, ratio = 1): number {
+  return 255 * (input1 / 255) * (input2 / 255) * ratio + (input1 / 255) * (1 - ratio) * 255;
+}
+
+export function applyMultiplicationRGB(input1: RGBArray, input2: RGBArray, ratio = 1): RGBArray {
+  return input1.map((_chan, i) => applyMultiplicationSingle(input1[i], input2[i], ratio)) as RGBArray;
+}

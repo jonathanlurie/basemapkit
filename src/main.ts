@@ -30,6 +30,13 @@ import { makeStyle } from "./lib/pmbm";
         "https://raw.githubusercontent.com/jonathanlurie/phosphor-mlgl-sprite/refs/heads/main/sprite/phosphor-diecut",
       glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf",
       lang: "fr",
+
+      brightness: -0.3,
+      saturation: -0.5,
+      hueRotation: 10,
+      multiplyColor: ["#171075", 0.2],
+      // mixColor: ["#001580", 0.6],
+
     }),
     center: [0, 0],
     zoom: 3,
