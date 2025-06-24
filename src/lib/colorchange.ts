@@ -5,7 +5,8 @@ function isColorDescription(elem: unknown): boolean {
     elem.startsWith("#") || 
     elem.startsWith("rgb(") || 
     elem.startsWith("rgba(") ||
-    elem.startsWith("hsl(")
+    elem.startsWith("hsl(") ||
+    elem.startsWith("hwb(")
   )) {
     return true
   }

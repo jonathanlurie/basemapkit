@@ -32,10 +32,12 @@ import { makeStyle } from "./lib/pmbm";
       lang: "fr",
 
       brightness: -0.3,
-      saturation: -0.5,
-      hueRotation: 10,
-      multiplyColor: ["#171075", 0.2],
+      // brightnessShift: -0.7,
+      saturation: -0.8,
+      // hueRotation: 10,
+      multiplyColor: ["#171075", 0.6],
       // mixColor: ["#001580", 0.6],
+      contrast: [1.2, 170],
 
     }),
     center: [0, 0],

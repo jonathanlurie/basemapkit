@@ -23,13 +23,28 @@ export type MakeStyleOptions = {
   lang?: undefined | "none" | "ar" | "cs" | "bg" | "da" | "de" | "el" | "en" | "es" | "et" | "fa" | "fi" | "fr" | "ga" | "he" | "hi" | "hr" | "hu" | "id" | "it" | "ja" | "ko" | "lt" | "lv" | "ne" | "nl" | "no" | "mr" | "mt" | "pl" | "pt" | "ro" | "ru" | "sk" | "sl" | "sv" | "tr" | "uk" | "ur" | "vi" | "zh-Hans" | "zh-Hant",
   script?: string;
 
+  negate?: boolean;
+
+  /**
+   * Ratio relative to current brightness
+   */
   brightness?: number;
+  brightnessShift?: number;
   hueRotation?: number;
-  // contrast?: number;
-  // contrastMidpoint?: number;
   saturation?: number;
   multiplyColor?: [string, number];
   mixColor?: [string, number];
+  contrast?: [
+    /**
+     * Contrast intensity
+     */
+    number, 
+
+    /**
+     * mid point brightness (127 is middle)
+     */
+    number
+  ];
 };
 
 export function isLanguageSupported(lang: string, script: string | undefined, verbose: boolean): boolean {
@@ -108,31 +123,47 @@ export function makeStyle(options: MakeStyleOptions): StyleSpecification {
 
   const brightness = options.brightness ?? 0;
   const hueRotation = options.hueRotation ?? 0;
-  // const contrast = options.contrast ?? 0;
-  // const contrastMidpoint = options.contrastMidpoint ?? 127;
   const saturation = options.saturation ?? 0;
-
-  
+  const negate = options.negate ?? false;
+  const brightnessShift = options.brightnessShift ?? 0;
 
   const shouldApplyColorTransform = brightness !== 0 || 
     hueRotation !== 0 || 
-    // contrast !== 0 || 
     saturation !== 0 || 
+    negate === true ||
     options.multiplyColor !== undefined ||
-    options.mixColor !== undefined;
+    options.mixColor !== undefined ||
+    brightnessShift !== 0 ||
+    options.contrast !== undefined;
 
 
   if (shouldApplyColorTransform) {
     findColor(layers, (color: string) => {
       // Using the Color lib for saturation and hue rotation
-      let inputColor = Color(color)
-        .saturate(saturation)
-        .rotate(hueRotation);
+      let layerColor = Color(color)
 
-      if (brightness >= 0) {
-        inputColor = inputColor.lighten(brightness);
-      } else {
-        inputColor = inputColor.darken(brightness * -1);
+      if (negate) {
+        layerColor = layerColor.negate();
+      }
+
+      if (saturation !== 0) {
+        layerColor = layerColor.saturate(saturation);
+      }
+
+      if (hueRotation !== 0) {
+        layerColor = layerColor.rotate(hueRotation);
+      }
+        
+      if (brightness > 0) {
+        layerColor = layerColor.lighten(brightness);
+      } else if (brightness < 0) {
+        layerColor = layerColor.darken(brightness * -1);
+      }
+
+      if (brightnessShift !== 0) {
+        const hsl = layerColor.hsl().array();
+        hsl[2] += brightnessShift * 100
+        layerColor = Color.hsl(...hsl);
       }
 
       // if (Array.isArray(options.mixColor) && typeof options.mixColor[0] === "string" && typeof options.mixColor[1] === "number") {
@@ -142,7 +173,7 @@ export function makeStyle(options: MakeStyleOptions): StyleSpecification {
       // }
         
 
-      const rgbColorInstance = inputColor.rgb();
+      const rgbColorInstance = layerColor.rgb();
       const alpha = rgbColorInstance.alpha();
       let rgbArr = [
         rgbColorInstance.red(),
@@ -154,7 +185,10 @@ export function makeStyle(options: MakeStyleOptions): StyleSpecification {
       // rgbArr = applyBrightnessRGB(rgbArr, brightness);
   
       // // Apply contrast
-      // rgbArr = applyContrastRGB(rgbArr, contrast, contrastMidpoint);
+      if (options.contrast) {
+        rgbArr = applyContrastRGB(rgbArr, options.contrast[0], options.contrast[1]);
+      }
+      
 
       if (Array.isArray(options.multiplyColor) && typeof options.multiplyColor[0] === "string" && typeof options.multiplyColor[1] === "number") {
         const multiplyColor = Color(options.multiplyColor[0]);
