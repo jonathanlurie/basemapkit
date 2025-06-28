@@ -2,7 +2,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import "./style.css";
 import maplibregl from "maplibre-gl";
 import { Protocol } from "pmtiles";
-import { makeStyle } from "./lib/pmbm";
+import { buildStyle, getStyle, getStyleList } from "./lib/pmbm";
 
 (() => {
   const appDiv = document.querySelector<HTMLDivElement>("#app");
@@ -14,32 +14,53 @@ import { makeStyle } from "./lib/pmbm";
   const protocol = new Protocol();
   maplibregl.addProtocol("pmtiles", protocol.tile);
 
+  console.log(getStyleList());
+
+  const pmtiles = "https://fsn1.your-objectstorage.com/public-map-data/pmtiles/planet.pmtiles";
+  const sprite = "https://raw.githubusercontent.com/jonathanlurie/phosphor-mlgl-sprite/refs/heads/main/sprite/phosphor-diecut";
+  const glyphs = "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf";
+  const lang = "fr";
+
+  const style = buildStyle({
+    baseStyleName: "versatile",
+
+    // If tiles are fetched directly on a public bucket as a single pmtiles file:
+    pmtiles,
+
+    // If pmtiles tiles are served as single MVT (using pmtiles CLI or Maplibre Martin) and referenced
+    // with a tileJSON file:
+    // tilejson: "http://localhost:8080/pmtiles/planet.json",
+
+    sprite, glyphs, lang,
+
+    hidePOIs: true,
+
+    colorEdit: {
+      exposure: -1,
+      saturation: -1,
+      // brightness: 0.2,
+      contrast: [1.2, 160],
+      // multiplyColor: ["#99a8ff", 0.3],
+      // mixColor: ["#99a8ff", 0.03]
+
+      
+    }
+  });
+
+
+
+  // const style = getStyle("versatile-bright", {
+  //   pmtiles, sprite, glyphs, lang,
+  // })
+  
+  console.log(style);
+  
+
   const map = new maplibregl.Map({
     container: appDiv,
     maxPitch: 89,
     hash: true,
-    style: makeStyle({
-      // If tiles are fetched directly on a public bucket as a single pmtiles file:
-      pmtiles: "https://fsn1.your-objectstorage.com/public-map-data/pmtiles/planet.pmtiles",
-
-      // If pmtiles tiles are served as single MVT (using pmtiles CLI or Maplibre Martin) and referenced
-      // with a tileJSON file:
-      // tilejson: "http://localhost:8080/pmtiles/planet.json",
-
-      sprite:
-        "https://raw.githubusercontent.com/jonathanlurie/phosphor-mlgl-sprite/refs/heads/main/sprite/phosphor-diecut",
-      glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf",
-      lang: "fr",
-
-      brightness: -0.3,
-      // brightnessShift: -0.7,
-      saturation: -0.8,
-      // hueRotation: 10,
-      multiplyColor: ["#171075", 0.6],
-      // mixColor: ["#001580", 0.6],
-      contrast: [1.2, 170],
-
-    }),
+    style,
     center: [0, 0],
     zoom: 3,
   });

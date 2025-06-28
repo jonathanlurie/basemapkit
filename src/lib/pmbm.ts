@@ -1,10 +1,130 @@
-import { get_country_name, get_multiline_name, language_script_pairs } from "@protomaps/basemaps";
-import versatileLayersRaw from "./assets/versatile-layers-raw.txt?raw";
-import type { StyleSpecification, LayerSpecification } from "maplibre-gl";
+import { get_country_name, get_multiline_name } from "@protomaps/basemaps";
 import Color from "color";
+import type { StyleSpecification, LayerSpecification } from "maplibre-gl";
 import { applyBrightnessRGB, applyContrastRGB, applyMultiplicationRGB, findColor, type RGBArray } from "./colorchange";
+import versatileLayersRaw from "./assets/versatile-layers-raw.txt?raw";
+import { getDefaultLanguage, isLanguageSupported } from "./language";
 
-export type MakeStyleOptions = {
+const baseStyles = {
+  "versatile": versatileLayersRaw,
+} as const;
+
+const stylePresets = {
+  "versatile-night": {
+    baseStyle: "versatile",
+    colorEdit: {
+      brightness: -0.3,
+      saturation: -0.8,
+      multiplyColor: ["#171075", 0.6],
+      contrast: [1.6, 160],
+    } as ColorEdit,
+  },
+
+  "versatile-bright": {
+    baseStyle: "versatile",
+    colorEdit: {
+      exposure: 0.6,
+      saturation: -0.1,
+      hueRotation: 15,
+      contrast: [0.2, 220]
+    } as ColorEdit,
+  },
+
+  "versatile-bnw": {
+    baseStyle: "versatile",
+    colorEdit: {
+      exposure: -1,
+      saturation: -1,
+      contrast: [1.2, 160],
+    } as ColorEdit,
+  },
+} as const;
+
+
+export type ColorEdit = {
+  /**
+   * Invert the image color
+   */
+  negate?: boolean;
+
+  /**
+   * Ratio relative to current brightness.
+   * Value in [-1, 1] but the range is actually open
+   */
+  brightness?: number;
+
+  /**
+   * Absolute brightness shift
+   * Value in [-1, 1] but the range is actually open
+   */
+  brightnessShift?: number;
+
+  /**
+   * Exposure, like brightness but more preserving
+   * Value in [-1, 1] but the range is actually open
+   */
+  exposure?: number;
+
+  /**
+   * Rotate the hue wheel
+   * Value in [-180, 180] but the range is actually open
+   */
+  hueRotation?: number;
+
+  /**
+   * Modifiy color saturation
+   * Value in [-1, 1] but the range is actually open
+   */
+  saturation?: number;
+
+  /**
+   * Multiply every color with the given one.
+   */
+  multiplyColor?: [
+    /**
+     * CSS color
+     */
+    string,
+
+    /**
+     * Mixing ratio in [0, 1], where 0 is fully the original color and 1 is fully the multiplication.
+     */
+    number
+  ];
+
+  /**
+   * Mix every color with the given one. Tends to yield less natural blending than multiplyColor.
+   */
+  mixColor?: [
+    /**
+     * CSS color
+     */
+    string,
+
+    /**
+     * Mixing ratio in [0, 1], where 0 is fully the original color and 1 is fully the one provided.
+     */
+    number
+  ];
+
+  /**
+   * Apply contrast, providing a contrast intensity and a mid (inflection) point
+   */
+  contrast?: [
+    /**
+     * Contrast intensity. Value in [-1, 1] but is actually an open range
+     */
+    number, 
+
+    /**
+     * Color intensity mid point in the range [0, 255]
+     */
+    number
+  ];
+}
+
+export type GetStyleOptions = {
+
   /**
    * The public URL of a pmtiles files. To use if sourcing tiles directly with
    * range-request using the `pmtiles`'s protocol. Alternatively, the option `tileJson` can be used and will take precedence.
@@ -17,73 +137,78 @@ export type MakeStyleOptions = {
    */
   tilejson?: string;
 
-
-  sprite: string;
-  glyphs: string;
-  lang?: undefined | "none" | "ar" | "cs" | "bg" | "da" | "de" | "el" | "en" | "es" | "et" | "fa" | "fi" | "fr" | "ga" | "he" | "hi" | "hr" | "hu" | "id" | "it" | "ja" | "ko" | "lt" | "lv" | "ne" | "nl" | "no" | "mr" | "mt" | "pl" | "pt" | "ro" | "ru" | "sk" | "sl" | "sv" | "tr" | "uk" | "ur" | "vi" | "zh-Hans" | "zh-Hant",
-  script?: string;
-
-  negate?: boolean;
+  /**
+   * URL of the sprites
+   */
+  sprite?: string;
 
   /**
-   * Ratio relative to current brightness
+   * URL of the glyphs
    */
-  brightness?: number;
-  brightnessShift?: number;
-  hueRotation?: number;
-  saturation?: number;
-  multiplyColor?: [string, number];
-  mixColor?: [string, number];
-  contrast?: [
-    /**
-     * Contrast intensity
-     */
-    number, 
+  glyphs: string;
 
-    /**
-     * mid point brightness (127 is middle)
-     */
-    number
-  ];
+  /**
+   * Language to apply to the basemap. Leaving this undefined will set to auto mode and use the platform language of the end user.
+   */
+  lang?: undefined | "none" | "ar" | "cs" | "bg" | "da" | "de" | "el" | "en" | "es" | "et" | "fa" | "fi" | "fr" | "ga" | "he" | "hi" | "hr" | "hu" | "id" | "it" | "ja" | "ko" | "lt" | "lv" | "ne" | "nl" | "no" | "mr" | "mt" | "pl" | "pt" | "ro" | "ru" | "sk" | "sl" | "sv" | "tr" | "uk" | "ur" | "vi" | "zh-Hans" | "zh-Hant",
+  
+  /**
+   * Language script to apply to the basemap
+   */
+  script?: string;
+
+  /**
+   * Points Of Interests are shown by default, requiring a sprite. Passing this option as `true`will mask the POIs layer
+   * and make the `sprite` optional
+   */
+  hidePOIs?: boolean;
+}
+
+
+export type BuildStyleOptions = GetStyleOptions & {
+  /**
+   * Name of the style to start from
+   */
+  baseStyleName: string;
+
+  /**
+   * Optional color modification to apply to the provided style
+   */
+  colorEdit?: ColorEdit;
 };
 
-export function isLanguageSupported(lang: string, script: string | undefined, verbose: boolean): boolean {
-  const candidates = language_script_pairs.filter((l) => l.lang === lang);
 
-  if (candidates.length === 0) {
-    verbose &&
-      console.warn(
-        `The language "${lang}". The languages available are: ${language_script_pairs.map((l) => l.lang).join(", ")}.`,
-      );
-    return false;
-  }
-
-  if (script) {
-    const candidatesWithScript = candidates.filter((l) => l.script === script);
-
-    if (candidatesWithScript.length) {
-      return true;
-    }
-
-    verbose &&
-      console.warn(
-        `The script "${script}" for the language "${lang}" is unsupported. Script available for this language: ${candidates.map((l) => l.script).join(", ")}.`,
-      );
-    return false;
-  }
-
-  return true;
+export function getStyleList(): string[] {
+  return Object.keys(baseStyles).concat(Object.keys(stylePresets));
 }
 
-export function getDefaultLanguage(): string {
-  const systemLang = Intl.DateTimeFormat().resolvedOptions().locale.split("-")[0];
-  if (isLanguageSupported(systemLang, undefined, false)) {
-    return systemLang;
+export function getStyle(styleName: string, options: GetStyleOptions): StyleSpecification {
+  // Check is style is raw
+  if (styleName in baseStyles) {
+    return buildStyle({
+      ...options,
+      baseStyleName: styleName,
+    });
   }
-  return "en";
+
+  // Or if it's a preset
+  if (styleName in stylePresets) {
+    const presetInfo = stylePresets[styleName as keyof typeof stylePresets];
+    return buildStyle({
+      ...options,
+      baseStyleName: presetInfo.baseStyle,
+      colorEdit: presetInfo.colorEdit,
+    })
+  }
+
+  throw new Error(`The style "${styleName}" does not exist as a base style, nor as a preset.`)
 }
 
-export function makeStyle(options: MakeStyleOptions): StyleSpecification {
+
+/**
+ * Build your own style, using one of the base style as starting point.
+ */
+export function buildStyle(options: BuildStyleOptions): StyleSpecification {
   let countryTextField: string;
   let otherTranslatedTextField: string;
 
@@ -106,7 +231,13 @@ export function makeStyle(options: MakeStyleOptions): StyleSpecification {
     otherTranslatedTextField = JSON.stringify(get_multiline_name(lang));
   }
 
-  const translatedLayersStr = versatileLayersRaw
+  if (!(options.baseStyleName in baseStyles)) {
+    throw new Error(`The base style ${options.baseStyleName} does not exist.`);
+  }
+
+  const baseStyleLayers = baseStyles[options.baseStyleName as keyof typeof baseStyles];
+
+  const translatedLayersStr = baseStyleLayers
     .replaceAll('"<LANG>"', otherTranslatedTextField)
     .replaceAll('"<LANG_COUNTRY>"', countryTextField);
 
@@ -120,22 +251,29 @@ export function makeStyle(options: MakeStyleOptions): StyleSpecification {
   }
 
   let layers = JSON.parse(translatedLayersStr) as unknown as LayerSpecification[];
+  const hidePOIs = options.hidePOIs ?? false;
 
-  const brightness = options.brightness ?? 0;
-  const hueRotation = options.hueRotation ?? 0;
-  const saturation = options.saturation ?? 0;
-  const negate = options.negate ?? false;
-  const brightnessShift = options.brightnessShift ?? 0;
+  if (hidePOIs) {
+    layers = layers.filter(l => l.id !== "pois");
+  }
+
+  const colorOptions = options.colorEdit ?? {};
+  const brightness = colorOptions.brightness ?? 0;
+  const hueRotation = colorOptions.hueRotation ?? 0;
+  const saturation = colorOptions.saturation ?? 0;
+  const negate = colorOptions.negate ?? false;
+  const brightnessShift = colorOptions.brightnessShift ?? 0;
+  const exposure = colorOptions.exposure ?? 0;
 
   const shouldApplyColorTransform = brightness !== 0 || 
     hueRotation !== 0 || 
     saturation !== 0 || 
     negate === true ||
-    options.multiplyColor !== undefined ||
-    options.mixColor !== undefined ||
+    colorOptions.multiplyColor !== undefined ||
+    colorOptions.mixColor !== undefined ||
     brightnessShift !== 0 ||
-    options.contrast !== undefined;
-
+    colorOptions.contrast !== undefined ||
+    exposure !== 0;
 
   if (shouldApplyColorTransform) {
     findColor(layers, (color: string) => {
@@ -146,14 +284,14 @@ export function makeStyle(options: MakeStyleOptions): StyleSpecification {
         layerColor = layerColor.negate();
       }
 
+      if (hueRotation !== 0) {
+        layerColor = layerColor.rotate(hueRotation);
+      }
+
       if (saturation !== 0) {
         layerColor = layerColor.saturate(saturation);
       }
 
-      if (hueRotation !== 0) {
-        layerColor = layerColor.rotate(hueRotation);
-      }
-        
       if (brightness > 0) {
         layerColor = layerColor.lighten(brightness);
       } else if (brightness < 0) {
@@ -166,12 +304,9 @@ export function makeStyle(options: MakeStyleOptions): StyleSpecification {
         layerColor = Color.hsl(...hsl);
       }
 
-      // if (Array.isArray(options.mixColor) && typeof options.mixColor[0] === "string" && typeof options.mixColor[1] === "number") {
-      //   console.log("mixing");
-        
-      //   inputColor = inputColor.mix(Color(options.mixColor[0]), options.mixColor[1]);
-      // }
-        
+      if (Array.isArray(colorOptions.mixColor) && typeof colorOptions.mixColor[0] === "string" && typeof colorOptions.mixColor[1] === "number") {
+        layerColor = layerColor.mix(Color(colorOptions.mixColor[0]), colorOptions.mixColor[1]);
+      }
 
       const rgbColorInstance = layerColor.rgb();
       const alpha = rgbColorInstance.alpha();
@@ -181,27 +316,25 @@ export function makeStyle(options: MakeStyleOptions): StyleSpecification {
         rgbColorInstance.blue()
       ] as RGBArray;
   
-      // Apply brightness
-      // rgbArr = applyBrightnessRGB(rgbArr, brightness);
+      // Apply exposure
+      if (exposure !== 0) {
+        rgbArr = applyBrightnessRGB(rgbArr, exposure);
+      }
   
-      // // Apply contrast
-      if (options.contrast) {
-        rgbArr = applyContrastRGB(rgbArr, options.contrast[0], options.contrast[1]);
+      // Apply contrast
+      if (Array.isArray(colorOptions.contrast) && typeof colorOptions.contrast[0] === "number" && typeof colorOptions.contrast[1] === "number") {
+        rgbArr = applyContrastRGB(rgbArr, colorOptions.contrast[0], colorOptions.contrast[1]);
       }
       
-
-      if (Array.isArray(options.multiplyColor) && typeof options.multiplyColor[0] === "string" && typeof options.multiplyColor[1] === "number") {
-        const multiplyColor = Color(options.multiplyColor[0]);
-
-        rgbArr = applyMultiplicationRGB(rgbArr, [multiplyColor.red(), multiplyColor.green(), multiplyColor.blue()], options.multiplyColor[1])
+      // Apply color multiplication
+      if (Array.isArray(colorOptions.multiplyColor) && typeof colorOptions.multiplyColor[0] === "string" && typeof colorOptions.multiplyColor[1] === "number") {
+        const multiplyColor = Color(colorOptions.multiplyColor[0]);
+        rgbArr = applyMultiplicationRGB(rgbArr, [multiplyColor.red(), multiplyColor.green(), multiplyColor.blue()], colorOptions.multiplyColor[1])
       }
 
-      
-  
-      
+      // Back to Color lib format
       const outputColor = Color({r: rgbArr[0], g: rgbArr[1], b: rgbArr[2], alpha: alpha})
         
-  
       if (color.startsWith("rgba(") || color.startsWith("rgb(")) {
         return outputColor.rgb().toString()
       }
@@ -216,7 +349,7 @@ export function makeStyle(options: MakeStyleOptions): StyleSpecification {
 
   const style: StyleSpecification = {
     version: 8,
-    sprite: options.sprite,
+    ...(options.sprite && !hidePOIs ? { sprite: options.sprite } : {}),
     glyphs: options.glyphs,
     sources: {
       pmbm_protomaps_planet: {

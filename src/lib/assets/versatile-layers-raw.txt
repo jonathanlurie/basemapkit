@@ -1749,7 +1749,7 @@
             "library",
             "school",
             "animal",
-            "toilets",
+            "toilet",
             "drinking_water",
             "viewpoint",
             "attraction",
