@@ -35,6 +35,8 @@ import { buildStyle, getStyle, getStyleList } from "./lib/pmbm";
 
     hidePOIs: true,
 
+    hideLabels: true,
+
     colorEdit: {
       exposure: -1,
       saturation: -1,

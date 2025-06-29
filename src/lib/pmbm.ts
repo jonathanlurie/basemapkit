@@ -1,6 +1,6 @@
 import { get_country_name, get_multiline_name } from "@protomaps/basemaps";
 import Color from "color";
-import type { StyleSpecification, LayerSpecification } from "maplibre-gl";
+import type { StyleSpecification, LayerSpecification, SymbolLayerSpecification } from "maplibre-gl";
 import { applyBrightnessRGB, applyContrastRGB, applyMultiplicationRGB, findColor, type RGBArray } from "./colorchange";
 import versatileLayersRaw from "./assets/versatile-layers-raw.txt?raw";
 import { getDefaultLanguage, isLanguageSupported } from "./language";
@@ -150,7 +150,7 @@ export type GetStyleOptions = {
   /**
    * Language to apply to the basemap. Leaving this undefined will set to auto mode and use the platform language of the end user.
    */
-  lang?: undefined | "none" | "ar" | "cs" | "bg" | "da" | "de" | "el" | "en" | "es" | "et" | "fa" | "fi" | "fr" | "ga" | "he" | "hi" | "hr" | "hu" | "id" | "it" | "ja" | "ko" | "lt" | "lv" | "ne" | "nl" | "no" | "mr" | "mt" | "pl" | "pt" | "ro" | "ru" | "sk" | "sl" | "sv" | "tr" | "uk" | "ur" | "vi" | "zh-Hans" | "zh-Hant",
+  lang?: undefined | "ar" | "cs" | "bg" | "da" | "de" | "el" | "en" | "es" | "et" | "fa" | "fi" | "fr" | "ga" | "he" | "hi" | "hr" | "hu" | "id" | "it" | "ja" | "ko" | "lt" | "lv" | "ne" | "nl" | "no" | "mr" | "mt" | "pl" | "pt" | "ro" | "ru" | "sk" | "sl" | "sv" | "tr" | "uk" | "ur" | "vi" | "zh-Hans" | "zh-Hant",
   
   /**
    * Language script to apply to the basemap
@@ -158,10 +158,16 @@ export type GetStyleOptions = {
   script?: string;
 
   /**
-   * Points Of Interests are shown by default, requiring a sprite. Passing this option as `true`will mask the POIs layer
-   * and make the `sprite` optional
+   * Points Of Interests are shown by default, requiring a sprite URL. Passing this option as `true` will remove the POIs layer
+   * and make the `sprite` option unnecessary.
    */
   hidePOIs?: boolean;
+
+  /**
+   * Labels are shown by default, requiring a glyphs URL. Passing this options as `true` will remove the label layers and make the 
+   * `glyphs` option unnecessary.
+   */
+  hideLabels?: boolean;
 }
 
 
@@ -211,9 +217,10 @@ export function getStyle(styleName: string, options: GetStyleOptions): StyleSpec
 export function buildStyle(options: BuildStyleOptions): StyleSpecification {
   let countryTextField: string;
   let otherTranslatedTextField: string;
+  const hideLabels = options.hideLabels ?? false;
 
   // Not displaying any label
-  if (options.lang === "none") {
+  if (hideLabels) {
     countryTextField = '""';
     otherTranslatedTextField = '""';
   }
@@ -252,9 +259,44 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
 
   let layers = JSON.parse(translatedLayersStr) as unknown as LayerSpecification[];
   const hidePOIs = options.hidePOIs ?? false;
+  
 
   if (hidePOIs) {
     layers = layers.filter(l => l.id !== "pois");
+  }
+
+  if (hideLabels) {
+    // Keeping the POI layer, yet removing the text field
+    const poiLayers = layers.filter(l => l.id === "pois");
+    if (poiLayers.length) {
+      const poiLayer = poiLayers[0] as SymbolLayerSpecification;
+      if (poiLayer.layout !== undefined) {
+        const layout = poiLayer.layout;
+        if (layout["text-field"] !== undefined) {
+          layout["text-field"] = "";
+        }
+      }
+    }
+
+    layers = layers.filter(l => {
+      if (l.id === "pois") {
+        return true;
+      }
+
+      if (l.type !== "symbol") {
+        return true;
+      }
+
+      const layer = l as SymbolLayerSpecification;
+
+      if (layer.layout !== undefined) {
+        const layout = layer.layout;
+        if (layout["text-field"] !== undefined) {
+          return false
+        }
+      }
+      return true;
+    })
   }
 
   const colorOptions = options.colorEdit ?? {};
@@ -352,7 +394,7 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
     ...(options.sprite && !hidePOIs ? { sprite: options.sprite } : {}),
     glyphs: options.glyphs,
     sources: {
-      pmbm_protomaps_planet: {
+      __protomaps_source: {
         type: "vector",
         url: sourceUrl,
         attribution: "<a href='https://openstreetmap.org/copyright'>© OpenStreetMap Contributors</a>",
