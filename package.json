@@ -1,12 +1,12 @@
 {
-  "name": "pmbm",
+  "name": "basemapkit",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.",
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/pmbm.js",
-      "types": "./dist/pmbm.d.ts"
+      "import": "./dist/basemapkit.js",
+      "types": "./dist/basemapkit.d.ts"
     }
   },
   "scripts": {

@@ -8,8 +8,8 @@ export default defineConfig({
     minify: true,
     sourcemap: true,
     lib: {
-      entry: resolve(__dirname, 'src/lib/pmbm.ts'),
-      name: 'pmbm',
+      entry: resolve(__dirname, 'src/lib/basemapkit.ts'),
+      name: 'basemapkit',
       fileName: (format, entryName) => `${entryName}.js`,
       formats: ['es'],
     },

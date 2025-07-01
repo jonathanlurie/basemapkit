@@ -2,7 +2,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import "./style.css";
 import maplibregl from "maplibre-gl";
 import { Protocol } from "pmtiles";
-import { buildStyle, getStyle, getStyleList } from "./lib/pmbm";
+import { buildStyle, getStyleList } from "./lib/basemapkit";
 
 (() => {
   const appDiv = document.querySelector<HTMLDivElement>("#app");
@@ -38,12 +38,14 @@ import { buildStyle, getStyle, getStyleList } from "./lib/pmbm";
     hideLabels: true,
 
     colorEdit: {
-      exposure: -1,
-      saturation: -1,
-      // brightness: 0.2,
-      contrast: [1.2, 160],
+      // exposure: -1,
+      // saturation: -1,
+      // contrast: [1.2, 160],
+
       // multiplyColor: ["#99a8ff", 0.3],
-      // mixColor: ["#99a8ff", 0.03]
+      // mixColor: ["#99a8ff", 0.03],
+      // brightness: 0.2,
+      // hueRotation: 90,
 
       
     }

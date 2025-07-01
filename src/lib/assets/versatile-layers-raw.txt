@@ -104,7 +104,7 @@
     "source-layer": "landuse",
     "filter": ["all", ["in", "kind", "bare_rock"]],
     "layout": {"visibility": "visible"},
-    "paint": {"fill-color": "rgba(212, 232, 234, 1)"}
+    "paint": {"fill-color": "rgb(221, 226, 226)"}
   },
   {
     "id": "landuse_park",
@@ -301,7 +301,7 @@
     "source-layer": "water",
     "filter": ["==", "$type", "Polygon"],
     "layout": {"visibility": "visible"},
-    "paint": {"fill-color": "rgba(159, 218, 251, 1)"}
+    "paint": {"fill-color": "rgb(135, 199, 236)"}
   },
   {
     "id": "water_stream",
@@ -2109,12 +2109,5 @@
       "fill-extrusion-opacity": 0.1,
       "fill-extrusion-height": {"type": "identity", "property": "height"}
     }
-  },
-  {
-    "id": "water_noise",
-    "type": "fill",
-    "source": "__protomaps_source",
-    "source-layer": "water",
-    "layout": {"visibility": "none"}
   }
 ]
