@@ -38,6 +38,42 @@ const stylePresets = {
       contrast: [1.2, 160],
     } as ColorEdit,
   },
+
+  "versatile-blueprint": {
+    baseStyle: "versatile",
+    colorEdit: {
+      exposure: -0.7,
+      saturation: -1,
+      contrast: [1.2, 160],
+      mixColor: ["#3355bb", 0.15],
+    } as ColorEdit,
+  },
+
+  "versatile-warm": {
+    baseStyle: "versatile",
+    colorEdit: {
+      exposure: -0.7,
+      contrast: [-0.1, 110],
+      mixColor: ["#ff8800", 0.1],
+    } as ColorEdit,
+  },
+
+  "versatile-vintage": {
+    baseStyle: "versatile",
+    colorEdit: {
+      exposure: -0.25,
+      multiplyColor: ["#ff8800", 0.4],
+      hueRotation: -5,
+    } as ColorEdit,
+  },
+
+  "versatile-saturated": {
+    baseStyle: "versatile",
+    colorEdit: {
+      exposure: -1,
+      saturation: 0.1,
+    } as ColorEdit,
+  },
 } as const;
 
 
@@ -150,7 +186,7 @@ export type GetStyleOptions = {
   /**
    * Language to apply to the basemap. Leaving this undefined will set to auto mode and use the platform language of the end user.
    */
-  lang?: undefined | "ar" | "cs" | "bg" | "da" | "de" | "el" | "en" | "es" | "et" | "fa" | "fi" | "fr" | "ga" | "he" | "hi" | "hr" | "hu" | "id" | "it" | "ja" | "ko" | "lt" | "lv" | "ne" | "nl" | "no" | "mr" | "mt" | "pl" | "pt" | "ro" | "ru" | "sk" | "sl" | "sv" | "tr" | "uk" | "ur" | "vi" | "zh-Hans" | "zh-Hant",
+  lang?: "ar" | "cs" | "bg" | "da" | "de" | "el" | "en" | "es" | "et" | "fa" | "fi" | "fr" | "ga" | "he" | "hi" | "hr" | "hu" | "id" | "it" | "ja" | "ko" | "lt" | "lv" | "ne" | "nl" | "no" | "mr" | "mt" | "pl" | "pt" | "ro" | "ru" | "sk" | "sl" | "sv" | "tr" | "uk" | "ur" | "vi" | "zh-Hans" | "zh-Hant",
   
   /**
    * Language script to apply to the basemap
@@ -278,16 +314,14 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
       }
     }
 
-    layers = layers.filter(l => {
-      if (l.id === "pois") {
+    layers = layers.filter(layer => {
+      if (layer.id === "pois") {
         return true;
       }
 
-      if (l.type !== "symbol") {
+      if (layer.type !== "symbol") {
         return true;
       }
-
-      const layer = l as SymbolLayerSpecification;
 
       if (layer.layout !== undefined) {
         const layout = layer.layout;
