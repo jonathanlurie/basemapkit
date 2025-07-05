@@ -77,6 +77,9 @@ const stylePresets = {
 } as const;
 
 
+/**
+ * Options to modify colors of a base style
+ */
 export type ColorEdit = {
   /**
    * Invert the image color
@@ -206,7 +209,9 @@ export type GetStyleOptions = {
   hideLabels?: boolean;
 }
 
-
+/**
+ * Options relative to building a style
+ */
 export type BuildStyleOptions = GetStyleOptions & {
   /**
    * Name of the style to start from
@@ -219,11 +224,16 @@ export type BuildStyleOptions = GetStyleOptions & {
   colorEdit?: ColorEdit;
 };
 
-
+/**
+ * Returns the list of styles available.
+ */
 export function getStyleList(): string[] {
   return Object.keys(baseStyles).concat(Object.keys(stylePresets));
 }
 
+/**
+ * Get a style.
+ */
 export function getStyle(styleName: string, options: GetStyleOptions): StyleSpecification {
   // Check is style is raw
   if (styleName in baseStyles) {

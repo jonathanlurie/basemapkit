@@ -7,6 +7,15 @@ import { buildStyle, getStyle, getStyleList } from "./lib/basemapkit";
 (() => {
   const appDiv = document.querySelector<HTMLDivElement>("#app");
 
+  const styleDD = document.getElementById("style-dd") as HTMLSelectElement;
+
+  for (const styleId of getStyleList()) {
+    const styleDdOption = document.createElement("option");
+    styleDdOption.value = styleId;
+    styleDdOption.innerText = styleId;
+    styleDD.appendChild(styleDdOption);
+  }
+
   if (!appDiv) {
     return;
   }
@@ -53,19 +62,14 @@ import { buildStyle, getStyle, getStyleList } from "./lib/basemapkit";
   // });
 
 
-
-  const style = getStyle("versatile-blueprint", {
-    pmtiles, sprite, glyphs, lang,
-  })
   
-  console.log(style);
-  
-
   const map = new maplibregl.Map({
     container: appDiv,
     maxPitch: 89,
     hash: true,
-    style,
+    style: getStyle("versatile", {
+      pmtiles, sprite, glyphs, lang,
+    }),
     center: [0, 0],
     zoom: 3,
   });
@@ -76,4 +80,15 @@ import { buildStyle, getStyle, getStyleList } from "./lib/basemapkit";
       type: ["interpolate", ["linear"], ["zoom"], 7, "vertical-perspective", 8, "mercator"],
     });
   });
+
+  // Update the style based on the dropdown
+  styleDD.addEventListener("change", (e: Event) => {
+    const selectedStyle = (e.target as HTMLSelectElement).value;
+    console.log(selectedStyle);
+
+    map.setStyle(getStyle(selectedStyle, {
+      pmtiles, sprite, glyphs, lang,
+    }), {diff: false});
+  });
+
 })();

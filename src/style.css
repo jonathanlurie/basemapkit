@@ -10,4 +10,22 @@ body, html {
   width: 100vw;
   height: 100dvh;
   margin: 0;
+  background: radial-gradient(circle,rgba(0, 54, 181, 1) 0%, rgba(0, 10, 33, 1) 100%);
+}
+
+#style-dd {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: fit-content;
+  font-size: 1.2em;
+  z-index: 1;
+  margin: 20px auto;
+  padding: 7px;
+  text-align: center;
+  background: #ffffff63;
+  backdrop-filter: blur(5px);
+  border: #ffffff00 10px solid;
+  border-radius: 10px;
 }
