@@ -29,3 +29,36 @@ body, html {
   border: #ffffff00 10px solid;
   border-radius: 10px;
 }
+
+#logo-img {
+  position: absolute;
+  z-index: 1;
+  width: 70vw;
+  max-width: 300px;
+  left: 0;
+  right: 0;
+  margin: 20px auto;
+  background: #ffffff9c;
+  padding: 10px 17px;
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+}
+
+#gh-link {
+  width: 40px;
+  height: 40px;
+  background-color: #ffffffc9;
+  border-radius: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 30px 20px;
+  z-index: 1;
+  text-align: center;
+}
+
+#gh-link > img {
+  width: 80%;
+  height: 80%;
+  margin: 10%;
+}
