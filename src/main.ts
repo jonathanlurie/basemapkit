@@ -20,15 +20,12 @@ import { buildStyle, getStyle, getStyleList } from "./lib/basemapkit";
     return;
   }
 
-  const protocol = new Protocol();
-  maplibregl.addProtocol("pmtiles", protocol.tile);
-
-  console.log(getStyleList());
+  maplibregl.addProtocol("pmtiles", new Protocol().tile);
 
   const pmtiles = "https://fsn1.your-objectstorage.com/public-map-data/pmtiles/planet.pmtiles";
   const sprite = "https://raw.githubusercontent.com/jonathanlurie/phosphor-mlgl-sprite/refs/heads/main/sprite/phosphor-diecut";
   const glyphs = "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf";
-  const lang = "fr";
+  const lang = "en";
 
   // const style = buildStyle({
   //   baseStyleName: "versatile",
