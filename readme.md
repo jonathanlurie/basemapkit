@@ -149,3 +149,14 @@ const style = getStyle("versatile-bnw", options);
 ![](./public/screenshots/manhattan-versatile-bnw.jpeg)
 ![](./public/screenshots/na-versatile-bnw.jpeg)
 ![](./public/screenshots/paris-versatile-bnw.jpeg)
+
+### `versatile-blueprint` ⤵️
+```ts
+// Create the style
+const style = getStyle("versatile-blueprint", options);
+```
+![](./public/screenshots/usa-versatile-blueprint.jpeg)
+![](./public/screenshots/alps-versatile-blueprint.jpeg)
+![](./public/screenshots/manhattan-versatile-blueprint.jpeg)
+![](./public/screenshots/na-versatile-blueprint.jpeg)
+![](./public/screenshots/paris-versatile-blueprint.jpeg)
