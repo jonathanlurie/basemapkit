@@ -65,7 +65,7 @@ const map = new maplibregl.Map({
 ## Language
 Basemakit styles are compatible with Protomaps languages properties and under the hood even uses [`@protomaps/basemaps`](https://docs.protomaps.com/basemaps/flavors). 
 
-The only addition from **Basemapkit** is the capability to detet the end user platform language, so if the `lang`option is not provided it will automatically use the language set by the user at the browser or OS level.
+The only addition from **Basemapkit** is the capability to detect the end user's platform language, so if the `lang` option is omitted, it will automatically use the language set by the user at the browser or OS level.
 
 Here is the list of supported languages:
 ```ts
@@ -73,6 +73,9 @@ Here is the list of supported languages:
 ```
 
 ## Styles available
+### 
+
+
 ### `versatile` ⤵️
 ```ts
 // Create the style

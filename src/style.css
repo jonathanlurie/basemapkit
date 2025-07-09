@@ -50,15 +50,54 @@ body, html {
   background-color: #ffffffc9;
   border-radius: 100%;
   position: absolute;
-  top: 0;
-  right: 0;
+  bottom: 0;
+  left: 0;
   margin: 30px 20px;
   z-index: 1;
   text-align: center;
+  border: #000000 2px solid;
 }
 
 #gh-link > img {
   width: 80%;
   height: 80%;
   margin: 10%;
+}
+
+#style-editor {
+  display: inline-grid;
+  width: fit-content;
+  height: fit-content;
+  position: absolute;
+  z-index: 4;
+  border: 20px solid #ffffff00;
+  border-radius: 7px;
+  bottom: 0;
+  left: 0;
+  top: 0;
+  margin: auto;
+  background-color: #ffffff77;
+  backdrop-filter: blur(11px);
+}
+
+#code-editor {
+  border: none;
+  resize: none;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  font-family: monospace;
+  font-size: 1em;
+  background-color: #ffffff4f;
+}
+
+#validate-style-bt {
+  background: #3a7e39;
+  color: white;
+  font-size: 1.2em;
+  border: none;
+  margin-top: 10px;
+  border-radius: 4px;
+  padding: 5px 0;
 }

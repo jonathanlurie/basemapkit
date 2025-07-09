@@ -4,6 +4,33 @@ import maplibregl from "maplibre-gl";
 import { Protocol } from "pmtiles";
 import { buildStyle, getStyle, getStyleList } from "./lib/basemapkit";
 
+const defaultCustomStyle = `
+{
+  // Invert the image color:
+  "negate": false,
+
+  // Ratio relative to current brightness.
+  // Value in [-1, 1] but the range is actually open
+  "brightness": 0,
+
+  // Absolute brightness shift
+  // Value in [-1, 1] but the range is actually open
+  "brightnessShift": 0,
+
+  // Exposure, like brightness but more preserving
+  // Value in [-1, 1] but the range is actually open
+  "exposure": 0,
+
+  //  Rotate the hue wheel
+  // Value in [-180, 180]
+  "hueRotation": 0,
+
+  // Modifiy color saturation
+  // Value in [-1, 1] but the range is actually open
+  "saturation": 0
+}
+`;
+
 (() => {
   const appDiv = document.querySelector<HTMLDivElement>("#app");
 
@@ -15,6 +42,12 @@ import { buildStyle, getStyle, getStyleList } from "./lib/basemapkit";
     styleDdOption.innerText = styleId;
     styleDD.appendChild(styleDdOption);
   }
+
+  // A custom option to show the custom panel
+  const styleDdOption = document.createElement("option");
+  styleDdOption.value = "custom";
+  styleDdOption.innerText = "🖌️ custom 🎨";
+  styleDD.appendChild(styleDdOption);
 
   if (!appDiv) {
     return;
@@ -81,11 +114,50 @@ import { buildStyle, getStyle, getStyleList } from "./lib/basemapkit";
   // Update the style based on the dropdown
   styleDD.addEventListener("change", (e: Event) => {
     const selectedStyle = (e.target as HTMLSelectElement).value;
-    console.log(selectedStyle);
 
-    map.setStyle(getStyle(selectedStyle, {
+    if (selectedStyle !== "custom") {
+      map.setStyle(getStyle(selectedStyle, {
+        pmtiles, sprite, glyphs, lang,
+      }), {diff: false});
+      return;
+    }
+
+    // The custom mode always starts with the versatile default style
+    map.setStyle(getStyle("versatile", {
       pmtiles, sprite, glyphs, lang,
     }), {diff: false});
+  });
+
+  const validateStyleBt = document.getElementById("validate-style-bt") as HTMLButtonElement;
+  const codeEditor = document.getElementById("code-editor") as HTMLTextAreaElement;
+
+  codeEditor.value = defaultCustomStyle;
+
+  validateStyleBt.addEventListener("pointerup", (e) => {
+    const jsonStr = codeEditor.value
+      .split("\n")
+      .map(l => l.trim())
+      .filter(l => !l.startsWith("//"))
+      .join("\n")
+     
+    const colorObj = JSON.parse(jsonStr);
+    console.log(jsonStr);
+
+      
+    const style = buildStyle({
+      baseStyleName: "versatile",
+      pmtiles,
+      sprite, glyphs, lang,
+
+      hidePOIs: false,
+
+      hideLabels: false,
+
+      colorEdit: colorObj
+    });
+
+    map.setStyle(style, {diff: false});
+    
   });
 
 })();
