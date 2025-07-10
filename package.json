@@ -1,7 +1,7 @@
 {
   "name": "basemapkit",
   "private": false,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "exports": {
     ".": {
@@ -19,6 +19,7 @@
     "protomaps",
     "map style"
   ],
+  "homepage": "https://github.com/jonathanlurie/basemapkit",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
