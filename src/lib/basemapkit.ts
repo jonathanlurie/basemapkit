@@ -126,13 +126,13 @@ export type ColorEdit = {
     string,
 
     /**
-     * Mixing ratio in [0, 1], where 0 is fully the original color and 1 is fully the multiplication.
+     * Mixing ratio in [0, 1], where 0 is fully the original color and 1 is fully the provided one.
      */
     number
   ];
 
   /**
-   * Mix every color with the given one. Tends to yield less natural blending than multiplyColor.
+   * Mix every color with the given one.
    */
   mixColor?: [
     /**
@@ -162,6 +162,8 @@ export type ColorEdit = {
   ];
 }
 
+export type Lang = "ar" | "cs" | "bg" | "da" | "de" | "el" | "en" | "es" | "et" | "fa" | "fi" | "fr" | "ga" | "he" | "hi" | "hr" | "hu" | "id" | "it" | "ja" | "ko" | "lt" | "lv" | "ne" | "nl" | "no" | "mr" | "mt" | "pl" | "pt" | "ro" | "ru" | "sk" | "sl" | "sv" | "tr" | "uk" | "ur" | "vi" | "zh-Hans" | "zh-Hant";
+
 export type GetStyleOptions = {
 
   /**
@@ -189,7 +191,7 @@ export type GetStyleOptions = {
   /**
    * Language to apply to the basemap. Leaving this undefined will set to auto mode and use the platform language of the end user.
    */
-  lang?: "ar" | "cs" | "bg" | "da" | "de" | "el" | "en" | "es" | "et" | "fa" | "fi" | "fr" | "ga" | "he" | "hi" | "hr" | "hu" | "id" | "it" | "ja" | "ko" | "lt" | "lv" | "ne" | "nl" | "no" | "mr" | "mt" | "pl" | "pt" | "ro" | "ru" | "sk" | "sl" | "sv" | "tr" | "uk" | "ur" | "vi" | "zh-Hans" | "zh-Hant",
+  lang?: Lang,
   
   /**
    * Language script to apply to the basemap
@@ -390,7 +392,7 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
         layerColor = Color.hsl(...hsl);
       }
 
-      if (Array.isArray(colorOptions.mixColor) && typeof colorOptions.mixColor[0] === "string" && typeof colorOptions.mixColor[1] === "number") {
+      if (Array.isArray(colorOptions.mixColor) && typeof colorOptions.mixColor[0] === "string" && typeof colorOptions.mixColor[1] === "number" && colorOptions.mixColor[1] !== 0 ) {
         layerColor = layerColor.mix(Color(colorOptions.mixColor[0]), colorOptions.mixColor[1]);
       }
 
@@ -408,12 +410,12 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
       }
   
       // Apply contrast
-      if (Array.isArray(colorOptions.contrast) && typeof colorOptions.contrast[0] === "number" && typeof colorOptions.contrast[1] === "number") {
+      if (Array.isArray(colorOptions.contrast) && typeof colorOptions.contrast[0] === "number" && typeof colorOptions.contrast[1] === "number" && colorOptions.contrast[0] !== 0) {
         rgbArr = applyContrastRGB(rgbArr, colorOptions.contrast[0], colorOptions.contrast[1]);
       }
       
       // Apply color multiplication
-      if (Array.isArray(colorOptions.multiplyColor) && typeof colorOptions.multiplyColor[0] === "string" && typeof colorOptions.multiplyColor[1] === "number") {
+      if (Array.isArray(colorOptions.multiplyColor) && typeof colorOptions.multiplyColor[0] === "string" && typeof colorOptions.multiplyColor[1] === "number" && colorOptions.multiplyColor[1] !== 0) {
         const multiplyColor = Color(colorOptions.multiplyColor[0]);
         rgbArr = applyMultiplicationRGB(rgbArr, [multiplyColor.red(), multiplyColor.green(), multiplyColor.blue()], colorOptions.multiplyColor[1])
       }

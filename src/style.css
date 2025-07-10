@@ -101,3 +101,11 @@ body, html {
   border-radius: 4px;
   padding: 5px 0;
 }
+
+.error-editor {
+  border-color: #fd00009f!important;
+}
+
+.hidden {
+  visibility: hidden;
+}

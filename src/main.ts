@@ -2,32 +2,32 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import "./style.css";
 import maplibregl from "maplibre-gl";
 import { Protocol } from "pmtiles";
-import { buildStyle, getStyle, getStyleList } from "./lib/basemapkit";
+import { buildStyle, getStyle, getStyleList, type ColorEdit, type Lang } from "./lib/basemapkit";
 
-const defaultCustomStyle = `
-{
-  // Invert the image color:
-  "negate": false,
+type CustomStyle = {
+  baseStyleName: string,
+  lang: Lang,
+  hidePOIs: boolean,
+  hideLabels: boolean,
+  colorEdits: ColorEdit,
+}
 
-  // Ratio relative to current brightness.
-  // Value in [-1, 1] but the range is actually open
-  "brightness": 0,
-
-  // Absolute brightness shift
-  // Value in [-1, 1] but the range is actually open
-  "brightnessShift": 0,
-
-  // Exposure, like brightness but more preserving
-  // Value in [-1, 1] but the range is actually open
-  "exposure": 0,
-
-  //  Rotate the hue wheel
-  // Value in [-180, 180]
-  "hueRotation": 0,
-
-  // Modifiy color saturation
-  // Value in [-1, 1] but the range is actually open
-  "saturation": 0
+const defaultCustomStyle = `{
+  "baseStyleName": "versatile",
+  "lang": "en",
+  "hidePOIs": false,
+  "hideLabels": false,
+  "colorEdits": {
+    "negate": false,
+    "brightness": 0,
+    "brightnessShift": 0,
+    "exposure": 0,
+    "contrast": [0, 127],
+    "hueRotation": 0,
+    "saturation": 0,
+    "multiplyColor": ["#ff0000", 0.0],
+    "mixColor": ["#ff0000", 0.0]
+  }
 }
 `;
 
@@ -35,6 +35,9 @@ const defaultCustomStyle = `
   const appDiv = document.querySelector<HTMLDivElement>("#app");
 
   const styleDD = document.getElementById("style-dd") as HTMLSelectElement;
+  const styleEditor = document.getElementById("style-editor") as HTMLDivElement;
+  const validateStyleBt = document.getElementById("validate-style-bt") as HTMLButtonElement;
+  const codeEditor = document.getElementById("code-editor") as HTMLTextAreaElement;
 
   for (const styleId of getStyleList()) {
     const styleDdOption = document.createElement("option");
@@ -59,39 +62,6 @@ const defaultCustomStyle = `
   const sprite = "https://raw.githubusercontent.com/jonathanlurie/phosphor-mlgl-sprite/refs/heads/main/sprite/phosphor-diecut";
   const glyphs = "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf";
   const lang = "en";
-
-  // const style = buildStyle({
-  //   baseStyleName: "versatile",
-
-  //   // If tiles are fetched directly on a public bucket as a single pmtiles file:
-  //   pmtiles,
-
-  //   // If pmtiles tiles are served as single MVT (using pmtiles CLI or Maplibre Martin) and referenced
-  //   // with a tileJSON file:
-  //   // tilejson: "http://localhost:8080/pmtiles/planet.json",
-
-  //   sprite, glyphs, lang,
-
-  //   hidePOIs: true,
-
-  //   hideLabels: true,
-
-  //   colorEdit: {
-  //     // negate: true,
-  //     // exposure: 1.9,
-  //     saturation: -0.1,
-  //     // contrast: [-0.1, 140],
-
-  //     multiplyColor: ["#ff00d9", 0.1],
-  //     // mixColor: ["#ff00d9", 0.2],
-  //     // brightness: 0.2,
-  //     hueRotation: 140,
-
-      
-  //   }
-  // });
-
-
   
   const map = new maplibregl.Map({
     container: appDiv,
@@ -119,41 +89,50 @@ const defaultCustomStyle = `
       map.setStyle(getStyle(selectedStyle, {
         pmtiles, sprite, glyphs, lang,
       }), {diff: false});
+      styleEditor.classList.add("hidden");
       return;
     }
 
+    styleEditor.classList.remove("hidden");
     // The custom mode always starts with the versatile default style
     map.setStyle(getStyle("versatile", {
       pmtiles, sprite, glyphs, lang,
     }), {diff: false});
   });
 
-  const validateStyleBt = document.getElementById("validate-style-bt") as HTMLButtonElement;
-  const codeEditor = document.getElementById("code-editor") as HTMLTextAreaElement;
-
+  
   codeEditor.value = defaultCustomStyle;
+  let customStyle: CustomStyle | null = JSON.parse(defaultCustomStyle) as CustomStyle;
+  let errorMessage = "";
+
+
+  codeEditor.addEventListener("input", () => {
+    customStyle = null;
+    try {
+      customStyle = JSON.parse(codeEditor.value) as CustomStyle;
+    } catch(e: unknown) {
+      styleEditor.classList.add("error-editor");
+      validateStyleBt.disabled = true;
+      errorMessage = e instanceof Error ? e.message : 'An error occurred';
+      console.log(errorMessage);
+      return;
+    }
+
+    console.log(customStyle);
+    styleEditor.classList.remove("error-editor");
+    validateStyleBt.disabled = false;
+  })
+
 
   validateStyleBt.addEventListener("pointerup", (e) => {
-    const jsonStr = codeEditor.value
-      .split("\n")
-      .map(l => l.trim())
-      .filter(l => !l.startsWith("//"))
-      .join("\n")
-     
-    const colorObj = JSON.parse(jsonStr);
-    console.log(jsonStr);
+    if (!customStyle) {
+      return;
+    }
 
-      
     const style = buildStyle({
-      baseStyleName: "versatile",
+      ...customStyle,
       pmtiles,
-      sprite, glyphs, lang,
-
-      hidePOIs: false,
-
-      hideLabels: false,
-
-      colorEdit: colorObj
+      sprite, glyphs,
     });
 
     map.setStyle(style, {diff: false});
@@ -161,3 +140,5 @@ const defaultCustomStyle = `
   });
 
 })();
+
+
