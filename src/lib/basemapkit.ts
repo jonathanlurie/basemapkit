@@ -274,7 +274,7 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
   }
 
   // Displaying a label that is supported
-  else if (typeof options.lang === "string" && isLanguageSupported(options.lang, options.script, true)) {
+  else if (typeof options.lang === "string" && isLanguageSupported(options.lang, options.script)) {
     countryTextField = JSON.stringify(get_country_name(options.lang, options.script));
     otherTranslatedTextField = JSON.stringify(get_multiline_name(options.lang, options.script));
   }

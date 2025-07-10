@@ -1,14 +1,12 @@
 import { language_script_pairs } from "@protomaps/basemaps";
 
-export function isLanguageSupported(lang: string, script: string | undefined, verbose: boolean): boolean {
+export function isLanguageSupported(lang: string, script: string | undefined): boolean {
   const candidates = language_script_pairs.filter((l) => l.lang === lang);
 
   if (candidates.length === 0) {
-    verbose &&
-      console.warn(
-        `The language "${lang}". The languages available are: ${language_script_pairs.map((l) => l.lang).join(", ")}.`,
-      );
-    return false;
+    throw new Error(
+      `The language "${lang}". The languages available are: ${language_script_pairs.map((l) => l.lang).join(", ")}.`,
+    );
   }
 
   if (script) {
@@ -18,11 +16,9 @@ export function isLanguageSupported(lang: string, script: string | undefined, ve
       return true;
     }
 
-    verbose &&
-      console.warn(
-        `The script "${script}" for the language "${lang}" is unsupported. Script available for this language: ${candidates.map((l) => l.script).join(", ")}.`,
-      );
-    return false;
+    throw new Error(
+      `The script "${script}" for the language "${lang}" is unsupported. Script available for this language: ${candidates.map((l) => l.script).join(", ")}.`,
+    );
   }
 
   return true;

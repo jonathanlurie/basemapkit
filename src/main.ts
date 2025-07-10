@@ -22,14 +22,56 @@ const defaultCustomStyle = `{
     "brightness": 0,
     "brightnessShift": 0,
     "exposure": 0,
-    "contrast": [0, 127],
+    "contrast": [
+      0,
+      127
+    ],
     "hueRotation": 0,
     "saturation": 0,
-    "multiplyColor": ["#ff0000", 0.0],
-    "mixColor": ["#ff0000", 0.0]
+    "multiplyColor": [
+      "#ff0000",
+      0
+    ],
+    "mixColor": [
+      "#ff0000",
+      0
+    ]
   }
 }
 `;
+
+
+function getStyleFromUrl(): CustomStyle | null {
+  const url = new URL(window.location.href);
+  const searchParams = url.searchParams;
+  const styleStr = searchParams.get("customstyle");
+
+  if (!styleStr) return null;
+
+  try {
+    const styleObj = JSON.parse(decodeURIComponent(styleStr));
+    return styleObj as CustomStyle;
+  } catch(e) {
+    console.error(e)
+    return null;
+  }
+}
+
+
+function updateUrlStyle(s: CustomStyle) {
+  const url = new URL(window.location.href);
+  const searchParams = url.searchParams;
+  searchParams.set("customstyle", encodeURIComponent(JSON.stringify(s)));
+  history.pushState(null, '', url);
+}
+
+function removeUrlStyle() {
+  const url = new URL(window.location.href);
+  const searchParams = url.searchParams;
+  searchParams.delete("customstyle");
+  history.pushState(null, '', url);
+}
+
 
 (() => {
   const appDiv = document.querySelector<HTMLDivElement>("#app");
@@ -84,6 +126,7 @@ const defaultCustomStyle = `{
 
   // Update the style based on the dropdown
   styleDD.addEventListener("change", (e: Event) => {
+    removeUrlStyle();
     const selectedStyle = (e.target as HTMLSelectElement).value;
 
     if (selectedStyle !== "custom") {
@@ -105,6 +148,27 @@ const defaultCustomStyle = `{
   codeEditor.value = defaultCustomStyle;
   let customStyle: CustomStyle | null = JSON.parse(defaultCustomStyle) as CustomStyle;
 
+  // Trying to load style from URL
+  const styleFromUrl = getStyleFromUrl();
+  if (styleFromUrl) {
+    try {
+      const style = buildStyle({
+        ...styleFromUrl,
+        pmtiles,
+        sprite, glyphs,
+      });
+  
+      customStyle = styleFromUrl;
+      codeEditor.value = JSON.stringify(styleFromUrl, null, 2);
+      map.setStyle(style, {diff: false});
+      updateUrlStyle(customStyle);
+      styleDD.value = "custom";
+      styleEditor.classList.remove("hidden");
+    } catch(e) {
+      removeUrlStyle();
+      console.error(e);
+    }
+  }
 
   codeEditor.addEventListener("input", () => {
     customStyle = null;
@@ -121,6 +185,8 @@ const defaultCustomStyle = `{
   })
 
   resetButton.addEventListener("pointerup", () => {
+    removeUrlStyle();
+    codeEditor.value = defaultCustomStyle;
     customStyle = JSON.parse(defaultCustomStyle) as CustomStyle;
     const style = buildStyle({
       ...customStyle,
@@ -132,8 +198,9 @@ const defaultCustomStyle = `{
   })
 
 
-  validateStyleBt.addEventListener("pointerup", (e) => {
+  validateStyleBt.addEventListener("pointerup", () => {
     if (!customStyle) {
+      removeUrlStyle();
       return;
     }
 
@@ -144,7 +211,7 @@ const defaultCustomStyle = `{
     });
 
     map.setStyle(style, {diff: false});
-    
+    updateUrlStyle(customStyle);
   });
 
 })();
