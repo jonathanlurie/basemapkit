@@ -5,6 +5,7 @@ import dts from 'vite-plugin-dts';
 export default defineConfig({
   mode: "production",
   build: {
+    copyPublicDir: false,
     minify: true,
     sourcemap: true,
     lib: {
