@@ -94,12 +94,6 @@ body, html {
 
 #validate-style-bt {
   background: #3a7e39;
-  color: white;
-  font-size: 1.2em;
-  border: none;
-  margin-top: 10px;
-  border-radius: 4px;
-  padding: 5px 0;
 }
 
 .error-editor {
@@ -108,4 +102,20 @@ body, html {
 
 .hidden {
   visibility: hidden;
+}
+
+.button {
+  background:#7a7a7a;
+  color: white;
+  font-size: 1.2em;
+  border: none;
+  margin-top: 10px;
+  border-radius: 4px;
+  padding: 5px 0;
+}
+
+#button-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 5px;
 }

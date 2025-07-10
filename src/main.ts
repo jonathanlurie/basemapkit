@@ -9,7 +9,7 @@ type CustomStyle = {
   lang: Lang,
   hidePOIs: boolean,
   hideLabels: boolean,
-  colorEdits: ColorEdit,
+  colorEdit: ColorEdit,
 }
 
 const defaultCustomStyle = `{
@@ -17,7 +17,7 @@ const defaultCustomStyle = `{
   "lang": "en",
   "hidePOIs": false,
   "hideLabels": false,
-  "colorEdits": {
+  "colorEdit": {
     "negate": false,
     "brightness": 0,
     "brightnessShift": 0,
@@ -38,6 +38,7 @@ const defaultCustomStyle = `{
   const styleEditor = document.getElementById("style-editor") as HTMLDivElement;
   const validateStyleBt = document.getElementById("validate-style-bt") as HTMLButtonElement;
   const codeEditor = document.getElementById("code-editor") as HTMLTextAreaElement;
+  const resetButton = document.getElementById("reset-style-bt") as HTMLButtonElement;
 
   for (const styleId of getStyleList()) {
     const styleDdOption = document.createElement("option");
@@ -103,24 +104,31 @@ const defaultCustomStyle = `{
   
   codeEditor.value = defaultCustomStyle;
   let customStyle: CustomStyle | null = JSON.parse(defaultCustomStyle) as CustomStyle;
-  let errorMessage = "";
 
 
   codeEditor.addEventListener("input", () => {
     customStyle = null;
     try {
       customStyle = JSON.parse(codeEditor.value) as CustomStyle;
-    } catch(e: unknown) {
+    } catch(_e) {
       styleEditor.classList.add("error-editor");
       validateStyleBt.disabled = true;
-      errorMessage = e instanceof Error ? e.message : 'An error occurred';
-      console.log(errorMessage);
-      return;
+      return
     }
 
-    console.log(customStyle);
     styleEditor.classList.remove("error-editor");
     validateStyleBt.disabled = false;
+  })
+
+  resetButton.addEventListener("pointerup", () => {
+    customStyle = JSON.parse(defaultCustomStyle) as CustomStyle;
+    const style = buildStyle({
+      ...customStyle,
+      pmtiles,
+      sprite, glyphs,
+    });
+
+    map.setStyle(style, {diff: false});
   })
 
 
