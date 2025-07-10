@@ -26,7 +26,7 @@ export function isLanguageSupported(lang: string, script: string | undefined): b
 
 export function getDefaultLanguage(): string {
   const systemLang = Intl.DateTimeFormat().resolvedOptions().locale.split("-")[0];
-  if (isLanguageSupported(systemLang, undefined, false)) {
+  if (isLanguageSupported(systemLang, undefined)) {
     return systemLang;
   }
   return "en";
