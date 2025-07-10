@@ -6,7 +6,7 @@ import versatileLayersRaw from "./assets/versatile-layers-raw.txt?raw";
 import { getDefaultLanguage, isLanguageSupported } from "./language";
 
 const baseStyles = {
-  "versatile": versatileLayersRaw,
+  versatile: versatileLayersRaw,
 } as const;
 
 const stylePresets = {
@@ -26,7 +26,7 @@ const stylePresets = {
       exposure: 0.6,
       saturation: -0.1,
       hueRotation: 15,
-      contrast: [0.2, 220]
+      contrast: [0.2, 220],
     } as ColorEdit,
   },
 
@@ -76,7 +76,6 @@ const stylePresets = {
   },
 } as const;
 
-
 /**
  * Options to modify colors of a base style
  */
@@ -124,11 +123,10 @@ export type ColorEdit = {
      * CSS color
      */
     string,
-
     /**
      * Mixing ratio in [0, 1], where 0 is fully the original color and 1 is fully the provided one.
      */
-    number
+    number,
   ];
 
   /**
@@ -139,11 +137,10 @@ export type ColorEdit = {
      * CSS color
      */
     string,
-
     /**
      * Mixing ratio in [0, 1], where 0 is fully the original color and 1 is fully the one provided.
      */
-    number
+    number,
   ];
 
   /**
@@ -153,19 +150,58 @@ export type ColorEdit = {
     /**
      * Contrast intensity. Value in [-1, 1] but is actually an open range
      */
-    number, 
-
+    number,
     /**
      * Color intensity mid point in the range [0, 255]
      */
-    number
+    number,
   ];
-}
+};
 
-export type Lang = "ar" | "cs" | "bg" | "da" | "de" | "el" | "en" | "es" | "et" | "fa" | "fi" | "fr" | "ga" | "he" | "hi" | "hr" | "hu" | "id" | "it" | "ja" | "ko" | "lt" | "lv" | "ne" | "nl" | "no" | "mr" | "mt" | "pl" | "pt" | "ro" | "ru" | "sk" | "sl" | "sv" | "tr" | "uk" | "ur" | "vi" | "zh-Hans" | "zh-Hant";
+export type Lang =
+  | "ar"
+  | "cs"
+  | "bg"
+  | "da"
+  | "de"
+  | "el"
+  | "en"
+  | "es"
+  | "et"
+  | "fa"
+  | "fi"
+  | "fr"
+  | "ga"
+  | "he"
+  | "hi"
+  | "hr"
+  | "hu"
+  | "id"
+  | "it"
+  | "ja"
+  | "ko"
+  | "lt"
+  | "lv"
+  | "ne"
+  | "nl"
+  | "no"
+  | "mr"
+  | "mt"
+  | "pl"
+  | "pt"
+  | "ro"
+  | "ru"
+  | "sk"
+  | "sl"
+  | "sv"
+  | "tr"
+  | "uk"
+  | "ur"
+  | "vi"
+  | "zh-Hans"
+  | "zh-Hant";
 
 export type GetStyleOptions = {
-
   /**
    * The public URL of a pmtiles files. To use if sourcing tiles directly with
    * range-request using the `pmtiles`'s protocol. Alternatively, the option `tileJson` can be used and will take precedence.
@@ -191,8 +227,8 @@ export type GetStyleOptions = {
   /**
    * Language to apply to the basemap. Leaving this undefined will set to auto mode and use the platform language of the end user.
    */
-  lang?: Lang,
-  
+  lang?: Lang;
+
   /**
    * Language script to apply to the basemap
    */
@@ -205,11 +241,11 @@ export type GetStyleOptions = {
   hidePOIs?: boolean;
 
   /**
-   * Labels are shown by default, requiring a glyphs URL. Passing this options as `true` will remove the label layers and make the 
+   * Labels are shown by default, requiring a glyphs URL. Passing this options as `true` will remove the label layers and make the
    * `glyphs` option unnecessary.
    */
   hideLabels?: boolean;
-}
+};
 
 /**
  * Options relative to building a style
@@ -252,12 +288,11 @@ export function getStyle(styleName: string, options: GetStyleOptions): StyleSpec
       ...options,
       baseStyleName: presetInfo.baseStyle,
       colorEdit: presetInfo.colorEdit,
-    })
+    });
   }
 
-  throw new Error(`The style "${styleName}" does not exist as a base style, nor as a preset.`)
+  throw new Error(`The style "${styleName}" does not exist as a base style, nor as a preset.`);
 }
-
 
 /**
  * Build your own style, using one of the base style as starting point.
@@ -298,24 +333,23 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
 
   let sourceUrl: string;
   if (typeof options.tilejson === "string") {
-    sourceUrl = options.tilejson
+    sourceUrl = options.tilejson;
   } else if (typeof options.pmtiles === "string") {
-    sourceUrl = `pmtiles://${options.pmtiles}`
+    sourceUrl = `pmtiles://${options.pmtiles}`;
   } else {
-    throw new Error(`At least one option of "tilejson" or "pmtiles" must be provided as data source.`)
+    throw new Error(`At least one option of "tilejson" or "pmtiles" must be provided as data source.`);
   }
 
   let layers = JSON.parse(translatedLayersStr) as unknown as LayerSpecification[];
   const hidePOIs = options.hidePOIs ?? false;
-  
 
   if (hidePOIs) {
-    layers = layers.filter(l => l.id !== "pois");
+    layers = layers.filter((l) => l.id !== "pois");
   }
 
   if (hideLabels) {
     // Keeping the POI layer, yet removing the text field
-    const poiLayers = layers.filter(l => l.id === "pois");
+    const poiLayers = layers.filter((l) => l.id === "pois");
     if (poiLayers.length) {
       const poiLayer = poiLayers[0] as SymbolLayerSpecification;
       if (poiLayer.layout !== undefined) {
@@ -326,7 +360,7 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
       }
     }
 
-    layers = layers.filter(layer => {
+    layers = layers.filter((layer) => {
       if (layer.id === "pois") {
         return true;
       }
@@ -338,11 +372,11 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
       if (layer.layout !== undefined) {
         const layout = layer.layout;
         if (layout["text-field"] !== undefined) {
-          return false
+          return false;
         }
       }
       return true;
-    })
+    });
   }
 
   const colorOptions = options.colorEdit ?? {};
@@ -353,9 +387,10 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
   const brightnessShift = colorOptions.brightnessShift ?? 0;
   const exposure = colorOptions.exposure ?? 0;
 
-  const shouldApplyColorTransform = brightness !== 0 || 
-    hueRotation !== 0 || 
-    saturation !== 0 || 
+  const shouldApplyColorTransform =
+    brightness !== 0 ||
+    hueRotation !== 0 ||
+    saturation !== 0 ||
     negate === true ||
     colorOptions.multiplyColor !== undefined ||
     colorOptions.mixColor !== undefined ||
@@ -366,7 +401,7 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
   if (shouldApplyColorTransform) {
     findColor(layers, (color: string) => {
       // Using the Color lib for saturation and hue rotation
-      let layerColor = Color(color)
+      let layerColor = Color(color);
 
       if (negate) {
         layerColor = layerColor.negate();
@@ -388,49 +423,64 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
 
       if (brightnessShift !== 0) {
         const hsl = layerColor.hsl().array();
-        hsl[2] += brightnessShift * 100
+        hsl[2] += brightnessShift * 100;
         layerColor = Color.hsl(...hsl);
       }
 
-      if (Array.isArray(colorOptions.mixColor) && typeof colorOptions.mixColor[0] === "string" && typeof colorOptions.mixColor[1] === "number" && colorOptions.mixColor[1] !== 0 ) {
+      if (
+        Array.isArray(colorOptions.mixColor) &&
+        typeof colorOptions.mixColor[0] === "string" &&
+        typeof colorOptions.mixColor[1] === "number" &&
+        colorOptions.mixColor[1] !== 0
+      ) {
         layerColor = layerColor.mix(Color(colorOptions.mixColor[0]), colorOptions.mixColor[1]);
       }
 
       const rgbColorInstance = layerColor.rgb();
       const alpha = rgbColorInstance.alpha();
-      let rgbArr = [
-        rgbColorInstance.red(),
-        rgbColorInstance.green(),
-        rgbColorInstance.blue()
-      ] as RGBArray;
-  
+      let rgbArr = [rgbColorInstance.red(), rgbColorInstance.green(), rgbColorInstance.blue()] as RGBArray;
+
       // Apply exposure
       if (exposure !== 0) {
         rgbArr = applyBrightnessRGB(rgbArr, exposure);
       }
-  
+
       // Apply contrast
-      if (Array.isArray(colorOptions.contrast) && typeof colorOptions.contrast[0] === "number" && typeof colorOptions.contrast[1] === "number" && colorOptions.contrast[0] !== 0) {
+      if (
+        Array.isArray(colorOptions.contrast) &&
+        typeof colorOptions.contrast[0] === "number" &&
+        typeof colorOptions.contrast[1] === "number" &&
+        colorOptions.contrast[0] !== 0
+      ) {
         rgbArr = applyContrastRGB(rgbArr, colorOptions.contrast[0], colorOptions.contrast[1]);
       }
-      
+
       // Apply color multiplication
-      if (Array.isArray(colorOptions.multiplyColor) && typeof colorOptions.multiplyColor[0] === "string" && typeof colorOptions.multiplyColor[1] === "number" && colorOptions.multiplyColor[1] !== 0) {
+      if (
+        Array.isArray(colorOptions.multiplyColor) &&
+        typeof colorOptions.multiplyColor[0] === "string" &&
+        typeof colorOptions.multiplyColor[1] === "number" &&
+        colorOptions.multiplyColor[1] !== 0
+      ) {
         const multiplyColor = Color(colorOptions.multiplyColor[0]);
-        rgbArr = applyMultiplicationRGB(rgbArr, [multiplyColor.red(), multiplyColor.green(), multiplyColor.blue()], colorOptions.multiplyColor[1])
+        rgbArr = applyMultiplicationRGB(
+          rgbArr,
+          [multiplyColor.red(), multiplyColor.green(), multiplyColor.blue()],
+          colorOptions.multiplyColor[1],
+        );
       }
 
       // Back to Color lib format
-      const outputColor = Color({r: rgbArr[0], g: rgbArr[1], b: rgbArr[2], alpha: alpha})
-        
+      const outputColor = Color({ r: rgbArr[0], g: rgbArr[1], b: rgbArr[2], alpha: alpha });
+
       if (color.startsWith("rgba(") || color.startsWith("rgb(")) {
-        return outputColor.rgb().toString()
+        return outputColor.rgb().toString();
       }
-  
+
       if (color.startsWith("hsl(") || color.startsWith("hsla(")) {
-        return outputColor.hsl().toString()
+        return outputColor.hsl().toString();
       }
-  
+
       return outputColor.hexa();
     });
   }

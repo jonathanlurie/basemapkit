@@ -5,12 +5,12 @@ import { Protocol } from "pmtiles";
 import { buildStyle, getStyle, getStyleList, type ColorEdit, type Lang } from "./lib/basemapkit";
 
 type CustomStyle = {
-  baseStyleName: string,
-  lang: Lang,
-  hidePOIs: boolean,
-  hideLabels: boolean,
-  colorEdit: ColorEdit,
-}
+  baseStyleName: string;
+  lang: Lang;
+  hidePOIs: boolean;
+  hideLabels: boolean;
+  colorEdit: ColorEdit;
+};
 
 const defaultCustomStyle = `{
   "baseStyleName": "versatile",
@@ -40,7 +40,6 @@ const defaultCustomStyle = `{
 }
 `;
 
-
 function getStyleFromUrl(): CustomStyle | null {
   const url = new URL(window.location.href);
   const searchParams = url.searchParams;
@@ -51,27 +50,25 @@ function getStyleFromUrl(): CustomStyle | null {
   try {
     const styleObj = JSON.parse(decodeURIComponent(styleStr));
     return styleObj as CustomStyle;
-  } catch(e) {
-    console.error(e)
+  } catch (e) {
+    console.error(e);
     return null;
   }
 }
-
 
 function updateUrlStyle(s: CustomStyle) {
   const url = new URL(window.location.href);
   const searchParams = url.searchParams;
   searchParams.set("customstyle", encodeURIComponent(JSON.stringify(s)));
-  history.pushState(null, '', url);
+  history.pushState(null, "", url);
 }
 
 function removeUrlStyle() {
   const url = new URL(window.location.href);
   const searchParams = url.searchParams;
   searchParams.delete("customstyle");
-  history.pushState(null, '', url);
+  history.pushState(null, "", url);
 }
-
 
 (() => {
   const appDiv = document.querySelector<HTMLDivElement>("#app");
@@ -102,16 +99,20 @@ function removeUrlStyle() {
   maplibregl.addProtocol("pmtiles", new Protocol().tile);
 
   const pmtiles = "https://fsn1.your-objectstorage.com/public-map-data/pmtiles/planet.pmtiles";
-  const sprite = "https://raw.githubusercontent.com/jonathanlurie/phosphor-mlgl-sprite/refs/heads/main/sprite/phosphor-diecut";
+  const sprite =
+    "https://raw.githubusercontent.com/jonathanlurie/phosphor-mlgl-sprite/refs/heads/main/sprite/phosphor-diecut";
   const glyphs = "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf";
   const lang = "en";
-  
+
   const map = new maplibregl.Map({
     container: appDiv,
     maxPitch: 89,
     hash: true,
     style: getStyle("versatile", {
-      pmtiles, sprite, glyphs, lang,
+      pmtiles,
+      sprite,
+      glyphs,
+      lang,
     }),
     center: [0, 0],
     zoom: 3,
@@ -130,21 +131,32 @@ function removeUrlStyle() {
     const selectedStyle = (e.target as HTMLSelectElement).value;
 
     if (selectedStyle !== "custom") {
-      map.setStyle(getStyle(selectedStyle, {
-        pmtiles, sprite, glyphs, lang,
-      }), {diff: false});
+      map.setStyle(
+        getStyle(selectedStyle, {
+          pmtiles,
+          sprite,
+          glyphs,
+          lang,
+        }),
+        { diff: false },
+      );
       styleEditor.classList.add("hidden");
       return;
     }
 
     styleEditor.classList.remove("hidden");
     // The custom mode always starts with the versatile default style
-    map.setStyle(getStyle("versatile", {
-      pmtiles, sprite, glyphs, lang,
-    }), {diff: false});
+    map.setStyle(
+      getStyle("versatile", {
+        pmtiles,
+        sprite,
+        glyphs,
+        lang,
+      }),
+      { diff: false },
+    );
   });
 
-  
   codeEditor.value = defaultCustomStyle;
   let customStyle: CustomStyle | null = JSON.parse(defaultCustomStyle) as CustomStyle;
 
@@ -155,16 +167,17 @@ function removeUrlStyle() {
       const style = buildStyle({
         ...styleFromUrl,
         pmtiles,
-        sprite, glyphs,
+        sprite,
+        glyphs,
       });
-  
+
       customStyle = styleFromUrl;
       codeEditor.value = JSON.stringify(styleFromUrl, null, 2);
-      map.setStyle(style, {diff: false});
+      map.setStyle(style, { diff: false });
       updateUrlStyle(customStyle);
       styleDD.value = "custom";
       styleEditor.classList.remove("hidden");
-    } catch(e) {
+    } catch (e) {
       removeUrlStyle();
       console.error(e);
     }
@@ -174,15 +187,15 @@ function removeUrlStyle() {
     customStyle = null;
     try {
       customStyle = JSON.parse(codeEditor.value) as CustomStyle;
-    } catch(_e) {
+    } catch (_e) {
       styleEditor.classList.add("error-editor");
       validateStyleBt.disabled = true;
-      return
+      return;
     }
 
     styleEditor.classList.remove("error-editor");
     validateStyleBt.disabled = false;
-  })
+  });
 
   resetButton.addEventListener("pointerup", () => {
     removeUrlStyle();
@@ -191,12 +204,12 @@ function removeUrlStyle() {
     const style = buildStyle({
       ...customStyle,
       pmtiles,
-      sprite, glyphs,
+      sprite,
+      glyphs,
     });
 
-    map.setStyle(style, {diff: false});
-  })
-
+    map.setStyle(style, { diff: false });
+  });
 
   validateStyleBt.addEventListener("pointerup", () => {
     if (!customStyle) {
@@ -207,13 +220,11 @@ function removeUrlStyle() {
     const style = buildStyle({
       ...customStyle,
       pmtiles,
-      sprite, glyphs,
+      sprite,
+      glyphs,
     });
 
-    map.setStyle(style, {diff: false});
+    map.setStyle(style, { diff: false });
     updateUrlStyle(customStyle);
   });
-
 })();
-
-

@@ -24,7 +24,6 @@ export function isLanguageSupported(lang: string, script: string | undefined): b
   return true;
 }
 
-
 export function getDefaultLanguage(): string {
   const systemLang = Intl.DateTimeFormat().resolvedOptions().locale.split("-")[0];
   if (isLanguageSupported(systemLang, undefined, false)) {
