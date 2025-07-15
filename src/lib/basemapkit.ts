@@ -10,6 +10,29 @@ const baseStyles = {
 } as const;
 
 const stylePresets = {
+  "avenue-pop": {
+    baseStyle: "avenue",
+    colorEdit: {
+      negate: false,
+      brightness: 0,
+      brightnessShift: 0,
+      exposure: 0,
+      contrast: [0.4, 220],
+      hueRotation: -8,
+      saturation: -0.1,
+      multiplyColor: ["#ff0000", 0],
+      mixColor: ["#ff0000", 0.02]
+    } as ColorEdit,
+  },
+
+  "avenue-saturated": {
+    baseStyle: "avenue",
+    colorEdit: {
+      exposure: -1,
+      saturation: 0.1,
+    } as ColorEdit,
+  },
+
   "avenue-night": {
     baseStyle: "avenue",
     colorEdit: {
@@ -44,7 +67,7 @@ const stylePresets = {
     colorEdit: {
       exposure: -0.7,
       saturation: -1,
-      contrast: [0.7, 160],
+      contrast: [0.75, 160],
       mixColor: ["#3355bb", 0.15],
     } as ColorEdit,
   },
@@ -54,6 +77,7 @@ const stylePresets = {
     colorEdit: {
       exposure: -0.7,
       mixColor: ["#ff8800", 0.1],
+      contrast: [0.1, 200],
     } as ColorEdit,
   },
 
@@ -63,16 +87,9 @@ const stylePresets = {
       exposure: -0.25,
       multiplyColor: ["#ff8800", 0.4],
       hueRotation: -5,
+      contrast: [0.2, 200],
     } as ColorEdit,
-  },
-
-  "avenue-saturated": {
-    baseStyle: "avenue",
-    colorEdit: {
-      exposure: -1,
-      saturation: 0.1,
-    } as ColorEdit,
-  },
+  }
 } as const;
 
 /**
