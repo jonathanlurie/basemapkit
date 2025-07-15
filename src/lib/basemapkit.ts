@@ -21,7 +21,7 @@ const stylePresets = {
       hueRotation: -8,
       saturation: -0.1,
       multiplyColor: ["#ff0000", 0],
-      mixColor: ["#ff0000", 0.02]
+      mixColor: ["#ff0000", 0.02],
     } as ColorEdit,
   },
 
@@ -89,7 +89,7 @@ const stylePresets = {
       hueRotation: -5,
       contrast: [0.2, 200],
     } as ColorEdit,
-  }
+  },
 } as const;
 
 /**
@@ -418,7 +418,6 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
     findColor(layers, (color: string) => {
       if (color === "#a6e085") {
         console.log("#a6e085");
-        
       }
 
       // Using the Color lib for saturation and hue rotation
