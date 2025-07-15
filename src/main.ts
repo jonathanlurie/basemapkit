@@ -13,7 +13,7 @@ type CustomStyle = {
 };
 
 const defaultCustomStyle = `{
-  "baseStyleName": "versatile",
+  "baseStyleName": "avenue",
   "lang": "en",
   "hidePOIs": false,
   "hideLabels": false,
@@ -108,7 +108,7 @@ function removeUrlStyle() {
     container: appDiv,
     maxPitch: 89,
     hash: true,
-    style: getStyle("versatile", {
+    style: getStyle("avenue", {
       pmtiles,
       sprite,
       glyphs,
@@ -145,9 +145,9 @@ function removeUrlStyle() {
     }
 
     styleEditor.classList.remove("hidden");
-    // The custom mode always starts with the versatile default style
+    // The custom mode always starts with the avenue default style
     map.setStyle(
-      getStyle("versatile", {
+      getStyle("avenue", {
         pmtiles,
         sprite,
         glyphs,

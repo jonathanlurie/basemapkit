@@ -2,64 +2,63 @@ import { get_country_name, get_multiline_name } from "@protomaps/basemaps";
 import Color from "color";
 import type { StyleSpecification, LayerSpecification, SymbolLayerSpecification } from "maplibre-gl";
 import { applyBrightnessRGB, applyContrastRGB, applyMultiplicationRGB, findColor, type RGBArray } from "./colorchange";
-import versatileLayersRaw from "./assets/versatile-layers-raw.txt?raw";
+import avenueLayersRaw from "./assets/avenue-layers-raw.txt?raw";
 import { getDefaultLanguage, isLanguageSupported } from "./language";
 
 const baseStyles = {
-  versatile: versatileLayersRaw,
+  avenue: avenueLayersRaw,
 } as const;
 
 const stylePresets = {
-  "versatile-night": {
-    baseStyle: "versatile",
+  "avenue-night": {
+    baseStyle: "avenue",
     colorEdit: {
       brightness: -0.3,
       saturation: -0.8,
       multiplyColor: ["#171075", 0.6],
-      contrast: [1.6, 160],
+      contrast: [0.8, 160],
     } as ColorEdit,
   },
 
-  "versatile-bright": {
-    baseStyle: "versatile",
+  "avenue-bright": {
+    baseStyle: "avenue",
     colorEdit: {
       exposure: 0.6,
-      saturation: -0.1,
+      saturation: -0.25,
       hueRotation: 15,
-      contrast: [0.2, 220],
+      contrast: [0.4, 220],
     } as ColorEdit,
   },
 
-  "versatile-bnw": {
-    baseStyle: "versatile",
+  "avenue-bnw": {
+    baseStyle: "avenue",
     colorEdit: {
       exposure: -1,
       saturation: -1,
-      contrast: [1.2, 160],
+      contrast: [0.6, 160],
     } as ColorEdit,
   },
 
-  "versatile-blueprint": {
-    baseStyle: "versatile",
+  "avenue-blueprint": {
+    baseStyle: "avenue",
     colorEdit: {
       exposure: -0.7,
       saturation: -1,
-      contrast: [1.2, 160],
+      contrast: [0.7, 160],
       mixColor: ["#3355bb", 0.15],
     } as ColorEdit,
   },
 
-  "versatile-warm": {
-    baseStyle: "versatile",
+  "avenue-warm": {
+    baseStyle: "avenue",
     colorEdit: {
       exposure: -0.7,
-      contrast: [-0.1, 110],
       mixColor: ["#ff8800", 0.1],
     } as ColorEdit,
   },
 
-  "versatile-vintage": {
-    baseStyle: "versatile",
+  "avenue-vintage": {
+    baseStyle: "avenue",
     colorEdit: {
       exposure: -0.25,
       multiplyColor: ["#ff8800", 0.4],
@@ -67,8 +66,8 @@ const stylePresets = {
     } as ColorEdit,
   },
 
-  "versatile-saturated": {
-    baseStyle: "versatile",
+  "avenue-saturated": {
+    baseStyle: "avenue",
     colorEdit: {
       exposure: -1,
       saturation: 0.1,
@@ -400,6 +399,11 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
 
   if (shouldApplyColorTransform) {
     findColor(layers, (color: string) => {
+      if (color === "#a6e085") {
+        console.log("#a6e085");
+        
+      }
+
       // Using the Color lib for saturation and hue rotation
       let layerColor = Color(color);
 

@@ -193,7 +193,7 @@
     "layout": {"visibility": "visible"},
     "paint": {
       "fill-opacity": ["interpolate", ["linear"], ["zoom"], 0, 1, 7, 1],
-      "fill-color": "rgba(170, 222, 156, 1)"
+      "fill-color": "rgb(184, 224, 173)"
     }
   },
   {

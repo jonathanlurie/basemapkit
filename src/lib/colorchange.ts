@@ -65,11 +65,11 @@ export function applyBrightnessRGB(input: RGBArray, brightness: number): RGBArra
   return input.map((chan) => applyBrightnessSingle(chan, brightness)) as RGBArray;
 }
 
-export function applyContrastSingle(input: number, contrast: number, midpoint = 127): number {
+export function applyContrastSingle_OLD(input: number, contrast: number, midpoint = 127): number {
   const centered = input - midpoint;
   const factor =
     contrast >= 0
-      ? 1 + contrast * 2
+      ? 1 + contrast
       : // Map [0, 1] to [1, 3]
         1 + contrast; // Map [-1, 0] to [0, 1]
 
@@ -90,6 +90,19 @@ export function applyContrastSingle(input: number, contrast: number, midpoint = 
   // Clamp to valid range
   return Math.round(Math.max(0, Math.min(255, adjusted)));
 }
+
+
+
+export function applyContrastSingle(input: number, contrast: number, midpoint = 127): number {
+  const boundedContrast = Math.max(-0.99, Math.min(0.99, contrast));
+  const steepness = boundedContrast < 0 ? boundedContrast + 1 : 1 / ( 1 - boundedContrast);
+  const adjusted = midpoint + steepness * (input - midpoint)
+
+  // Clamp to valid range
+  return Math.round(Math.max(0, Math.min(255, adjusted)));
+}
+
+
 
 export function applyContrastRGB(input: RGBArray, contrast: number, midpoint = 127): RGBArray {
   return input.map((chan) => applyContrastSingle(chan, contrast, midpoint)) as RGBArray;
