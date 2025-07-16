@@ -11,8 +11,11 @@ Basemaps for <a href="https://maplibre.org/maplibre-gl-js/docs/">Maplibre GL JS<
 
 Basemapkit generates customizable styles compatible with **Maplibre GL JS** that relies on the **Protomaps** Planet schemas when it comes to [vector layers and feature properties](https://docs.protomaps.com/basemaps/layers). You can download your own PMtiles copy of the planet on the official [Protomaps build page](https://maps.protomaps.com/builds/). 
 
-
-![Showing the Basemapkit's Avenue style](./public/screenshots/eu-avenue.jpg)
+| |  |  |
+| :----------------: | :------: | ----: |
+| ![](./public/screenshots/eu-avenue.jpg) | ![](./public/screenshots/eu-avenue-pop.jpg) | ![](./public/screenshots/eu-avenue-night.jpg) |
+| ![](./public/screenshots/eu-avenue-bright.jpg) | ![](./public/screenshots/eu-avenue-saturated.jpg)| ![](./public/screenshots/eu-avenue-warm.jpg) |
+| ![](./public/screenshots/eu-avenue-vintage.jpg) | ![](./public/screenshots/eu-avenue-bnw.jpg) | ![](./public/screenshots/eu-avenue-blueprint.jpg) |
 
 ## Getting started
 ### Install
@@ -36,21 +39,21 @@ maplibregl.addProtocol("pmtiles", new Protocol().tile);
 
 // Build the Basemapkit style
 const style = getStyle(
-  // One of the main syle:
-  "avenue", 
-  {
-    // URL to the pmtiles
-    pmtiles: "https://my-s3-bucket.com/planet.pmtiles",
+// One of the main syle:
+"avenue", 
+{
+  // URL to the pmtiles
+  pmtiles: "https://my-s3-bucket.com/planet.pmtiles",
 
-    // URL to the sprites (for POIs)
-    sprite: "https://raw.githubusercontent.com/jonathanlurie/phosphor-mlgl-sprite/refs/heads/main/sprite/phosphor-diecut",
+  // URL to the sprites (for POIs)
+  sprite: "https://raw.githubusercontent.com/jonathanlurie/phosphor-mlgl-sprite/refs/heads/main/sprite/phosphor-diecut",
 
-    // URL to the glyphs (for labels)
-    glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf";
+  // URL to the glyphs (for labels)
+  glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf";
 
-    // Language (you can ommit to use the platform language)
-    lang: "en",
-  });
+  // Language (you can ommit to use the platform language)
+  lang: "en",
+});
 
 // Instantiate the Map:
 const map = new maplibregl.Map({
@@ -62,6 +65,27 @@ const map = new maplibregl.Map({
   style,
 });
 ```
+
+If using a traditional `tile.json` and `z/x/y` tiles instead of range-requesting a `.pmtiles` file, then replace the option `pmtiles` by `tilejson`, as in the example below:
+```ts
+const style = getStyle(
+// One of the main syle:
+"avenue", 
+{
+  // URL to the tile.json
+  tilejson: "https://example.com/tile.json",
+
+  // URL to the sprites (for POIs)
+  sprite: "https://raw.githubusercontent.com/jonathanlurie/phosphor-mlgl-sprite/refs/heads/main/sprite/phosphor-diecut",
+
+  // URL to the glyphs (for labels)
+  glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf";
+
+  // Language (you can ommit to use the platform language)
+  lang: "en",
+});
+```
+This can get particularly handy when using the [Protomaps CLI](https://docs.protomaps.com/pmtiles/cli) or [Martin](https://martin.maplibre.org/) to serve `z/x/y` vector tiles from a server.
 
 ## Language
 Basemakit styles are compatible with Protomaps languages properties and under the hood even uses [`@protomaps/basemaps`](https://docs.protomaps.com/basemaps/flavors). 
@@ -140,7 +164,7 @@ getStyle(
 Note that the corresponding layers are removed from the style and not just made invisible. If hiding POIs or label, the options `sprite` and `glyph` are unnecessary.
 
 ## Getting creative
-In addition to 
+In addition to language and hiding POIs/labels, Basmapkit exposes some methods to modify the colors of the original style (`avenue`) to create *presets*. When the style is generated with some non-default `colorEdit`, a brand new Maplibre style is created and can be directly injected into a Maplibre `Map` instance's `.setStyle()` method, or even written as a static json file.
 
 ```ts
 
@@ -204,9 +228,10 @@ getStyle("avenue",
   }
 );
 ```
-You can live play with these on [basmapkit.jnth.io](https://basemapkit.jnth.io/) and selecting the style `🖌️ custom 🎨`.  
+You can live play with these on [basmapkit.jnth.io](https://s.jnth.io/s/basemapkit) and selecting the style `🖌️ custom 🎨`.  
 
 From this "color editor" were created the built-in styles available below...
+
 
 
 ## Style presets available
