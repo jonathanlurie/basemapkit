@@ -11,7 +11,8 @@ Basemaps for <a href="https://maplibre.org/maplibre-gl-js/docs/">Maplibre GL JS<
 
 Basemapkit generates customizable styles compatible with **Maplibre GL JS** that relies on the **Protomaps** Planet schemas when it comes to [vector layers and feature properties](https://docs.protomaps.com/basemaps/layers). You can download your own PMtiles copy of the planet on the official [Protomaps build page](https://maps.protomaps.com/builds/). 
 
-![Showing the Basemapkit's Versatile style](./public/versatile.jpg)
+
+![Showing the Basemapkit's Avenue style](./public/screenshots/eu-avenue.jpg)
 
 ## Getting started
 ### Install
@@ -36,7 +37,7 @@ maplibregl.addProtocol("pmtiles", new Protocol().tile);
 // Build the Basemapkit style
 const style = getStyle(
   // One of the main syle:
-  "versatile", 
+  "avenue", 
   {
     // URL to the pmtiles
     pmtiles: "https://my-s3-bucket.com/planet.pmtiles",
@@ -49,7 +50,7 @@ const style = getStyle(
 
     // Language (you can ommit to use the platform language)
     lang: "en",
-  }),
+  });
 
 // Instantiate the Map:
 const map = new maplibregl.Map({
@@ -72,94 +73,241 @@ Here is the list of supported languages:
 "ar" | "cs" | "bg" | "da" | "de" | "el" | "en" | "es" | "et" | "fa" | "fi" | "fr" | "ga" | "he" | "hi" | "hr" | "hu" | "id" | "it" | "ja" | "ko" | "lt" | "lv" | "ne" | "nl" | "no" | "mr" | "mt" | "pl" | "pt" | "ro" | "ru" | "sk" | "sl" | "sv" | "tr" | "uk" | "ur" | "vi" | "zh-Hans" | "zh-Hant"
 ```
 
-## Styles available
-### 
+## POIs and labels
+There are options to hide the points of interests and labels. By default, both are shown, meaning the options goes like this:
+```ts
+getStyle(
+  "avenue", 
+  {
+    pmtiles: "...",
+    sprite: "...",
+    glyphs: "...";
+
+    hidePOIs: false,
+    hideLabels: false,
+  });
+```
+So by default, London looks like this:
+![a part of the city of London with both POIs and labels](./public/screenshots/hide-nothing.jpg)
+
+But POIs can be hidden by doing this:
+```ts
+getStyle(
+  "avenue", 
+  {
+    pmtiles: "...",
+    sprite: "...",
+    glyphs: "...";
+
+    hidePOIs: true,
+    hideLabels: false,
+  });
+```
+Then the same locations looks like this:
+![a part of the city of London with both POIs hidden](./public/screenshots/hide-pois.jpg)
+
+Alternatively, the labels can be hidden, this also includes the labels that come with POIs, so only POIs' icons will be shown by doing this:
+```ts
+getStyle(
+  "avenue", 
+  {
+    pmtiles: "...",
+    sprite: "...",
+    glyphs: "...";
+
+    hidePOIs: false,
+    hideLabels: true,
+  });
+```
+here is how it looks like:
+![a part of the city of London with labels hidden](./public/screenshots/hide-labels.jpg)
+
+And finally, both labels and POIs can be hidden, resulting in a bit of a mysterious map:
+```ts
+getStyle(
+  "avenue", 
+  {
+    pmtiles: "...",
+    sprite: "...",
+    glyphs: "...";
+
+    hidePOIs: true,
+    hideLabels: true,
+  });
+```
+![a part of the city of London with labels and POIs hidden](./public/screenshots/hide-pois-labels.jpg)
+
+Note that the corresponding layers are removed from the style and not just made invisible. If hiding POIs or label, the options `sprite` and `glyph` are unnecessary.
+
+## Getting creative
+In addition to 
+
+```ts
+
+getStyle("avenue", 
+  {
+    pmtiles: "...",
+    sprite: "...",
+    glyphs: "...";
+    hidePOIs: false,
+    hideLabels: false,
+  
+
+    colorEdit: {
+      // Invert the colors:
+      negate: false,
+
+      // In the range [-1, 1]:
+      brightness: 0,
+
+      // In the range [-1, 1]:
+      brightnessShift: 0,
+
+      // In the range [-1, 1]:
+      exposure: 0,
+
+      contrast: [
+        // intensity in the range [-1, 1]:
+        0,
+        // Midpoint in [0, 255]
+        127
+      ],
+
+      // Rotate around the hue wheel, in range [0, 360]
+      hueRotation: 0,
+
+      // In the range [-1, 1] 
+      // with -1 being gray levels and 1 being extra boosted colors
+      saturation: 0,
+
+      // Color blending with a multiply method
+      multiplyColor: [
+        // Color to multiply with
+        "#ff0000",
+
+        // blending factor in [0, 1]
+        // with 0 being the original color and 1 being the the color above
+        0
+      ],
+
+      // Linear color blending
+      mixColor: [
+        // Color to blend with
+        "#ff0000",
+
+        // blending factor in [0, 1]
+        // with 0 being the original color and 1 being the the color above
+        0
+      ]
+    }
+
+  }
+);
+```
+You can live play with these on [basmapkit.jnth.io](https://basemapkit.jnth.io/) and selecting the style `🖌️ custom 🎨`.  
+
+From this "color editor" were created the built-in styles available below...
 
 
-### `versatile` ⤵️
+## Style presets available
+Some custom `colorEdit` recipes are already built in Basemapkit and can be accessed directly from the `getStyle()`function.
+### `avenue` ⤵️
+This one is the default, with all the `colorEdit` options set to default:
 ```ts
 // Create the style
-const style = getStyle("versatile", options);
+const style = getStyle("avenue", options);
 ```
-![](./public/screenshots/usa-versatile.jpeg)
-![](./public/screenshots/alps-versatile.jpeg)
-![](./public/screenshots/manhattan-versatile.jpeg)
-![](./public/screenshots/na-versatile.jpeg)
-![](./public/screenshots/paris-versatile.jpeg)
+![](./public/screenshots/eu-avenue.jpg)
+![](./public/screenshots/nyc-avenue.jpg)
+![](./public/screenshots/jp-avenue.jpg)
+![](./public/screenshots/eiffel-avenue.jpg)
+![](./public/screenshots/alps-avenue.jpg)
+
+### `avenue-pop` ⤵️
+```ts
+// Create the style
+const style = getStyle("avenue-pop", options);
+```
+![](./public/screenshots/eu-avenue-pop.jpg)
+![](./public/screenshots/nyc-avenue-pop.jpg)
+![](./public/screenshots/jp-avenue-pop.jpg)
+![](./public/screenshots/eiffel-avenue-pop.jpg)
+![](./public/screenshots/alps-avenue-pop.jpg)
  
-### `versatile-night` ⤵️
-```ts
-// Create the style
-const style = getStyle("versatile-night", options);
-```
-![](./public/screenshots/usa-versatile-night.jpeg)
-![](./public/screenshots/alps-versatile-night.jpeg)
-![](./public/screenshots/manhattan-versatile-night.jpeg)
-![](./public/screenshots/na-versatile-night.jpeg)
-![](./public/screenshots/paris-versatile-night.jpeg)
  
-### `versatile-bright` ⤵️
+### `avenue-night` ⤵️
 ```ts
 // Create the style
-const style = getStyle("versatile-bright", options);
+const style = getStyle("avenue-night", options);
 ```
-![](./public/screenshots/usa-versatile-bright.jpeg)
-![](./public/screenshots/alps-versatile-bright.jpeg)
-![](./public/screenshots/manhattan-versatile-bright.jpeg)
-![](./public/screenshots/na-versatile-bright.jpeg)
-![](./public/screenshots/paris-versatile-bright.jpeg)
-
-### `versatile-saturated` ⤵️
-```ts
-// Create the style
-const style = getStyle("versatile-saturated", options);
-```
-![](./public/screenshots/usa-versatile-saturated.jpeg)
-![](./public/screenshots/alps-versatile-saturated.jpeg)
-![](./public/screenshots/manhattan-versatile-saturated.jpeg)
-![](./public/screenshots/na-versatile-saturated.jpeg)
-![](./public/screenshots/paris-versatile-saturated.jpeg)
-
-### `versatile-warm` ⤵️
-```ts
-// Create the style
-const style = getStyle("versatile-warm", options);
-```
-![](./public/screenshots/usa-versatile-warm.jpeg)
-![](./public/screenshots/alps-versatile-warm.jpeg)
-![](./public/screenshots/manhattan-versatile-warm.jpeg)
-![](./public/screenshots/na-versatile-warm.jpeg)
-![](./public/screenshots/paris-versatile-warm.jpeg)
-
-### `versatile-vintage` ⤵️
-```ts
-// Create the style
-const style = getStyle("versatile-vintage", options);
-```
-![](./public/screenshots/usa-versatile-vintage.jpeg)
-![](./public/screenshots/alps-versatile-vintage.jpeg)
-![](./public/screenshots/manhattan-versatile-vintage.jpeg)
-![](./public/screenshots/na-versatile-vintage.jpeg)
-![](./public/screenshots/paris-versatile-vintage.jpeg)
+![](./public/screenshots/eu-avenue-night.jpg)
+![](./public/screenshots/nyc-avenue-night.jpg)
+![](./public/screenshots/jp-avenue-night.jpg)
+![](./public/screenshots/eiffel-avenue-night.jpg)
+![](./public/screenshots/alps-avenue-night.jpg)
  
-### `versatile-bnw` ⤵️
+### `avenue-bright` ⤵️
 ```ts
 // Create the style
-const style = getStyle("versatile-bnw", options);
+const style = getStyle("avenue-bright", options);
 ```
-![](./public/screenshots/usa-versatile-bnw.jpeg)
-![](./public/screenshots/alps-versatile-bnw.jpeg)
-![](./public/screenshots/manhattan-versatile-bnw.jpeg)
-![](./public/screenshots/na-versatile-bnw.jpeg)
-![](./public/screenshots/paris-versatile-bnw.jpeg)
+![](./public/screenshots/eu-avenue-bright.jpg)
+![](./public/screenshots/nyc-avenue-bright.jpg)
+![](./public/screenshots/jp-avenue-bright.jpg)
+![](./public/screenshots/eiffel-avenue-bright.jpg)
+![](./public/screenshots/alps-avenue-bright.jpg)
 
-### `versatile-blueprint` ⤵️
+### `avenue-saturated` ⤵️
 ```ts
 // Create the style
-const style = getStyle("versatile-blueprint", options);
+const style = getStyle("avenue-saturated", options);
 ```
-![](./public/screenshots/usa-versatile-blueprint.jpeg)
-![](./public/screenshots/alps-versatile-blueprint.jpeg)
-![](./public/screenshots/manhattan-versatile-blueprint.jpeg)
-![](./public/screenshots/na-versatile-blueprint.jpeg)
-![](./public/screenshots/paris-versatile-blueprint.jpeg)
+![](./public/screenshots/eu-avenue-saturated.jpg)
+![](./public/screenshots/nyc-avenue-saturated.jpg)
+![](./public/screenshots/jp-avenue-saturated.jpg)
+![](./public/screenshots/eiffel-avenue-saturated.jpg)
+![](./public/screenshots/alps-avenue-saturated.jpg)
+
+### `avenue-warm` ⤵️
+```ts
+// Create the style
+const style = getStyle("avenue-warm", options);
+```
+![](./public/screenshots/eu-avenue-warm.jpg)
+![](./public/screenshots/nyc-avenue-warm.jpg)
+![](./public/screenshots/jp-avenue-warm.jpg)
+![](./public/screenshots/eiffel-avenue-warm.jpg)
+![](./public/screenshots/alps-avenue-warm.jpg)
+
+### `avenue-vintage` ⤵️
+```ts
+// Create the style
+const style = getStyle("avenue-vintage", options);
+```
+![](./public/screenshots/eu-avenue-vintage.jpg)
+![](./public/screenshots/nyc-avenue-vintage.jpg)
+![](./public/screenshots/jp-avenue-vintage.jpg)
+![](./public/screenshots/eiffel-avenue-vintage.jpg)
+![](./public/screenshots/alps-avenue-vintage.jpg)
+ 
+### `avenue-bnw` ⤵️
+```ts
+// Create the style
+const style = getStyle("avenue-bnw", options);
+```
+![](./public/screenshots/eu-avenue-bnw.jpg)
+![](./public/screenshots/nyc-avenue-bnw.jpg)
+![](./public/screenshots/jp-avenue-bnw.jpg)
+![](./public/screenshots/eiffel-avenue-bnw.jpg)
+![](./public/screenshots/alps-avenue-bnw.jpg)
+
+### `avenue-blueprint` ⤵️
+```ts
+// Create the style
+const style = getStyle("avenue-blueprint", options);
+```
+![](./public/screenshots/eu-avenue-blueprint.jpg)
+![](./public/screenshots/nyc-avenue-blueprint.jpg)
+![](./public/screenshots/jp-avenue-blueprint.jpg)
+![](./public/screenshots/eiffel-avenue-blueprint.jpg)
+![](./public/screenshots/alps-avenue-blueprint.jpg)
