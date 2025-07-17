@@ -133,3 +133,14 @@ body, html {
 #reset-style-bt {
   background-color: #e99900;
 }
+
+#basemapkit-version {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  color: #000000;
+  font-family: monospace;
+  z-index: 2;
+  padding: 5px;
+}

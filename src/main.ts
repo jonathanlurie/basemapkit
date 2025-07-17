@@ -2,6 +2,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import "./style.css";
 import maplibregl from "maplibre-gl";
 import { Protocol } from "pmtiles";
+import packagejson from "../package.json";
 import { buildStyle, getStyle, getStyleList, type ColorEdit, type Lang } from "./lib/basemapkit";
 
 type CustomStyle = {
@@ -78,6 +79,9 @@ function removeUrlStyle() {
   const validateStyleBt = document.getElementById("validate-style-bt") as HTMLButtonElement;
   const codeEditor = document.getElementById("code-editor") as HTMLTextAreaElement;
   const resetButton = document.getElementById("reset-style-bt") as HTMLButtonElement;
+  const basemapkitVersionDiv = document.getElementById("basemapkit-version") as HTMLDivElement;
+
+  basemapkitVersionDiv.innerText = packagejson.version;
 
   for (const styleId of getStyleList()) {
     const styleDdOption = document.createElement("option");

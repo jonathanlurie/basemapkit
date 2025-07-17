@@ -175,7 +175,7 @@ buildStyle({
     hidePOIs: false,
     hideLabels: false,
   
-    // At the moment, "avenue"
+    // At the moment, "avenue" is the only style to start from
     baseStyleName: "avenue",
 
     colorEdit: {
@@ -267,7 +267,7 @@ And from this "color editor" were created the built-in styles available below...
 
 
 ## Style presets available
-Some custom `colorEdit` recipes are already built in Basemapkit and can be accessed directly from the `getStyle()`function.
+Some custom `colorEdit` recipes are already built in Basemapkit and can be accessed directly from the `getStyle()` function.
 ### `avenue` ⤵️
 This one is the default, with all the `colorEdit` options set to default:
 ```ts
