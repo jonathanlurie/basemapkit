@@ -9,7 +9,7 @@ Basemaps for <a href="https://maplibre.org/maplibre-gl-js/docs/">Maplibre GL JS<
   <img src="https://img.shields.io/npm/v/basemapkit"></img>
 </p>
 
-Basemapkit generates customizable styles compatible with **Maplibre GL JS** that relies on the **Protomaps** Planet schemas when it comes to [vector layers and feature properties](https://docs.protomaps.com/basemaps/layers). You can download your own PMtiles copy of the planet on the official [Protomaps build page](https://maps.protomaps.com/builds/). 
+**Basemapkit** generates customizable styles compatible with **Maplibre GL JS** that relies on the **Protomaps** Planet schemas when it comes to [vector layers and feature properties](https://docs.protomaps.com/basemaps/layers). You can download your own PMtiles copy of the planet on the official [Protomaps build page](https://maps.protomaps.com/builds/). 
 
 | |  |  |
 | :----------------: | :------: | ----: |
@@ -25,7 +25,7 @@ npm install basemapkit
 ```
 
 ### Add some style
-The following example add a Maplibre `Map`, add the Protomaps protocol and then generates a style:
+The following example instantiates a Maplibre `Map`, then initializes the Protomaps protocol and then generates a style with Basemapkit:
 
 ```ts
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -66,7 +66,7 @@ const map = new maplibregl.Map({
 });
 ```
 
-If using a traditional `tile.json` and `z/x/y` tiles instead of range-requesting a `.pmtiles` file, then replace the option `pmtiles` by `tilejson`, as in the example below:
+If using a traditional `tile.json` and `z/x/y` tiles instead of http-range-requesting a `pmtiles` file, then replace the option `pmtiles` by `tilejson`, as in the example below:
 ```ts
 const style = getStyle(
 // One of the main syle:
@@ -85,10 +85,10 @@ const style = getStyle(
   lang: "en",
 });
 ```
-This can get particularly handy when using the [Protomaps CLI](https://docs.protomaps.com/pmtiles/cli) or [Martin](https://martin.maplibre.org/) to serve `z/x/y` vector tiles from a server.
+This can get particularly handy when using the [Protomaps CLI](https://docs.protomaps.com/pmtiles/cli) or [Martin](https://martin.maplibre.org/) to serve `z/x/y` vector tiles.
 
 ## Language
-Basemakit styles are compatible with Protomaps languages properties and under the hood even uses [`@protomaps/basemaps`](https://docs.protomaps.com/basemaps/flavors). 
+Basemakit styles are compatible with Protomaps languages properties and uses [`@protomaps/basemaps`](https://docs.protomaps.com/basemaps/flavors) under the hood. 
 
 The only addition from **Basemapkit** is the capability to detect the end user's platform language, so if the `lang` option is omitted, it will automatically use the language set by the user at the browser or OS level.
 
@@ -105,7 +105,7 @@ getStyle(
   {
     pmtiles: "...",
     sprite: "...",
-    glyphs: "...";
+    glyphs: "...",
 
     hidePOIs: false,
     hideLabels: false,
@@ -121,7 +121,7 @@ getStyle(
   {
     pmtiles: "...",
     sprite: "...",
-    glyphs: "...";
+    glyphs: "...",
 
     hidePOIs: true,
     hideLabels: false,
@@ -130,14 +130,14 @@ getStyle(
 Then the same locations looks like this:
 ![a part of the city of London with both POIs hidden](./public/screenshots/hide-pois.jpg)
 
-Alternatively, the labels can be hidden, this also includes the labels that come with POIs, so only POIs' icons will be shown by doing this:
+Alternatively, the labels can be hidden, this includes POIs' labels, so only POIs' icons will be shown by doing this:
 ```ts
 getStyle(
   "avenue", 
   {
     pmtiles: "...",
     sprite: "...",
-    glyphs: "...";
+    glyphs: "...",
 
     hidePOIs: false,
     hideLabels: true,
@@ -146,14 +146,14 @@ getStyle(
 here is how it looks like:
 ![a part of the city of London with labels hidden](./public/screenshots/hide-labels.jpg)
 
-And finally, both labels and POIs can be hidden, resulting in a bit of a mysterious map:
+And finally, both labels and POIs can be hidden, resulting in a somewhat mysterious map:
 ```ts
 getStyle(
   "avenue", 
   {
     pmtiles: "...",
     sprite: "...",
-    glyphs: "...";
+    glyphs: "...",
 
     hidePOIs: true,
     hideLabels: true,
@@ -163,19 +163,20 @@ getStyle(
 
 Note that the corresponding layers are removed from the style and not just made invisible. If hiding POIs or label, the options `sprite` and `glyph` are unnecessary.
 
-## Getting creative
+## Getting creative with `buildStyle()`
 In addition to language and hiding POIs/labels, Basmapkit exposes some methods to modify the colors of the original style (`avenue`) to create *presets*. When the style is generated with some non-default `colorEdit`, a brand new Maplibre style is created and can be directly injected into a Maplibre `Map` instance's `.setStyle()` method, or even written as a static json file.
 
 ```ts
 
-getStyle("avenue", 
-  {
+buildStyle({
     pmtiles: "...",
     sprite: "...",
-    glyphs: "...";
+    glyphs: "...",
     hidePOIs: false,
     hideLabels: false,
   
+    // At the moment, "avenue"
+    baseStyleName: "avenue",
 
     colorEdit: {
       // Invert the colors:
@@ -228,9 +229,40 @@ getStyle("avenue",
   }
 );
 ```
-You can live play with these on [basmapkit.jnth.io](https://s.jnth.io/s/basemapkit) and selecting the style `🖌️ custom 🎨`.  
+For instance, let's create a TMNT toxic N.Y.C. kind of map:
+```json
+{
+  "baseStyleName": "avenue",
+  "lang": "en",
+  "hidePOIs": true,
+  "hideLabels": false,
+  "colorEdit": {
+    "negate": true,
+    "brightness": 0.4,
+    "brightnessShift": 0,
+    "exposure": 0.8,
+    "contrast": [
+      0.4,
+      160
+    ],
+    "hueRotation": 80,
+    "saturation": 0.12,
+    "multiplyColor": [
+      "#ff00ff",
+      0.6
+    ],
+    "mixColor": [
+      "#00ff00",
+      0.3
+    ]
+  }
+}
+```
+And here is the result:
+![](./public/screenshots/tmnt-toxic-nyc.jpg)
 
-From this "color editor" were created the built-in styles available below...
+You can live play with these on [basemapkit.jnth.io](https://s.jnth.io/s/basemapkit) and selecting the style `🖌️ custom 🎨`.  
+And from this "color editor" were created the built-in styles available below...
 
 
 
