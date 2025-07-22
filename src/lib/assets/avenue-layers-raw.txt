@@ -355,6 +355,54 @@
     "paint": {"fill-color": "rgba(43, 63, 131, 0.07)"}
   },
   {
+    "id": "landuse_nature_reserve_bg",
+    "type": "line",
+    "source": "__protomaps_source",
+    "source-layer": "landuse",
+    "minzoom": 8,
+    "filter": ["all", ["==", "kind", "nature_reserve"]],
+    "layout": {"visibility": "visible"},
+    "paint": {
+      "line-width": [
+        "interpolate",
+        ["exponential", 1.6],
+        ["zoom"],
+        8,
+        5,
+        15,
+        20,
+        18,
+        30
+      ],
+      "line-color": "rgba(5, 109, 0, 0.19)",
+      "line-opacity": {"stops": [[8, 0], [9, 0.4]]}
+    }
+  },
+  {
+    "id": "landuse_nature_reserve",
+    "type": "line",
+    "source": "__protomaps_source",
+    "source-layer": "landuse",
+    "minzoom": 8,
+    "filter": ["all", ["==", "kind", "nature_reserve"]],
+    "layout": {"visibility": "visible"},
+    "paint": {
+      "line-width": [
+        "interpolate",
+        ["exponential", 1.6],
+        ["zoom"],
+        8,
+        1,
+        15,
+        3,
+        18,
+        5
+      ],
+      "line-color": "rgba(5, 109, 0, 0.19)",
+      "line-opacity": {"stops": [[8, 0], [9, 1]]}
+    }
+  },
+  {
     "id": "ferry",
     "type": "line",
     "source": "__protomaps_source",
@@ -913,7 +961,7 @@
         20,
         6
       ],
-      "line-color": "rgba(0, 0, 0, 0.15)"
+      "line-color": "rgba(0, 0, 0, 0.05)"
     }
   },
   {
@@ -931,7 +979,7 @@
     ],
     "layout": {"visibility": "visible"},
     "paint": {
-      "line-dasharray": [2, 2],
+      "line-dasharray": [3, 1.5],
       "line-width": [
         "interpolate",
         ["exponential", 1.6],
@@ -941,7 +989,7 @@
         20,
         9
       ],
-      "line-color": "rgba(249, 247, 241, 1)"
+      "line-color": "rgba(249, 247, 241, 0.6)"
     }
   },
   {
@@ -1508,8 +1556,8 @@
         18,
         4
       ],
-      "line-color": "rgba(20, 116, 0, 1)",
-      "line-dasharray": [2, 1.5]
+      "line-color": "rgba(20, 116, 0, 0.7)",
+      "line-dasharray": [3, 1.5]
     }
   },
   {
