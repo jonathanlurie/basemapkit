@@ -3,7 +3,7 @@
     "id": "background",
     "type": "background",
     "layout": {"visibility": "visible"},
-    "paint": {"background-color": "#cccccc"}
+    "paint": {"background-color": "rgb(135, 199, 236)"}
   },
   {
     "id": "earth",
@@ -295,13 +295,48 @@
     "paint": {"fill-color": "#e9e9ed"}
   },
   {
+    "id": "hillshader",
+    "type": "hillshade",
+    "source": "__terrain_source",
+    "paint": {
+      "hillshade-illumination-anchor": "viewport",
+      "hillshade-exaggeration": [
+        "interpolate",
+        ["exponential", 1.6],
+        ["zoom"],
+        0, 0.1,
+        4, 0.2,
+        7, 0.3,
+        10, 0.4
+      ],
+      "hillshade-shadow-color": "#123161",
+      "hillshade-highlight-color": "#fff0b3",
+      "hillshade-accent-color": "rgba(0, 184, 255, 0.65)",
+      "hillshade-illumination-direction": [
+        "literal",
+        310
+      ]
+    },
+    "layout": {"visibility": "visible"}
+  },
+  {
     "id": "water",
     "type": "fill",
     "source": "__protomaps_source",
     "source-layer": "water",
     "filter": ["==", "$type", "Polygon"],
     "layout": {"visibility": "visible"},
-    "paint": {"fill-color": "rgb(135, 199, 236)"}
+    "paint": {
+      "fill-color": "rgb(135, 199, 236)",
+      "fill-opacity": [
+        "interpolate",
+        ["exponential", 1.6],
+        ["zoom"],
+        0, 0.4,
+        5, 0.75,
+        8, 0.95
+      ]
+    }
   },
   {
     "id": "water_stream",
@@ -2158,4 +2193,5 @@
       "fill-extrusion-height": {"type": "identity", "property": "height"}
     }
   }
+
 ]

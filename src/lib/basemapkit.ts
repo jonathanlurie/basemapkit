@@ -515,6 +515,11 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
         url: sourceUrl,
         attribution: "<a href='https://openstreetmap.org/copyright'>© OpenStreetMap Contributors</a>",
       },
+
+      __terrain_source: {
+        url: "http://127.0.0.1:8080/tiles.json",
+        type: "raster-dem"
+      }
     },
     layers: layers,
   };

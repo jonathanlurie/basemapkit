@@ -122,12 +122,20 @@ function removeUrlStyle() {
     zoom: 3,
   });
 
+  // map.showTileBoundaries = true;
   // Enable globe view
   map.on("style.load", () => {
     map.setProjection({
       type: ["interpolate", ["linear"], ["zoom"], 7, "vertical-perspective", 8, "mercator"],
     });
   });
+
+  // map.on("load", () => {
+  //   map.setTerrain({
+  //     source: "__terrain_source",
+  //     exaggeration: 1,
+  //   });
+  // })
 
   // Update the style based on the dropdown
   styleDD.addEventListener("change", (e: Event) => {
