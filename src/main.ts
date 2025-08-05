@@ -102,7 +102,8 @@ function removeUrlStyle() {
 
   maplibregl.addProtocol("pmtiles", new Protocol().tile);
 
-  const pmtiles = "https://fsn1.your-objectstorage.com/public-map-data/pmtiles/planet.pmtiles";
+  // const pmtiles = "https://fsn1.your-objectstorage.com/public-map-data/pmtiles/planet.pmtiles";
+  const pmtiles = "http://127.0.0.1:8080/protomaps_planet/20250505.pmtiles"
   const sprite =
     "https://raw.githubusercontent.com/jonathanlurie/phosphor-mlgl-sprite/refs/heads/main/sprite/phosphor-diecut";
   const glyphs = "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf";
@@ -124,11 +125,11 @@ function removeUrlStyle() {
 
   // map.showTileBoundaries = true;
   // Enable globe view
-  map.on("style.load", () => {
-    map.setProjection({
-      type: ["interpolate", ["linear"], ["zoom"], 7, "vertical-perspective", 8, "mercator"],
-    });
-  });
+  // map.on("style.load", () => {
+  //   map.setProjection({
+  //     type: ["interpolate", ["linear"], ["zoom"], 7, "vertical-perspective", 8, "mercator"],
+  //   });
+  // });
 
   // map.on("load", () => {
   //   map.setTerrain({

@@ -261,6 +261,8 @@ export type GetStyleOptions = {
    * `glyphs` option unnecessary.
    */
   hideLabels?: boolean;
+
+
 };
 
 /**
@@ -517,11 +519,13 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
       },
 
       __terrain_source: {
-        url: "http://127.0.0.1:8080/tiles.json",
+        // url: "http://127.0.0.1:8080/tiles.json",
+        url: "pmtiles://http://127.0.0.1:8080/mapzen_terrain_rgb_webp_pmtiles/terrain.pmtiles",
         type: "raster-dem"
       }
     },
     layers: layers,
+    projection: { type: ["interpolate", ["linear"], ["zoom"], 7, "vertical-perspective", 8, "mercator"] }
   };
 
   return style;
