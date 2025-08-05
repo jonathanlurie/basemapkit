@@ -263,7 +263,43 @@ export type GetStyleOptions = {
   hideLabels?: boolean;
 
 
+  terrain?: {
+     /**
+     * The public URL of a pmtiles files for raster terrain, encoded on RGB channels of either PNG or WebP. To use if sourcing tiles directly with
+     * range-request using the `pmtiles`'s protocol. Alternatively, the option `tileJson` can be used and will take precedence.
+     */
+    pmtiles?: string;
+
+    /**
+     * The public URL to a tile JSON file for raster terrain tiles, encoded on RGB channels of either PNG or WebP. To use if classic z/x/y MVT tiles are served through
+     * Maplibre's Martin or the pmtiles CLI. Will take precedence on the option `pmtiles` if both are provided.
+     */
+    tilejson?: string;
+
+    /**
+     * Enable or disable the hillshading. Enabled by default if one of the source options `terrain.pmtiles` or `terrain.tilejson` is provided.
+     * It cannot be enabled if none of the source option is provided.
+     */
+    hillshading?: boolean,
+
+    /**
+     * The terrain exaggeration is disabled by default, making the terrain flat even if one of the source options `terrain.pmtiles` or `terrain.tilejson` is provided.
+     * A value of `1` produces at-scale realistic terrain elevation.
+     * It cannot be enabled if none of the source option is provided.
+     */
+    exaggeration?: number,
+  }
 };
+
+/**
+ * Identifier of the terrain source within the Basemapkit source definition
+ */
+export const BASEMAPKIT_BASEMAP_SOURCE_ID = "__bmk_bm_src"
+
+/**
+ * Identifier of the terrain source within the Basemapkit style definition.
+ */
+export const BASEMAPKIT_TERRAIN_SOURCE_ID = "__bmk_tr_src";
 
 /**
  * Options relative to building a style
@@ -346,6 +382,8 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
   const baseStyleLayers = baseStyles[options.baseStyleName as keyof typeof baseStyles];
 
   const translatedLayersStr = baseStyleLayers
+    .replaceAll('<BMK_BM_SRC>', BASEMAPKIT_BASEMAP_SOURCE_ID)
+    .replaceAll('<BMK_TR_SRC>', BASEMAPKIT_TERRAIN_SOURCE_ID)
     .replaceAll('"<LANG>"', otherTranslatedTextField)
     .replaceAll('"<LANG_COUNTRY>"', countryTextField);
 
@@ -512,20 +550,23 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
     ...(options.sprite && !hidePOIs ? { sprite: options.sprite } : {}),
     glyphs: options.glyphs,
     sources: {
-      __protomaps_source: {
+      [BASEMAPKIT_BASEMAP_SOURCE_ID]: {
         type: "vector",
         url: sourceUrl,
         attribution: "<a href='https://openstreetmap.org/copyright'>© OpenStreetMap Contributors</a>",
       },
 
-      __terrain_source: {
-        // url: "http://127.0.0.1:8080/tiles.json",
+      [BASEMAPKIT_TERRAIN_SOURCE_ID]: {
         url: "pmtiles://http://127.0.0.1:8080/mapzen_terrain_rgb_webp_pmtiles/terrain.pmtiles",
         type: "raster-dem"
       }
     },
     layers: layers,
-    projection: { type: ["interpolate", ["linear"], ["zoom"], 7, "vertical-perspective", 8, "mercator"] }
+    projection: { type: ["interpolate", ["linear"], ["zoom"], 7, "vertical-perspective", 8, "mercator"] },
+    terrain: {
+      source: BASEMAPKIT_TERRAIN_SOURCE_ID,
+      exaggeration: 1,
+    }
   };
 
   return style;
