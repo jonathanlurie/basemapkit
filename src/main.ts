@@ -118,6 +118,9 @@ function removeUrlStyle() {
       sprite,
       glyphs,
       lang,
+      terrain: {
+        pmtiles: "http://127.0.0.1:8080/mapzen_terrain_rgb_webp_pmtiles/terrain.pmtiles",
+      }
     }),
     center: [0, 0],
     zoom: 3,
@@ -150,6 +153,9 @@ function removeUrlStyle() {
           sprite,
           glyphs,
           lang,
+          terrain: {
+            pmtiles: "http://127.0.0.1:8080/mapzen_terrain_rgb_webp_pmtiles/terrain.pmtiles",
+          }
         }),
         { diff: false },
       );
@@ -165,6 +171,9 @@ function removeUrlStyle() {
         sprite,
         glyphs,
         lang,
+        terrain: {
+          pmtiles: "http://127.0.0.1:8080/mapzen_terrain_rgb_webp_pmtiles/terrain.pmtiles",
+        }
       }),
       { diff: false },
     );

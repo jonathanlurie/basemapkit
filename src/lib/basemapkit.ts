@@ -262,7 +262,9 @@ export type GetStyleOptions = {
    */
   hideLabels?: boolean;
 
-
+  /**
+   * Adding terrain to the style
+   */
   terrain?: {
      /**
      * The public URL of a pmtiles files for raster terrain, encoded on RGB channels of either PNG or WebP. To use if sourcing tiles directly with
@@ -396,6 +398,22 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
     throw new Error(`At least one option of "tilejson" or "pmtiles" must be provided as data source.`);
   }
 
+  let terrainSourceUrl: string = "";
+  let hillshading = false;
+  let terrainExaggeration = 0;
+  if (options.terrain) {
+    if (typeof options.terrain.tilejson === "string") {
+      terrainSourceUrl = options.terrain.tilejson;
+    } else if (typeof options.terrain.pmtiles === "string") {
+      terrainSourceUrl = `pmtiles://${options.terrain.pmtiles}`;
+    }
+
+    if (terrainSourceUrl) {
+      hillshading = options.terrain.hillshading ?? true;
+      terrainExaggeration = options.terrain.exaggeration ?? 0;
+    }
+  }
+
   let layers = JSON.parse(translatedLayersStr) as unknown as LayerSpecification[];
   const hidePOIs = options.hidePOIs ?? false;
 
@@ -456,9 +474,6 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
 
   if (shouldApplyColorTransform) {
     findColor(layers, (color: string) => {
-      if (color === "#a6e085") {
-        console.log("#a6e085");
-      }
 
       // Using the Color lib for saturation and hue rotation
       let layerColor = Color(color);
@@ -556,17 +571,27 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
         attribution: "<a href='https://openstreetmap.org/copyright'>© OpenStreetMap Contributors</a>",
       },
 
-      [BASEMAPKIT_TERRAIN_SOURCE_ID]: {
-        url: "pmtiles://http://127.0.0.1:8080/mapzen_terrain_rgb_webp_pmtiles/terrain.pmtiles",
-        type: "raster-dem"
-      }
+      // Add the terrain source if terrain source is provided and the hillshading
+      // or terrain is enabled.
+      ...((terrainSourceUrl && (terrainExaggeration || hillshading)) ? {
+        [BASEMAPKIT_TERRAIN_SOURCE_ID]: {
+          url: terrainSourceUrl,
+          type: "raster-dem"
+        }
+      } : {})
+
     },
     layers: layers,
     projection: { type: ["interpolate", ["linear"], ["zoom"], 7, "vertical-perspective", 8, "mercator"] },
-    terrain: {
-      source: BASEMAPKIT_TERRAIN_SOURCE_ID,
-      exaggeration: 1,
-    }
+
+    // Add the terrain if the terrain source is provided and the exaggeration is superior to 0
+    ...((terrainSourceUrl && terrainExaggeration) ? {
+      terrain: {
+        source: BASEMAPKIT_TERRAIN_SOURCE_ID,
+        exaggeration: terrainExaggeration,
+      }
+    } : {})
+
   };
 
   return style;
