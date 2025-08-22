@@ -16,8 +16,11 @@ Basemaps for <a href="https://maplibre.org/maplibre-gl-js/docs/">Maplibre GL JS<
 | ![](./public/screenshots/eu-avenue.jpg) | ![](./public/screenshots/eu-avenue-pop.jpg) | ![](./public/screenshots/eu-avenue-night.jpg) |
 | ![](./public/screenshots/eu-avenue-bright.jpg) | ![](./public/screenshots/eu-avenue-saturated.jpg)| ![](./public/screenshots/eu-avenue-warm.jpg) |
 | ![](./public/screenshots/eu-avenue-vintage.jpg) | ![](./public/screenshots/eu-avenue-bnw.jpg) | ![](./public/screenshots/eu-avenue-blueprint.jpg) |
+| ![](./public/screenshots/terrain-zermatt.jpg) | ![](./public/screenshots/terrain-new-zealand.jpg) | ![](./public/screenshots/terrain-japan.jpg) |
 
-## Getting started
+![](./public/screenshots/terrain-corsica.jpg)
+
+## Getting started 👷
 ### Install
 On an existing ES project:
 ```bash
@@ -67,6 +70,7 @@ const map = new maplibregl.Map({
 ```
 
 If using a traditional `tile.json` and `z/x/y` tiles instead of http-range-requesting a `pmtiles` file, then replace the option `pmtiles` by `tilejson`, as in the example below:
+
 ```ts
 const style = getStyle(
 // One of the main syle:
@@ -95,6 +99,81 @@ The only addition from **Basemapkit** is the capability to detect the end user's
 Here is the list of supported languages:
 ```ts
 "ar" | "cs" | "bg" | "da" | "de" | "el" | "en" | "es" | "et" | "fa" | "fi" | "fr" | "ga" | "he" | "hi" | "hr" | "hu" | "id" | "it" | "ja" | "ko" | "lt" | "lv" | "ne" | "nl" | "no" | "mr" | "mt" | "pl" | "pt" | "ro" | "ru" | "sk" | "sl" | "sv" | "tr" | "uk" | "ur" | "vi" | "zh-Hans" | "zh-Hant"
+```
+
+## Terrain 🏔️
+Basemapkit can feature hillshading and/or terrain bumps when a terrain tileset is provided. The terrain tiles can be encoded as `"mapbox"` (default) or `"terrarium"`, in either PNG or WebP format. Then, the terrain tileset can be packed as *pmtiles* (``options.terrain.pmtiles`) or left as individual tiles, using a *tiles.json* as entry point (`options.terrain.tilejson`).  
+
+| |  |  | |  |
+| :----------------: | :------: | :----: | :------: | :----: |
+| ![](./public/screenshots/terrain-bask-country.jpg) | ![](./public/screenshots/terrain-zermatt.jpg) | ![](./public/screenshots/terrain-new-zealand.jpg) | ![](./public/screenshots/terrain-japan.jpg) | ![](./public/screenshots/terrain-grand-canyon.jpg) |
+
+![](./public/screenshots/terrain-corsica.jpg)
+
+Here is how to add hillshading but keep the terrain flat. Those settings are actually the default when the terrain tiles are provided.
+
+```ts
+const style = getStyle(
+"avenue", 
+{
+  pmtiles: "",
+  sprite: "...",
+  glyphs: "...";
+  lang: "...",
+
+  /**
+   * The terrain options:
+   */
+  terrain: {
+    /**
+     * The public URL of a pmtiles files for raster terrain, encoded on RGB channels of either PNG or WebP. To use if sourcing tiles directly with
+     * range-request using the `pmtiles`'s protocol. Alternatively, the option `tileJson` can be used and will take precedence.
+     */
+    pmtiles: "https://my-s3-bucket.com/terrain.pmtiles";
+
+    /**
+     * Enable or disable the hillshading. Enabled by default if one of the source options `terrain.pmtiles` or `terrain.tilejson` is provided.
+     * It cannot be enabled if none of the source option is provided.
+     */
+    hillshading: true,
+
+    /**
+     * The terrain exaggeration is disabled by default, making the terrain flat even if one of the source options `terrain.pmtiles` or `terrain.tilejson` is provided.
+     * A value of `1` produces at-scale realistic terrain elevation.
+     * It cannot be enabled if none of the source option is provided.
+     */
+    exaggeration: 0,
+
+    /**
+     * Encoding of the terrain raster data. Can be "mapbox" or "terrarium". Default: "mapbox"
+     */
+    encoding: "mapbox",
+  }
+});
+```
+
+Alternatively, if the terrain tiles are refered to with a `tiles.json`:
+
+```ts
+const style = getStyle(
+"avenue", 
+{
+  pmtiles: "",
+  sprite: "...",
+  glyphs: "...";
+  lang: "...",
+
+  /**
+   * The terrain options:
+   */
+  terrain: {
+    /**
+     * The public URL to a tile JSON file for raster terrain tiles, encoded on RGB channels of either PNG or WebP. To use if classic z/x/y MVT tiles are served through
+     * Maplibre's Martin or the pmtiles CLI. Will take precedence on the option `pmtiles` if both are provided.
+     */
+    tilejson: "https://example.com/terrain-tile.json";
+  }
+});
 ```
 
 ## POIs and labels
@@ -172,6 +251,7 @@ buildStyle({
     pmtiles: "...",
     sprite: "...",
     glyphs: "...",
+    terrain: {...},
     hidePOIs: false,
     hideLabels: false,
   

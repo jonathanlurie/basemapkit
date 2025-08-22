@@ -1,6 +1,6 @@
 import { get_country_name, get_multiline_name } from "@protomaps/basemaps";
 import Color from "color";
-import type { StyleSpecification, LayerSpecification, SymbolLayerSpecification } from "maplibre-gl";
+import type { StyleSpecification, LayerSpecification, SymbolLayerSpecification, RasterDEMSourceSpecification } from "maplibre-gl";
 import { applyBrightnessRGB, applyContrastRGB, applyMultiplicationRGB, findColor, type RGBArray } from "./colorchange";
 import avenueLayersRaw from "./assets/avenue-layers-raw.txt?raw";
 import { getDefaultLanguage, isLanguageSupported } from "./language";
@@ -263,10 +263,10 @@ export type GetStyleOptions = {
   hideLabels?: boolean;
 
   /**
-   * Adding terrain to the style
+   * Adding terrain to the style. This includes options for both hillshading and bumpy terrain
    */
   terrain?: {
-     /**
+    /**
      * The public URL of a pmtiles files for raster terrain, encoded on RGB channels of either PNG or WebP. To use if sourcing tiles directly with
      * range-request using the `pmtiles`'s protocol. Alternatively, the option `tileJson` can be used and will take precedence.
      */
@@ -277,6 +277,11 @@ export type GetStyleOptions = {
      * Maplibre's Martin or the pmtiles CLI. Will take precedence on the option `pmtiles` if both are provided.
      */
     tilejson?: string;
+
+    /**
+     * Encoding of the terrain raster data. Default: "mapbox"
+     */
+    encoding?: "mapbox" | "terrarium",
 
     /**
      * Enable or disable the hillshading. Enabled by default if one of the source options `terrain.pmtiles` or `terrain.tilejson` is provided.
@@ -400,6 +405,7 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
 
   let terrainSourceUrl: string = "";
   let hillshading = false;
+  let terrainEncoding = "";
   let terrainExaggeration = 0;
   if (options.terrain) {
     if (typeof options.terrain.tilejson === "string") {
@@ -412,11 +418,19 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
       hillshading = options.terrain.hillshading ?? true;
       terrainExaggeration = options.terrain.exaggeration ?? 0;
     }
+
+    terrainEncoding = options.terrain.encoding ?? "mapbox";
   }
 
   let layers = JSON.parse(translatedLayersStr) as unknown as LayerSpecification[];
   const hidePOIs = options.hidePOIs ?? false;
 
+  // Remove hillshader layer if unnecessary
+  if (!hillshading) {
+    layers = layers.filter((l) => l.id !== "hillshader");
+  }
+
+  // Removing the POIs layer
   if (hidePOIs) {
     layers = layers.filter((l) => l.id !== "pois");
   }
@@ -576,8 +590,9 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
       ...((terrainSourceUrl && (terrainExaggeration || hillshading)) ? {
         [BASEMAPKIT_TERRAIN_SOURCE_ID]: {
           url: terrainSourceUrl,
-          type: "raster-dem"
-        }
+          type: "raster-dem",
+          encoding: terrainEncoding,
+        } as RasterDEMSourceSpecification,
       } : {})
 
     },

@@ -307,7 +307,9 @@
         0, 0.1,
         4, 0.2,
         7, 0.3,
-        10, 0.4
+        10, 0.4,
+        15, 0.4,
+        17, 0.2
       ],
       "hillshade-shadow-color": "#123161",
       "hillshade-highlight-color": "#fff0b3",
