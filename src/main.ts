@@ -11,6 +11,7 @@ type CustomStyle = {
   hidePOIs: boolean;
   hideLabels: boolean;
   colorEdit: ColorEdit;
+  hillshading: boolean;
 };
 
 const defaultCustomStyle = `{
@@ -37,7 +38,8 @@ const defaultCustomStyle = `{
       "#ff0000",
       0
     ]
-  }
+  },
+  "hillshading": true
 }
 `;
 
@@ -104,7 +106,8 @@ function removeUrlStyle() {
 
   const lang = "en";
   const pmtiles = "https://fsn1.your-objectstorage.com/public-map-data/pmtiles/planet.pmtiles";
-  const sprite = "https://raw.githubusercontent.com/jonathanlurie/phosphor-mlgl-sprite/refs/heads/main/sprite/phosphor-diecut";
+  const sprite =
+    "https://raw.githubusercontent.com/jonathanlurie/phosphor-mlgl-sprite/refs/heads/main/sprite/phosphor-diecut";
   const glyphs = "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf";
   const pmtilesTerrain = "https://fsn1.your-objectstorage.com/public-map-data/pmtiles/terrain-mapterhorn.pmtiles";
   const terrainTileEncoding = "terrarium";
@@ -119,7 +122,6 @@ function removeUrlStyle() {
       glyphs,
       lang,
 
-      // Mapterhorn
       terrain: {
         pmtiles: pmtilesTerrain,
         encoding: terrainTileEncoding,
@@ -129,7 +131,7 @@ function removeUrlStyle() {
     zoom: 3,
   });
 
-  // map.showTileBoundaries = true;
+  map.showTileBoundaries = true;
 
   // Update the style based on the dropdown
   styleDD.addEventListener("change", (e: Event) => {
@@ -146,7 +148,7 @@ function removeUrlStyle() {
           terrain: {
             pmtiles: pmtilesTerrain,
             encoding: terrainTileEncoding,
-          }
+          },
         }),
         { diff: false },
       );
@@ -165,7 +167,7 @@ function removeUrlStyle() {
         terrain: {
           pmtiles: pmtilesTerrain,
           encoding: terrainTileEncoding,
-        }
+        },
       }),
       { diff: false },
     );
@@ -183,12 +185,21 @@ function removeUrlStyle() {
         pmtiles,
         sprite,
         glyphs,
+        ...(styleFromUrl.hillshading
+          ? {
+              terrain: {
+                pmtiles: pmtilesTerrain,
+                encoding: terrainTileEncoding,
+                hillshading: true,
+              },
+            }
+          : {}),
       });
 
       customStyle = styleFromUrl;
       codeEditor.value = JSON.stringify(styleFromUrl, null, 2);
       map.setStyle(style, { diff: false });
-      updateUrlStyle(customStyle);
+      // updateUrlStyle(customStyle);
       styleDD.value = "custom";
       styleEditor.classList.remove("hidden");
     } catch (e) {
@@ -215,11 +226,21 @@ function removeUrlStyle() {
     removeUrlStyle();
     codeEditor.value = defaultCustomStyle;
     customStyle = JSON.parse(defaultCustomStyle) as CustomStyle;
+
     const style = buildStyle({
       ...customStyle,
       pmtiles,
       sprite,
       glyphs,
+      ...(customStyle.hillshading
+        ? {
+            terrain: {
+              pmtiles: pmtilesTerrain,
+              encoding: terrainTileEncoding,
+              hillshading: true,
+            },
+          }
+        : {}),
     });
 
     map.setStyle(style, { diff: false });
@@ -231,14 +252,24 @@ function removeUrlStyle() {
       return;
     }
 
+    updateUrlStyle(customStyle);
+
     const style = buildStyle({
       ...customStyle,
       pmtiles,
       sprite,
       glyphs,
+      ...(customStyle.hillshading
+        ? {
+            terrain: {
+              pmtiles: pmtilesTerrain,
+              encoding: terrainTileEncoding,
+              hillshading: true,
+            },
+          }
+        : {}),
     });
 
     map.setStyle(style, { diff: false });
-    updateUrlStyle(customStyle);
   });
 })();

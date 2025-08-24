@@ -1,6 +1,11 @@
 import { get_country_name, get_multiline_name } from "@protomaps/basemaps";
 import Color from "color";
-import type { StyleSpecification, LayerSpecification, SymbolLayerSpecification, RasterDEMSourceSpecification } from "maplibre-gl";
+import type {
+  StyleSpecification,
+  LayerSpecification,
+  SymbolLayerSpecification,
+  RasterDEMSourceSpecification,
+} from "maplibre-gl";
 import { applyBrightnessRGB, applyContrastRGB, applyMultiplicationRGB, findColor, type RGBArray } from "./colorchange";
 import avenueLayersRaw from "./assets/avenue-layers-raw.txt?raw";
 import { getDefaultLanguage, isLanguageSupported } from "./language";
@@ -281,27 +286,27 @@ export type GetStyleOptions = {
     /**
      * Encoding of the terrain raster data. Default: "mapbox"
      */
-    encoding?: "mapbox" | "terrarium",
+    encoding?: "mapbox" | "terrarium";
 
     /**
      * Enable or disable the hillshading. Enabled by default if one of the source options `terrain.pmtiles` or `terrain.tilejson` is provided.
      * It cannot be enabled if none of the source option is provided.
      */
-    hillshading?: boolean,
+    hillshading?: boolean;
 
     /**
      * The terrain exaggeration is disabled by default, making the terrain flat even if one of the source options `terrain.pmtiles` or `terrain.tilejson` is provided.
      * A value of `1` produces at-scale realistic terrain elevation.
      * It cannot be enabled if none of the source option is provided.
      */
-    exaggeration?: number,
-  }
+    exaggeration?: number;
+  };
 };
 
 /**
  * Identifier of the terrain source within the Basemapkit source definition
  */
-export const BASEMAPKIT_BASEMAP_SOURCE_ID = "__bmk_bm_src"
+export const BASEMAPKIT_BASEMAP_SOURCE_ID = "__bmk_bm_src";
 
 /**
  * Identifier of the terrain source within the Basemapkit style definition.
@@ -389,8 +394,8 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
   const baseStyleLayers = baseStyles[options.baseStyleName as keyof typeof baseStyles];
 
   const translatedLayersStr = baseStyleLayers
-    .replaceAll('<BMK_BM_SRC>', BASEMAPKIT_BASEMAP_SOURCE_ID)
-    .replaceAll('<BMK_TR_SRC>', BASEMAPKIT_TERRAIN_SOURCE_ID)
+    .replaceAll("<BMK_BM_SRC>", BASEMAPKIT_BASEMAP_SOURCE_ID)
+    .replaceAll("<BMK_TR_SRC>", BASEMAPKIT_TERRAIN_SOURCE_ID)
     .replaceAll('"<LANG>"', otherTranslatedTextField)
     .replaceAll('"<LANG_COUNTRY>"', countryTextField);
 
@@ -488,7 +493,6 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
 
   if (shouldApplyColorTransform) {
     findColor(layers, (color: string) => {
-
       // Using the Color lib for saturation and hue rotation
       let layerColor = Color(color);
 
@@ -587,26 +591,28 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
 
       // Add the terrain source if terrain source is provided and the hillshading
       // or terrain is enabled.
-      ...((terrainSourceUrl && (terrainExaggeration || hillshading)) ? {
-        [BASEMAPKIT_TERRAIN_SOURCE_ID]: {
-          url: terrainSourceUrl,
-          type: "raster-dem",
-          encoding: terrainEncoding,
-        } as RasterDEMSourceSpecification,
-      } : {})
-
+      ...(terrainSourceUrl && (terrainExaggeration || hillshading)
+        ? {
+            [BASEMAPKIT_TERRAIN_SOURCE_ID]: {
+              url: terrainSourceUrl,
+              type: "raster-dem",
+              encoding: terrainEncoding,
+            } as RasterDEMSourceSpecification,
+          }
+        : {}),
     },
     layers: layers,
     projection: { type: ["interpolate", ["linear"], ["zoom"], 7, "vertical-perspective", 8, "mercator"] },
 
     // Add the terrain if the terrain source is provided and the exaggeration is superior to 0
-    ...((terrainSourceUrl && terrainExaggeration) ? {
-      terrain: {
-        source: BASEMAPKIT_TERRAIN_SOURCE_ID,
-        exaggeration: terrainExaggeration,
-      }
-    } : {})
-
+    ...(terrainSourceUrl && terrainExaggeration
+      ? {
+          terrain: {
+            source: BASEMAPKIT_TERRAIN_SOURCE_ID,
+            exaggeration: terrainExaggeration,
+          },
+        }
+      : {}),
   };
 
   return style;

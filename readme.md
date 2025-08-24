@@ -91,7 +91,7 @@ const style = getStyle(
 ```
 This can get particularly handy when using the [Protomaps CLI](https://docs.protomaps.com/pmtiles/cli) or [Martin](https://martin.maplibre.org/) to serve `z/x/y` vector tiles.
 
-## Language
+## Language 📣
 Basemakit styles are compatible with Protomaps languages properties and uses [`@protomaps/basemaps`](https://docs.protomaps.com/basemaps/flavors) under the hood. 
 
 The only addition from **Basemapkit** is the capability to detect the end user's platform language, so if the `lang` option is omitted, it will automatically use the language set by the user at the browser or OS level.
@@ -176,7 +176,7 @@ const style = getStyle(
 });
 ```
 
-## POIs and labels
+## POIs and labels 📍
 There are options to hide the points of interests and labels. By default, both are shown, meaning the options goes like this:
 ```ts
 getStyle(
@@ -343,7 +343,6 @@ And here is the result:
 
 You can live play with these on [basemapkit.jnth.io](https://s.jnth.io/s/basemapkit) and selecting the style `🖌️ custom 🎨`.  
 And from this "color editor" were created the built-in styles available below...
-
 
 
 ## Style presets available
