@@ -131,7 +131,7 @@ function removeUrlStyle() {
     zoom: 3,
   });
 
-  map.showTileBoundaries = true;
+  // map.showTileBoundaries = true;
 
   // Update the style based on the dropdown
   styleDD.addEventListener("change", (e: Event) => {
