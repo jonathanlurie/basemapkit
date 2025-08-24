@@ -3,12 +3,12 @@
     "id": "background",
     "type": "background",
     "layout": {"visibility": "visible"},
-    "paint": {"background-color": "#cccccc"}
+    "paint": {"background-color": "rgb(135, 199, 236)"}
   },
   {
     "id": "earth",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "earth",
     "filter": ["==", "$type", "Polygon"],
     "layout": {"visibility": "visible"},
@@ -17,7 +17,7 @@
   {
     "id": "landcover",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landcover",
     "filter": [
       "all",
@@ -67,7 +67,7 @@
   {
     "id": "landuse_residential",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "filter": ["all", ["==", "kind", "residential"]],
     "layout": {"visibility": "visible"},
@@ -79,7 +79,7 @@
   {
     "id": "landuse_urban_green",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "filter": ["in", "kind", "allotments", "village_green", "playground"],
     "layout": {"visibility": "visible"},
@@ -88,7 +88,7 @@
   {
     "id": "landuse-sand",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "filter": ["all", ["==", "kind", "sand"]],
     "layout": {"visibility": "visible"},
@@ -100,7 +100,7 @@
   {
     "id": "landuse_bare_rock",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "filter": ["all", ["in", "kind", "bare_rock"]],
     "layout": {"visibility": "visible"},
@@ -109,7 +109,7 @@
   {
     "id": "landuse_park",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "filter": [
       "all",
@@ -160,7 +160,7 @@
   {
     "id": "landuse_farmland",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "filter": ["all", ["==", "kind", "farmland"]],
     "layout": {"visibility": "visible"},
@@ -169,7 +169,7 @@
   {
     "id": "landuse_pitch",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "filter": ["all", ["==", "kind", "pitch"]],
     "layout": {"visibility": "visible"},
@@ -178,7 +178,7 @@
   {
     "id": "landuse_military",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "filter": ["all", ["==", "kind", "military"]],
     "layout": {"visibility": "visible"},
@@ -187,7 +187,7 @@
   {
     "id": "landuse_wood-forest",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "filter": ["all", ["in", "kind", "forest", "wood"]],
     "layout": {"visibility": "visible"},
@@ -199,7 +199,7 @@
   {
     "id": "landuse_hospital",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "filter": ["==", "kind", "hospital"],
     "layout": {"visibility": "visible"},
@@ -208,7 +208,7 @@
   {
     "id": "landuse_industrial",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "filter": ["==", "kind", "industrial"],
     "layout": {"visibility": "visible"},
@@ -217,7 +217,7 @@
   {
     "id": "landuse_school",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "filter": ["in", "kind", "school", "university", "college"],
     "layout": {"visibility": "visible"},
@@ -226,7 +226,7 @@
   {
     "id": "landuse_zoo",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "filter": ["in", "kind", "zoo"],
     "layout": {"visibility": "visible"},
@@ -235,7 +235,7 @@
   {
     "id": "landuse_aerodrome",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "filter": ["in", "kind", "aerodrome"],
     "layout": {"visibility": "visible"},
@@ -244,7 +244,7 @@
   {
     "id": "roads_runway",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": ["==", "kind_detail", "runway"],
     "layout": {"visibility": "visible"},
@@ -266,7 +266,7 @@
   {
     "id": "roads_taxiway",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "minzoom": 13,
     "filter": ["==", "kind_detail", "taxiway"],
@@ -289,24 +289,61 @@
   {
     "id": "landuse_runway",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "filter": ["any", ["in", "kind", "runway", "taxiway"]],
     "paint": {"fill-color": "#e9e9ed"}
   },
   {
+    "id": "hillshader",
+    "type": "hillshade",
+    "source": "<BMK_TR_SRC>",
+    "paint": {
+      "hillshade-illumination-anchor": "viewport",
+      "hillshade-exaggeration": [
+        "interpolate",
+        ["exponential", 1.6],
+        ["zoom"],
+        0, 0.1,
+        4, 0.2,
+        7, 0.3,
+        10, 0.4,
+        15, 0.4,
+        17, 0.2
+      ],
+      "hillshade-shadow-color": "#123161",
+      "hillshade-highlight-color": "#fff0b3",
+      "hillshade-accent-color": "rgba(0, 184, 255, 0.65)",
+      "hillshade-illumination-direction": [
+        "literal",
+        310
+      ]
+    },
+    "layout": {"visibility": "visible"}
+  },
+  {
     "id": "water",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "water",
     "filter": ["==", "$type", "Polygon"],
     "layout": {"visibility": "visible"},
-    "paint": {"fill-color": "rgb(135, 199, 236)"}
+    "paint": {
+      "fill-color": "rgb(135, 199, 236)",
+      "fill-opacity": [
+        "interpolate",
+        ["exponential", 1.6],
+        ["zoom"],
+        0, 0.4,
+        5, 0.75,
+        8, 0.95
+      ]
+    }
   },
   {
     "id": "water_stream",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "water",
     "minzoom": 14,
     "filter": ["in", "kind", "stream"],
@@ -316,7 +353,7 @@
   {
     "id": "landuse_beach",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "filter": ["in", "kind", "beach"],
     "layout": {"visibility": "visible"},
@@ -325,7 +362,7 @@
   {
     "id": "water_river",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "water",
     "minzoom": 9,
     "filter": ["in", "kind", "river"],
@@ -348,7 +385,7 @@
   {
     "id": "landuse_wetland",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "filter": ["all", ["==", "kind", "wetland"]],
     "layout": {"visibility": "visible"},
@@ -357,7 +394,7 @@
   {
     "id": "landuse_nature_reserve_bg",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "minzoom": 8,
     "filter": ["all", ["==", "kind", "nature_reserve"]],
@@ -381,7 +418,7 @@
   {
     "id": "landuse_nature_reserve",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "minzoom": 8,
     "filter": ["all", ["==", "kind", "nature_reserve"]],
@@ -405,7 +442,7 @@
   {
     "id": "ferry",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": ["all", ["==", "kind", "ferry"]],
     "layout": {"visibility": "visible"},
@@ -429,7 +466,7 @@
   {
     "id": "landuse_pedestrian",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "filter": ["in", "kind", "pedestrian", "dam"],
     "layout": {"visibility": "visible"},
@@ -438,7 +475,7 @@
   {
     "id": "landuse_pier",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "landuse",
     "filter": ["==", "kind", "pier"],
     "paint": {"fill-color": "#e0e0e0"}
@@ -446,7 +483,7 @@
   {
     "id": "roads_tunnels_other_casing",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": ["all", ["has", "is_tunnel"], ["in", "kind", "other", "path"]],
     "paint": {
@@ -465,7 +502,7 @@
   {
     "id": "roads_tunnels_minor_casing",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": ["all", ["has", "is_tunnel"], ["==", "kind", "minor_road"]],
     "paint": {
@@ -498,7 +535,7 @@
   {
     "id": "roads_tunnels_link_casing",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": ["all", ["has", "is_tunnel"], ["has", "is_link"]],
     "paint": {
@@ -529,7 +566,7 @@
   {
     "id": "roads_tunnels_major_casing",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": [
       "all",
@@ -566,7 +603,7 @@
   {
     "id": "roads_tunnels_highway_casing",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": [
       "all",
@@ -605,7 +642,7 @@
   {
     "id": "roads_tunnels_other",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": ["all", ["has", "is_tunnel"], ["in", "kind", "other", "path"]],
     "paint": {
@@ -625,7 +662,7 @@
   {
     "id": "roads_tunnels_minor",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": ["all", ["has", "is_tunnel"], ["==", "kind", "minor_road"]],
     "paint": {
@@ -648,7 +685,7 @@
   {
     "id": "roads_tunnels_link",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": ["all", ["has", "is_tunnel"], ["has", "is_link"]],
     "paint": {
@@ -669,7 +706,7 @@
   {
     "id": "roads_tunnels_major",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": ["all", ["has", "is_tunnel"], ["==", "kind", "major_road"]],
     "paint": {
@@ -692,7 +729,7 @@
   {
     "id": "roads_tunnels_highway",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": [
       "all",
@@ -722,7 +759,7 @@
   {
     "id": "buildings",
     "type": "fill",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "buildings",
     "filter": ["in", "kind", "building", "building_part"],
     "paint": {"fill-opacity": 0.3, "fill-color": "#c2beba"}
@@ -730,7 +767,7 @@
   {
     "id": "roads_pier",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": ["==", "kind_detail", "pier"],
     "paint": {
@@ -751,7 +788,7 @@
   {
     "id": "roads_minor_service_casing",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "minzoom": 13,
     "filter": [
@@ -787,7 +824,7 @@
   {
     "id": "roads_minor_casing",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": [
       "all",
@@ -828,7 +865,7 @@
   {
     "id": "roads_link_casing",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "minzoom": 13,
     "filter": ["has", "is_link"],
@@ -859,7 +896,7 @@
   {
     "id": "roads_major_casing_late",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "minzoom": 12,
     "filter": [
@@ -900,7 +937,7 @@
   {
     "id": "roads_highway_casing_late",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "minzoom": 12,
     "filter": [
@@ -940,7 +977,7 @@
   {
     "id": "roads_other-bg",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "minzoom": 13,
     "filter": [
@@ -967,7 +1004,7 @@
   {
     "id": "roads_other",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "minzoom": 13,
     "filter": [
@@ -995,7 +1032,7 @@
   {
     "id": "roads_link",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": ["has", "is_link"],
     "paint": {
@@ -1016,7 +1053,7 @@
   {
     "id": "roads_minor_service",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": [
       "all",
@@ -1041,7 +1078,7 @@
   {
     "id": "roads_minor",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": [
       "all",
@@ -1071,7 +1108,7 @@
   {
     "id": "roads_major_casing_early",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "maxzoom": 12,
     "filter": [
@@ -1108,7 +1145,7 @@
   {
     "id": "roads_major",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": [
       "all",
@@ -1137,7 +1174,7 @@
   {
     "id": "roads_highway_casing_early",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "maxzoom": 12,
     "filter": [
@@ -1181,7 +1218,7 @@
   {
     "id": "roads_highway",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": [
       "all",
@@ -1213,7 +1250,7 @@
   {
     "id": "roads_rail",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": ["==", "kind", "rail"],
     "layout": {"visibility": "visible"},
@@ -1237,7 +1274,7 @@
   {
     "id": "boundaries_country_casing",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "boundaries",
     "minzoom": 3,
     "filter": ["<=", "kind_detail", 2],
@@ -1261,7 +1298,7 @@
   {
     "id": "boundaries_country",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "boundaries",
     "filter": ["<=", "kind_detail", 2],
     "layout": {"visibility": "visible"},
@@ -1291,7 +1328,7 @@
   {
     "id": "boundaries",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "boundaries",
     "filter": [">", "kind_detail", 2],
     "layout": {"visibility": "visible"},
@@ -1310,7 +1347,7 @@
   {
     "id": "roads_bridges_other_casing",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "minzoom": 12,
     "filter": ["all", ["has", "is_bridge"], ["in", "kind", "other", "path"]],
@@ -1330,7 +1367,7 @@
   {
     "id": "roads_bridges_link_casing",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "minzoom": 12,
     "filter": ["all", ["has", "is_bridge"], ["has", "is_link"]],
@@ -1361,7 +1398,7 @@
   {
     "id": "roads_bridges_minor_casing",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "minzoom": 12,
     "filter": ["all", ["has", "is_bridge"], ["==", "kind", "minor_road"]],
@@ -1394,7 +1431,7 @@
   {
     "id": "roads_bridges_major_casing",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "minzoom": 12,
     "filter": ["all", ["has", "is_bridge"], ["==", "kind", "major_road"]],
@@ -1425,7 +1462,7 @@
   {
     "id": "roads_bridges_other",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "minzoom": 12,
     "filter": ["all", ["has", "is_bridge"], ["in", "kind", "other", "path"]],
@@ -1447,7 +1484,7 @@
   {
     "id": "roads_bridges_minor",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "minzoom": 12,
     "filter": ["all", ["has", "is_bridge"], ["==", "kind", "minor_road"]],
@@ -1471,7 +1508,7 @@
   {
     "id": "roads_bridges_link",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "minzoom": 12,
     "filter": ["all", ["has", "is_bridge"], ["has", "is_link"]],
@@ -1493,7 +1530,7 @@
   {
     "id": "roads_bridges_major",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "minzoom": 12,
     "filter": ["all", ["has", "is_bridge"], ["==", "kind", "major_road"]],
@@ -1517,7 +1554,7 @@
   {
     "id": "cycleway_bg",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": ["any", ["==", "kind_detail", "cycleway"]],
     "layout": {"visibility": "visible"},
@@ -1540,7 +1577,7 @@
   {
     "id": "cycleway",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": ["any", ["==", "kind_detail", "cycleway"]],
     "layout": {"visibility": "visible"},
@@ -1563,7 +1600,7 @@
   {
     "id": "roads_bridges_highway_casing",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "minzoom": 12,
     "filter": [
@@ -1601,7 +1638,7 @@
   {
     "id": "roads_bridges_highway",
     "type": "line",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "filter": [
       "all",
@@ -1631,7 +1668,7 @@
   {
     "id": "address_label",
     "type": "symbol",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "buildings",
     "minzoom": 18,
     "filter": ["==", "kind", "address"],
@@ -1650,7 +1687,7 @@
   {
     "id": "water_waterway_label",
     "type": "symbol",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "water",
     "minzoom": 13,
     "filter": ["in", "kind", "river", "stream"],
@@ -1666,7 +1703,7 @@
   {
     "id": "roads_labels_minor",
     "type": "symbol",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "minzoom": 15,
     "filter": ["in", "kind", "minor_road", "other", "path"],
@@ -1687,7 +1724,7 @@
   {
     "id": "water_label_ocean",
     "type": "symbol",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "water",
     "filter": ["in", "kind", "sea", "ocean", "bay", "strait", "fjord"],
     "layout": {
@@ -1707,7 +1744,7 @@
   {
     "id": "earth_label_islands",
     "type": "symbol",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "earth",
     "filter": ["in", "kind", "island"],
     "layout": {
@@ -1726,7 +1763,7 @@
   {
     "id": "water_label_lakes",
     "type": "symbol",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "water",
     "filter": ["in", "kind", "lake", "water"],
     "layout": {
@@ -1751,7 +1788,7 @@
   {
     "id": "roads_labels_major",
     "type": "symbol",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "roads",
     "minzoom": 11,
     "filter": ["in", "kind", "highway", "major_road"],
@@ -1772,7 +1809,7 @@
   {
     "id": "pois",
     "type": "symbol",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "pois",
     "filter": [
       "all",
@@ -1881,7 +1918,7 @@
   {
     "id": "places_subplace",
     "type": "symbol",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "places",
     "filter": ["==", "kind", "neighbourhood"],
     "layout": {
@@ -1930,7 +1967,7 @@
   {
     "id": "places_region",
     "type": "symbol",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "places",
     "filter": ["==", "kind", "region"],
     "layout": {
@@ -1951,7 +1988,7 @@
   {
     "id": "places_locality",
     "type": "symbol",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "places",
     "filter": ["==", "kind", "locality"],
     "layout": {
@@ -2075,7 +2112,7 @@
   {
     "id": "places_country",
     "type": "symbol",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "places",
     "filter": ["==", "kind", "country"],
     "layout": {
@@ -2145,7 +2182,7 @@
   {
     "id": "building_extrusion",
     "type": "fill-extrusion",
-    "source": "__protomaps_source",
+    "source": "<BMK_BM_SRC>",
     "source-layer": "buildings",
     "filter": [
       "any",
@@ -2158,4 +2195,5 @@
       "fill-extrusion-height": {"type": "identity", "property": "height"}
     }
   }
+
 ]

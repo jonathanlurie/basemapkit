@@ -1,6 +1,11 @@
 import { get_country_name, get_multiline_name } from "@protomaps/basemaps";
 import Color from "color";
-import type { StyleSpecification, LayerSpecification, SymbolLayerSpecification } from "maplibre-gl";
+import type {
+  StyleSpecification,
+  LayerSpecification,
+  SymbolLayerSpecification,
+  RasterDEMSourceSpecification,
+} from "maplibre-gl";
 import { applyBrightnessRGB, applyContrastRGB, applyMultiplicationRGB, findColor, type RGBArray } from "./colorchange";
 import avenueLayersRaw from "./assets/avenue-layers-raw.txt?raw";
 import { getDefaultLanguage, isLanguageSupported } from "./language";
@@ -261,7 +266,52 @@ export type GetStyleOptions = {
    * `glyphs` option unnecessary.
    */
   hideLabels?: boolean;
+
+  /**
+   * Adding terrain to the style. This includes options for both hillshading and bumpy terrain
+   */
+  terrain?: {
+    /**
+     * The public URL of a pmtiles files for raster terrain, encoded on RGB channels of either PNG or WebP. To use if sourcing tiles directly with
+     * range-request using the `pmtiles`'s protocol. Alternatively, the option `tileJson` can be used and will take precedence.
+     */
+    pmtiles?: string;
+
+    /**
+     * The public URL to a tile JSON file for raster terrain tiles, encoded on RGB channels of either PNG or WebP. To use if classic z/x/y MVT tiles are served through
+     * Maplibre's Martin or the pmtiles CLI. Will take precedence on the option `pmtiles` if both are provided.
+     */
+    tilejson?: string;
+
+    /**
+     * Encoding of the terrain raster data. Default: "mapbox"
+     */
+    encoding?: "mapbox" | "terrarium";
+
+    /**
+     * Enable or disable the hillshading. Enabled by default if one of the source options `terrain.pmtiles` or `terrain.tilejson` is provided.
+     * It cannot be enabled if none of the source option is provided.
+     */
+    hillshading?: boolean;
+
+    /**
+     * The terrain exaggeration is disabled by default, making the terrain flat even if one of the source options `terrain.pmtiles` or `terrain.tilejson` is provided.
+     * A value of `1` produces at-scale realistic terrain elevation.
+     * It cannot be enabled if none of the source option is provided.
+     */
+    exaggeration?: number;
+  };
 };
+
+/**
+ * Identifier of the terrain source within the Basemapkit source definition
+ */
+export const BASEMAPKIT_BASEMAP_SOURCE_ID = "__bmk_bm_src";
+
+/**
+ * Identifier of the terrain source within the Basemapkit style definition.
+ */
+export const BASEMAPKIT_TERRAIN_SOURCE_ID = "__bmk_tr_src";
 
 /**
  * Options relative to building a style
@@ -344,6 +394,8 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
   const baseStyleLayers = baseStyles[options.baseStyleName as keyof typeof baseStyles];
 
   const translatedLayersStr = baseStyleLayers
+    .replaceAll("<BMK_BM_SRC>", BASEMAPKIT_BASEMAP_SOURCE_ID)
+    .replaceAll("<BMK_TR_SRC>", BASEMAPKIT_TERRAIN_SOURCE_ID)
     .replaceAll('"<LANG>"', otherTranslatedTextField)
     .replaceAll('"<LANG_COUNTRY>"', countryTextField);
 
@@ -356,9 +408,34 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
     throw new Error(`At least one option of "tilejson" or "pmtiles" must be provided as data source.`);
   }
 
+  let terrainSourceUrl: string = "";
+  let hillshading = false;
+  let terrainEncoding = "";
+  let terrainExaggeration = 0;
+  if (options.terrain) {
+    if (typeof options.terrain.tilejson === "string") {
+      terrainSourceUrl = options.terrain.tilejson;
+    } else if (typeof options.terrain.pmtiles === "string") {
+      terrainSourceUrl = `pmtiles://${options.terrain.pmtiles}`;
+    }
+
+    if (terrainSourceUrl) {
+      hillshading = options.terrain.hillshading ?? true;
+      terrainExaggeration = options.terrain.exaggeration ?? 0;
+    }
+
+    terrainEncoding = options.terrain.encoding ?? "mapbox";
+  }
+
   let layers = JSON.parse(translatedLayersStr) as unknown as LayerSpecification[];
   const hidePOIs = options.hidePOIs ?? false;
 
+  // Remove hillshader layer if unnecessary
+  if (!hillshading) {
+    layers = layers.filter((l) => l.id !== "hillshader");
+  }
+
+  // Removing the POIs layer
   if (hidePOIs) {
     layers = layers.filter((l) => l.id !== "pois");
   }
@@ -416,10 +493,6 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
 
   if (shouldApplyColorTransform) {
     findColor(layers, (color: string) => {
-      if (color === "#a6e085") {
-        console.log("#a6e085");
-      }
-
       // Using the Color lib for saturation and hue rotation
       let layerColor = Color(color);
 
@@ -510,13 +583,36 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
     ...(options.sprite && !hidePOIs ? { sprite: options.sprite } : {}),
     glyphs: options.glyphs,
     sources: {
-      __protomaps_source: {
+      [BASEMAPKIT_BASEMAP_SOURCE_ID]: {
         type: "vector",
         url: sourceUrl,
         attribution: "<a href='https://openstreetmap.org/copyright'>© OpenStreetMap Contributors</a>",
       },
+
+      // Add the terrain source if terrain source is provided and the hillshading
+      // or terrain is enabled.
+      ...(terrainSourceUrl && (terrainExaggeration || hillshading)
+        ? {
+            [BASEMAPKIT_TERRAIN_SOURCE_ID]: {
+              url: terrainSourceUrl,
+              type: "raster-dem",
+              encoding: terrainEncoding,
+            } as RasterDEMSourceSpecification,
+          }
+        : {}),
     },
     layers: layers,
+    projection: { type: ["interpolate", ["linear"], ["zoom"], 7, "vertical-perspective", 8, "mercator"] },
+
+    // Add the terrain if the terrain source is provided and the exaggeration is superior to 0
+    ...(terrainSourceUrl && terrainExaggeration
+      ? {
+          terrain: {
+            source: BASEMAPKIT_TERRAIN_SOURCE_ID,
+            exaggeration: terrainExaggeration,
+          },
+        }
+      : {}),
   };
 
   return style;
