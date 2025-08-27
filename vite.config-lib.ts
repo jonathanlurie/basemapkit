@@ -20,6 +20,7 @@ export default defineConfig({
         "@protomaps/basemaps",
         "maplibre-gl",
         "pmtiles",
+        "color",
       ],
       output: {
         // Provide global variables to use in the UMD build for externalized deps
