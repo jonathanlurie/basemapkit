@@ -112,21 +112,25 @@ function removeUrlStyle() {
   const pmtilesTerrain = "https://fsn1.your-objectstorage.com/public-map-data/pmtiles/terrain-mapterhorn.pmtiles";
   const terrainTileEncoding = "terrarium";
 
+  const style = getStyle("bureau", {
+    pmtiles,
+    sprite,
+    glyphs,
+    lang,
+    terrain: {
+      pmtiles: pmtilesTerrain,
+      encoding: terrainTileEncoding,
+    },
+  });
+
+  console.log(style);
+  
+
   const map = new maplibregl.Map({
     container: appDiv,
     maxPitch: 89,
     hash: true,
-    style: getStyle("avenue", {
-      pmtiles,
-      sprite,
-      glyphs,
-      lang,
-
-      terrain: {
-        pmtiles: pmtilesTerrain,
-        encoding: terrainTileEncoding,
-      },
-    }),
+    style,
     center: [0, 0],
     zoom: 3,
   });

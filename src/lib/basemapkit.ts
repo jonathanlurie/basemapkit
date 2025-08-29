@@ -8,10 +8,12 @@ import type {
 } from "maplibre-gl";
 import { applyBrightnessRGB, applyContrastRGB, applyMultiplicationRGB, findColor, type RGBArray } from "./colorchange";
 import avenueLayersRaw from "./assets/avenue-layers-raw.txt?raw";
+import bureauLayersRaw from "./assets/bureau-layers-raw.txt?raw";
 import { getDefaultLanguage, isLanguageSupported } from "./language";
 
 const baseStyles = {
   avenue: avenueLayersRaw,
+  bureau: bureauLayersRaw,
 } as const;
 
 const stylePresets = {
@@ -95,6 +97,189 @@ const stylePresets = {
       contrast: [0.2, 200],
     } as ColorEdit,
   },
+
+  "bureau-negative": {
+    baseStyle: "bureau",
+    colorEdit: {
+      negate: true,
+      hueRotation: 180,
+    } as ColorEdit,
+  },
+
+  "bureau-bnw": {
+    baseStyle: "bureau",
+    colorEdit: {
+      saturation: -1,
+    } as ColorEdit,
+  },
+
+  "bureau-purple": {
+    baseStyle: "bureau",
+    colorEdit: {
+      negate: false,
+      brightness: -0.2,
+      hueRotation: 40,
+      saturation: -0.4,
+    } as ColorEdit,
+  },
+
+  "bureau-bnw-negative": {
+    baseStyle: "bureau",
+    colorEdit: {
+      negate: true,
+      saturation: -1,
+    } as ColorEdit,
+  },
+
+  "bureau-bnw-dark": {
+    baseStyle: "bureau",
+    colorEdit: {
+      brightness: -0.6,
+      saturation: -1,
+    } as ColorEdit,
+  },
+
+  "bureau-bnw-bright": {
+    baseStyle: "bureau",
+    colorEdit: {
+      brightnessShift: 0.3,
+      saturation: -1,
+    } as ColorEdit,
+  },
+
+  "bureau-bnw-negative-bright": {
+    baseStyle: "bureau",
+    colorEdit: {
+      brightnessShift: 0.35,
+      exposure: 0.8,
+      saturation: -1,
+      negate: true,
+      contrast: [
+      0.5,
+      245
+    ],
+    } as ColorEdit,
+  },
+
+  "bureau-bnw-negative-dark": {
+    baseStyle: "bureau",
+    colorEdit: {
+      brightnessShift: -0.2,
+      brightness: -0.3,
+      saturation: -1,
+      negate: true,
+    } as ColorEdit,
+  },
+
+  "bureau-sand": {
+    baseStyle: "bureau",
+    colorEdit: {
+      brightnessShift: 0.2,
+      exposure: 0.2,
+      saturation: -1,
+      negate: false,
+        multiplyColor: [
+        "#ffeeab",
+        0.45
+      ],
+      mixColor: [
+        "#ffeeab",
+        0.1
+      ]
+    } as ColorEdit,
+  },
+
+  "bureau-sand-negative": {
+    baseStyle: "bureau",
+    colorEdit: {
+      brightnessShift: 0.2,
+      exposure: 0.2,
+      saturation: -1,
+      negate: true,
+        multiplyColor: [
+        "#ffeeab",
+        0.45
+      ],
+      mixColor: [
+        "#ffeeab",
+        0.1
+      ]
+    } as ColorEdit,
+  },
+
+  "bureau-ivory": {
+    baseStyle: "bureau",
+    colorEdit: {
+      brightnessShift: 0.2,
+      exposure: 0.2,
+      saturation: -1,
+      negate: false,
+        multiplyColor: [
+        "#f0e9d1",
+        0.45
+      ],
+      mixColor: [
+        "#f0e9d1",
+        0.1
+      ]
+    } as ColorEdit,
+  },
+
+  "bureau-ivory-negative": {
+    baseStyle: "bureau",
+    colorEdit: {
+      brightnessShift: 0.2,
+      exposure: 0.2,
+      saturation: -1,
+      negate: true,
+        multiplyColor: [
+        "#f0e9d1",
+        0.45
+      ],
+      mixColor: [
+        "#f0e9d1",
+        0.1
+      ]
+    } as ColorEdit,
+  },
+
+  "bureau-navy": {
+    baseStyle: "bureau",
+    colorEdit: {
+      brightnessShift: 0.2,
+      exposure: 0.2,
+      saturation: -1,
+      negate: false,
+        multiplyColor: [
+        "#002c99",
+        0.5
+      ],
+      mixColor: [
+        "#002c99",
+        0.2
+      ]
+    } as ColorEdit,
+  },
+
+  "bureau-navy-negative": {
+    baseStyle: "bureau",
+    colorEdit: {
+      brightnessShift: 0.2,
+      exposure: 0.2,
+      saturation: -1,
+      negate: true,
+        multiplyColor: [
+        "#002c99",
+        0.5
+      ],
+      mixColor: [
+        "#002c99",
+        0.2
+      ]
+    } as ColorEdit,
+  },
+
+
 } as const;
 
 /**
