@@ -3,7 +3,7 @@
     "id": "background",
     "type": "background",
     "layout": {"visibility": "visible"},
-    "paint": {"background-color": "rgba(106, 159, 193, 1)"}
+    "paint": {"background-color": "rgb(106, 159, 193)"}
   },
   {
     "id": "water",
@@ -66,7 +66,7 @@
     "source-layer": "landuse",
     "filter": ["all", ["==", "kind", "wetland"]],
     "layout": {"visibility": "visible"},
-    "paint": {"fill-color": "rgba(0, 0, 0, 0.09)"}
+    "paint": {"fill-opacity": 0.08, "fill-color": "#000000"}
   },
   {
     "id": "hillshader",
@@ -152,7 +152,11 @@
     "minzoom": 14,
     "filter": ["in", "kind", "stream"],
     "layout": {"visibility": "visible"},
-    "paint": {"line-width": 0.5, "line-color": "rgba(0, 0, 0, 0.35)"}
+    "paint": {
+      "line-width": 0.5,
+      "line-color": "#000000",
+      "line-opacity": 0.35
+    }
   },
   {
     "id": "roads_tunnels_other_casing",
@@ -627,7 +631,7 @@
         ["zoom"],
         ["literal", [2]],
         4,
-        ["literal", [2, 1]]
+        ["literal", [2, 2]]
       ],
       "line-color": "#000000",
       "line-opacity": 0.5

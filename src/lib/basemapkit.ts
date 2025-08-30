@@ -16,6 +16,11 @@ const baseStyles = {
   bureau: bureauLayersRaw,
 } as const;
 
+type PresetDefinition = {
+  baseStyle: string,
+  colorEdit: ColorEdit,
+}
+
 const stylePresets = {
   "avenue-pop": {
     baseStyle: "avenue",
@@ -30,7 +35,7 @@ const stylePresets = {
       multiplyColor: ["#ff0000", 0],
       mixColor: ["#ff0000", 0.02],
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "avenue-saturated": {
     baseStyle: "avenue",
@@ -38,7 +43,7 @@ const stylePresets = {
       exposure: -1,
       saturation: 0.1,
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "avenue-night": {
     baseStyle: "avenue",
@@ -48,7 +53,7 @@ const stylePresets = {
       multiplyColor: ["#171075", 0.6],
       contrast: [0.8, 160],
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "avenue-bright": {
     baseStyle: "avenue",
@@ -58,7 +63,7 @@ const stylePresets = {
       hueRotation: 15,
       contrast: [0.4, 220],
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "avenue-bnw": {
     baseStyle: "avenue",
@@ -67,7 +72,7 @@ const stylePresets = {
       saturation: -1,
       contrast: [0.6, 160],
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "avenue-blueprint": {
     baseStyle: "avenue",
@@ -77,7 +82,7 @@ const stylePresets = {
       contrast: [0.75, 160],
       mixColor: ["#3355bb", 0.15],
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "avenue-warm": {
     baseStyle: "avenue",
@@ -86,7 +91,7 @@ const stylePresets = {
       mixColor: ["#ff8800", 0.1],
       contrast: [0.1, 200],
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "avenue-vintage": {
     baseStyle: "avenue",
@@ -96,7 +101,7 @@ const stylePresets = {
       hueRotation: -5,
       contrast: [0.2, 200],
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "bureau-negative": {
     baseStyle: "bureau",
@@ -104,14 +109,14 @@ const stylePresets = {
       negate: true,
       hueRotation: 180,
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "bureau-bnw": {
     baseStyle: "bureau",
     colorEdit: {
       saturation: -1,
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "bureau-purple": {
     baseStyle: "bureau",
@@ -121,7 +126,7 @@ const stylePresets = {
       hueRotation: 40,
       saturation: -0.4,
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "bureau-bnw-negative": {
     baseStyle: "bureau",
@@ -129,7 +134,7 @@ const stylePresets = {
       negate: true,
       saturation: -1,
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "bureau-bnw-dark": {
     baseStyle: "bureau",
@@ -137,7 +142,7 @@ const stylePresets = {
       brightness: -0.6,
       saturation: -1,
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "bureau-bnw-bright": {
     baseStyle: "bureau",
@@ -145,7 +150,7 @@ const stylePresets = {
       brightnessShift: 0.3,
       saturation: -1,
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "bureau-bnw-negative-bright": {
     baseStyle: "bureau",
@@ -155,11 +160,11 @@ const stylePresets = {
       saturation: -1,
       negate: true,
       contrast: [
-      0.5,
-      245
-    ],
+        0.5,
+        245
+      ],
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "bureau-bnw-negative-dark": {
     baseStyle: "bureau",
@@ -169,7 +174,7 @@ const stylePresets = {
       saturation: -1,
       negate: true,
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "bureau-sand": {
     baseStyle: "bureau",
@@ -178,7 +183,7 @@ const stylePresets = {
       exposure: 0.2,
       saturation: -1,
       negate: false,
-        multiplyColor: [
+      multiplyColor: [
         "#ffeeab",
         0.45
       ],
@@ -187,7 +192,7 @@ const stylePresets = {
         0.1
       ]
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "bureau-sand-negative": {
     baseStyle: "bureau",
@@ -205,7 +210,7 @@ const stylePresets = {
         0.1
       ]
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "bureau-ivory": {
     baseStyle: "bureau",
@@ -223,63 +228,35 @@ const stylePresets = {
         0.1
       ]
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "bureau-ivory-negative": {
     baseStyle: "bureau",
     colorEdit: {
-      brightnessShift: 0.2,
-      exposure: 0.2,
-      saturation: -1,
-      negate: true,
-        multiplyColor: [
-        "#f0e9d1",
-        0.45
+      brightnessShift: -0.4,
+      exposure: -0.2,
+      saturation: 1,
+      contrast: [
+        0.5,
+        50
       ],
-      mixColor: [
-        "#f0e9d1",
-        0.1
-      ]
+      negate: true,
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "bureau-navy": {
     baseStyle: "bureau",
     colorEdit: {
-      brightnessShift: 0.2,
-      exposure: 0.2,
-      saturation: -1,
-      negate: false,
-        multiplyColor: [
-        "#002c99",
-        0.5
+      brightnessShift: -0.4,
+      exposure: -0.2,
+      saturation: 1,
+      contrast: [
+        0.5,
+        50
       ],
-      mixColor: [
-        "#002c99",
-        0.2
-      ]
     } as ColorEdit,
-  },
-
-  "bureau-navy-negative": {
-    baseStyle: "bureau",
-    colorEdit: {
-      brightnessShift: 0.2,
-      exposure: 0.2,
-      saturation: -1,
-      negate: true,
-        multiplyColor: [
-        "#002c99",
-        0.5
-      ],
-      mixColor: [
-        "#002c99",
-        0.2
-      ]
-    } as ColorEdit,
-  },
-
-
+  } as PresetDefinition,
+  
 } as const;
 
 /**
@@ -517,8 +494,21 @@ export type BuildStyleOptions = GetStyleOptions & {
  * Returns the list of styles available.
  */
 export function getStyleList(): string[] {
-  return Object.keys(baseStyles).concat(Object.keys(stylePresets));
+  const list = []
+
+  for (const baseStyle of Object.keys(baseStyles)) {
+    list.push(baseStyle)
+
+    const presetsForBaseStyle = Object.entries(stylePresets)
+      .filter(([_, preset]) => preset.baseStyle === baseStyle)
+      .map(([presetId]) => presetId);
+
+    list.push(...presetsForBaseStyle)
+  }
+
+  return list;
 }
+
 
 /**
  * Get a style.

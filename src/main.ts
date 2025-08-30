@@ -43,7 +43,32 @@ const defaultCustomStyle = `{
 }
 `;
 
-function getStyleFromUrl(): CustomStyle | null {
+function getStyleIdFromUrl(): string | null {
+  const url = new URL(window.location.href);
+  const searchParams = url.searchParams;
+  const styleId = searchParams.get("styleid");
+
+  if (!styleId) return null;
+
+  const styleIdFormatted = styleId.trim().toLowerCase();
+  return getStyleList().includes(styleIdFormatted) ? styleIdFormatted : null;
+}
+
+function updateUrlStyleId(styleId: string) {
+  const url = new URL(window.location.href);
+  const searchParams = url.searchParams;
+  searchParams.set("styleid", styleId.trim().toLowerCase());
+  history.pushState(null, "", url);
+}
+
+function removeUrlStyleId() {
+  const url = new URL(window.location.href);
+  const searchParams = url.searchParams;
+  searchParams.delete("styleid");
+  history.pushState(null, "", url);
+}
+
+function getCustomStyleFromUrl(): CustomStyle | null {
   const url = new URL(window.location.href);
   const searchParams = url.searchParams;
   const styleStr = searchParams.get("customstyle");
@@ -59,14 +84,14 @@ function getStyleFromUrl(): CustomStyle | null {
   }
 }
 
-function updateUrlStyle(s: CustomStyle) {
+function updateUrlCustomStyle(s: CustomStyle) {
   const url = new URL(window.location.href);
   const searchParams = url.searchParams;
   searchParams.set("customstyle", encodeURIComponent(JSON.stringify(s)));
   history.pushState(null, "", url);
 }
 
-function removeUrlStyle() {
+function removeUrlCustomStyle() {
   const url = new URL(window.location.href);
   const searchParams = url.searchParams;
   searchParams.delete("customstyle");
@@ -83,6 +108,8 @@ function removeUrlStyle() {
   const resetButton = document.getElementById("reset-style-bt") as HTMLButtonElement;
   const basemapkitVersionDiv = document.getElementById("basemapkit-version") as HTMLDivElement;
 
+  let currentStyleId = getStyleIdFromUrl() || "avenue"
+
   basemapkitVersionDiv.innerText = packagejson.version;
 
   for (const styleId of getStyleList()) {
@@ -98,6 +125,8 @@ function removeUrlStyle() {
   styleDdOption.innerText = "🖌️ custom 🎨";
   styleDD.appendChild(styleDdOption);
 
+  styleDD.value = currentStyleId;
+
   if (!appDiv) {
     return;
   }
@@ -112,7 +141,9 @@ function removeUrlStyle() {
   const pmtilesTerrain = "https://fsn1.your-objectstorage.com/public-map-data/pmtiles/terrain-mapterhorn.pmtiles";
   const terrainTileEncoding = "terrarium";
 
-  const style = getStyle("bureau", {
+  
+
+  const style = getStyle(currentStyleId, {
     pmtiles,
     sprite,
     glyphs,
@@ -139,10 +170,12 @@ function removeUrlStyle() {
 
   // Update the style based on the dropdown
   styleDD.addEventListener("change", (e: Event) => {
-    removeUrlStyle();
+    removeUrlCustomStyle();
+    removeUrlStyleId();
     const selectedStyle = (e.target as HTMLSelectElement).value;
 
     if (selectedStyle !== "custom") {
+      updateUrlStyleId(selectedStyle);
       map.setStyle(
         getStyle(selectedStyle, {
           pmtiles,
@@ -181,7 +214,7 @@ function removeUrlStyle() {
   let customStyle: CustomStyle | null = JSON.parse(defaultCustomStyle) as CustomStyle;
 
   // Trying to load style from URL
-  const styleFromUrl = getStyleFromUrl();
+  const styleFromUrl = getCustomStyleFromUrl();
   if (styleFromUrl) {
     try {
       const style = buildStyle({
@@ -203,11 +236,11 @@ function removeUrlStyle() {
       customStyle = styleFromUrl;
       codeEditor.value = JSON.stringify(styleFromUrl, null, 2);
       map.setStyle(style, { diff: false });
-      // updateUrlStyle(customStyle);
+      // updateUrlCustomStyle(customStyle);
       styleDD.value = "custom";
       styleEditor.classList.remove("hidden");
     } catch (e) {
-      removeUrlStyle();
+      removeUrlCustomStyle();
       console.error(e);
     }
   }
@@ -227,7 +260,7 @@ function removeUrlStyle() {
   });
 
   resetButton.addEventListener("pointerup", () => {
-    removeUrlStyle();
+    removeUrlCustomStyle();
     codeEditor.value = defaultCustomStyle;
     customStyle = JSON.parse(defaultCustomStyle) as CustomStyle;
 
@@ -252,11 +285,11 @@ function removeUrlStyle() {
 
   validateStyleBt.addEventListener("pointerup", () => {
     if (!customStyle) {
-      removeUrlStyle();
+      removeUrlCustomStyle();
       return;
     }
 
-    updateUrlStyle(customStyle);
+    updateUrlCustomStyle(customStyle);
 
     const style = buildStyle({
       ...customStyle,
