@@ -1,9 +1,9 @@
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./style.css";
 import maplibregl from "maplibre-gl";
-import { Protocol } from "pmtiles";
+import { Protocol, PMTiles } from "pmtiles";
 import packagejson from "../package.json";
-import { buildStyle, getStyle, getStyleList, type ColorEdit, type Lang } from "./lib/basemapkit";
+import { BASEMAPKIT_TERRAIN_SOURCE_ID, buildStyle, getStyle, getStyleList, type ColorEdit, type Lang } from "./lib/basemapkit";
 
 type CustomStyle = {
   baseStyleName: string;
@@ -166,7 +166,81 @@ function removeUrlCustomStyle() {
     zoom: 3,
   });
 
-  // map.showTileBoundaries = true;
+  map.showTileBoundaries = true;
+
+
+
+
+
+
+
+
+
+
+  // map.on('load', () => {
+  //   console.log("showing building");
+    
+  //   // const pbfSourceBuilding = "building"
+  //   const pbfSourceBuilding = "buildings_intersecting_precip"
+
+  //   // 1) Vector source pointing at your MVT tiles
+  //   map.addSource('my-mvt', {
+  //     type: 'vector',
+  //     // url: "http://127.0.0.1:8000/metadata.json",
+  //     // url: "https://api.maptiler.com/tiles/v3/tiles.json?key=2HjmsNaDXvgEkf4RQLaS",
+  //     // tiles: ["https://api.maptiler.com/tiles/v3/{z}/{x}/{y}.pbf?key=2HjmsNaDXvgEkf4RQLaS"],
+  //     tiles: ['http://127.0.0.1:8080/{z}/{x}/{y}.pbf'],
+  //     minzoom: 6,
+  //     maxzoom: 16,              // match what you exported
+  //     attribution: '© Your Data',
+  //   });
+
+  //   // // 2a) Fill polygons
+  //   map.addLayer({
+  //     id: 'my-fill',
+  //     type: 'fill',
+  //     source: 'my-mvt',
+  //     'source-layer': pbfSourceBuilding,
+  //     paint: {
+  //       'fill-color': '#ff0000',
+  //       'fill-opacity': 0.8
+  //     }
+  //   });
+
+  //   // 2b) Outline (for polygons) or use as a line layer for linework
+  //   // map.addLayer({
+  //   //   id: 'my-outline',
+  //   //   type: 'line',
+  //   //   source: 'my-mvt',
+  //   //   'source-layer': pbfSourceBuilding,
+  //   //   paint: {
+  //   //     'line-color': '#00ff00',
+  //   //     'line-width': 1
+  //   //   }
+  //   // });
+
+  //   // 2c) Labels (if you have a name property)
+  //   // map.addLayer({
+  //   //   id: 'my-labels',
+  //   //   type: 'symbol',
+  //   //   source: 'my-mvt',
+  //   //   'source-layer': 'buildings_intersecting_precip',
+  //   //   layout: { 'text-field': ['get', 'name'], 'text-size': 12 }
+  //   // });
+  // });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // Update the style based on the dropdown
   styleDD.addEventListener("change", (e: Event) => {
@@ -310,3 +384,63 @@ function removeUrlCustomStyle() {
     map.setStyle(style, { diff: false });
   });
 })();
+
+const pmtileTerrain = new PMTiles("https://fsn1.your-objectstorage.com/public-map-data/pmtiles/terrain-mapterhorn.pmtiles");
+
+async function debugTile(z: number, x: number, y: number) {
+  
+
+  const tileData = await pmtileTerrain.getZxy(z, x, y);
+
+  const header = await pmtileTerrain.getHeader();
+  console.log(header);
+  
+
+   if (!tileData) return null;
+    
+    // Create a blob from the tile data
+    const blob = new Blob([tileData.data]);
+    const imageUrl = URL.createObjectURL(blob);
+    
+    // Create and load image
+    const img = new Image();
+    await new Promise((resolve, reject) => {
+    img.onload = resolve;
+    img.onerror = reject;
+    img.src = imageUrl;
+    });
+    
+    // Create canvas to extract pixel data
+    const canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext("2d");
+    ctx?.drawImage(img, 0, 0);
+    
+    const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
+    
+    // Clean up
+    URL.revokeObjectURL(imageUrl);
+    
+    console.log(imageData);
+    
+    return {
+    image: img,
+    imageData,
+    getPixelValue: (x: number, y: number) => {
+      if (!imageData) return null;
+      const index = (y * canvas.width + x) * 4;
+      const r = imageData.data[index];
+      const g = imageData.data[index + 1];
+      const b = imageData.data[index + 2];
+      // Terrarium encoding formula
+      const elevation = r*256 + g + b/256 - 32768;
+      return { r, g, b, elevation };
+    }
+    };
+  console.log(tileData);
+  
+
+}
+
+console.log(debugTile);
