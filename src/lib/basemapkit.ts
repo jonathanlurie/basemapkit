@@ -258,6 +258,56 @@ const stylePresets = {
       ],
     } as ColorEdit,
   } as PresetDefinition,
+
+
+  "journal-night": {
+    baseStyle: "journal",
+    colorEdit: {
+      brightnessShift: -0.15,
+      exposure: -2,
+      saturation: -0.6,
+      multiplyColor: [
+        "#4444ff",
+        0.2
+      ],
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "journal-teal": {
+    baseStyle: "journal",
+    colorEdit: {
+      brightnessShift: 0.02,
+      exposure: -1.2,
+      hueRotation: -5,
+      saturation: -0.35,
+      multiplyColor: [
+        "#ff9900",
+        0.05
+      ],
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "journal-vintage": {
+    baseStyle: "journal",
+    colorEdit: {
+      brightness: 0.02,
+      brightnessShift: 0.03,
+      exposure: -1.4,
+      saturation: -0.3,
+      contrast: [
+        0.2,
+        180
+      ],
+      multiplyColor: [
+        "#ffc963",
+        0.25
+      ],
+      mixColor: [
+        "#ffc963",
+        0.08
+      ]
+    } as ColorEdit,
+  } as PresetDefinition,
   
 } as const;
 
