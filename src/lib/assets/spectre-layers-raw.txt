@@ -1,0 +1,479 @@
+[
+  {
+    "id": "background",
+    "type": "background",
+    "layout": {"visibility": "visible"},
+    "paint": {"background-color": "#333"}
+  },
+  {
+    "id": "earth",
+    "type": "fill",
+    "source": "<BMK_BM_SRC>",
+    "source-layer": "earth",
+    "filter": ["==", "$type", "Polygon"],
+    "paint": {
+      "fill-color": "#fff",
+      "fill-opacity": 0.1
+    }
+  },
+
+  {
+    "id": "hillshader",
+    "type": "hillshade",
+    "source": "__bmk_tr_src",
+    "layout": {"visibility": "visible"},
+    "paint": {
+      "hillshade-illumination-anchor": "viewport",
+      "hillshade-exaggeration": [
+        "interpolate",
+        ["exponential", 1.6],
+        ["zoom"],
+        0,
+        0.05,
+        4,
+        0.05,
+        7,
+        0.15,
+        10,
+        0.2,
+        15,
+        0.2,
+        17,
+        0.1
+      ],
+      "hillshade-shadow-color": "#000000",
+      "hillshade-highlight-color": "#ffffff",
+      "hillshade-accent-color": "#ffffff",
+      "hillshade-illumination-direction": ["literal", 310]
+    }
+  },
+  {
+    "id": "water",
+    "type": "fill",
+    "source": "<BMK_BM_SRC>",
+    "source-layer": "water",
+    "filter": ["==", "$type", "Polygon"],
+    "paint": {
+      "fill-color": "#000",
+      "fill-opacity": 0.1
+    }
+  },
+
+  {
+    "id": "earth-line",
+    "type": "line",
+    "source": "<BMK_BM_SRC>",
+    "source-layer": "earth",
+    "filter": ["==", "$type", "Polygon"],
+    "paint": {
+      "line-color": "#0f0",
+      "line-width": {
+        "base": 1.6,
+        "stops": [
+          [1, 1],
+          [6, 2]
+        ]
+      }
+    }
+  },
+
+  {
+    "id": "boundaries_country",
+    "type": "line",
+    "source": "<BMK_BM_SRC>",
+    "source-layer": "boundaries",
+    "minzoom": 0,
+    "filter": ["<=", "kind_detail", 2],
+    "layout": {"visibility": "visible"},
+    "paint": {
+      "line-width": {
+        "base": 1.6,
+        "stops": [
+          [1, 1],
+          [6, 2]
+        ]
+      },
+      "line-color": "#0f0"
+    }
+  },
+  {
+    "id": "boundaries",
+    "type": "line",
+    "source": "<BMK_BM_SRC>",
+    "source-layer": "boundaries",
+    "filter": [">", "kind_detail", 2],
+    "layout": {"visibility": "visible"},
+    "paint": {
+      "line-width": {
+        "base": 1.6,
+        "stops": [
+          [1, 0.75],
+          [6, 1.5]
+        ]
+      },
+      "line-dasharray": [
+        "step",
+        ["zoom"],
+        ["literal", [2]],
+        4,
+        ["literal", [2, 2]]
+      ],
+      "line-color": "#0f0"
+    }
+  },
+ 
+  {
+    "id": "water_label_ocean",
+    "type": "symbol",
+    "source": "<BMK_BM_SRC>",
+    "source-layer": "water",
+    "filter": ["in", "kind", "sea", "ocean", "bay", "strait", "fjord"],
+    "layout": {
+      "text-font": ["Noto Sans Italic"],
+      "text-field": "<LANG>",
+      "text-size": ["interpolate", ["linear"], ["zoom"], 1, 12, 10, 12],
+      "text-letter-spacing": 0.1,
+      "text-max-width": 9,
+      "text-transform": "uppercase"
+    },
+    "paint": {
+      "text-color": "rgba(0, 0, 0, 0.5)"
+    }
+  },
+  {
+    "id": "earth_label_islands",
+    "type": "symbol",
+    "source": "<BMK_BM_SRC>",
+    "source-layer": "earth",
+    "filter": ["in", "kind", "island"],
+    "layout": {
+      "text-font": ["Noto Sans Italic"],
+      "text-field": "<LANG>",
+      "text-size": 10,
+      "text-letter-spacing": 0.1,
+      "text-max-width": 8
+    },
+    "paint": {
+      "text-color": "rgba(0, 0, 0, 0.85)",
+      "text-halo-color": "rgba(255, 255, 255, 0.85)",
+      "text-halo-width": 1
+    }
+  },
+  {
+    "id": "water_label_lakes",
+    "type": "symbol",
+    "source": "<BMK_BM_SRC>",
+    "source-layer": "water",
+    "filter": ["in", "kind", "lake", "water"],
+    "layout": {
+      "text-font": ["Noto Sans Italic"],
+      "text-field": "<LANG>",
+      "text-size": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        3,
+        10,
+        6,
+        12,
+        10,
+        12
+      ],
+      "text-letter-spacing": 0.1,
+      "text-max-width": 9
+    },
+    "paint": {"text-color": "rgba(0, 0, 0, 0.5)"}
+  },
+  {
+    "id": "pois",
+    "type": "symbol",
+    "source": "<BMK_BM_SRC>",
+    "source-layer": "pois",
+    "filter": [
+      "all",
+      [
+        "in",
+        ["get", "kind"],
+        [
+          "literal",
+          [
+            "beach",
+            "forest",
+            "marina",
+            "park",
+            "peak",
+            "zoo",
+            "garden",
+            "aerodrome",
+            "station",
+            "ferry_terminal",
+            "stadium",
+            "university",
+            "library",
+            "school",
+            "animal",
+            "toilet",
+            "drinking_water",
+            "viewpoint",
+            "attraction",
+            "camp_site",
+            "college",
+            "fishing",
+            "golf_course",
+            "hospital",
+            "information",
+            "landmark",
+            "military",
+            "national_park",
+            "nature_reserve",
+            "picnic_site",
+            "picnic_table",
+            "playground",
+            "railway",
+            "townhall",
+            "zoo"
+          ]
+        ]
+      ],
+      [">=", ["zoom"], ["+", ["get", "min_zoom"], -2]]
+    ],
+    "layout": {
+      "icon-image": [
+        "match",
+        ["get", "kind"],
+        "park",
+        "garden",
+        ["get", "kind"]
+      ],
+      "text-font": ["Noto Sans Regular"],
+      "text-justify": "auto",
+      "text-field": "<LANG>",
+      "text-size": ["interpolate", ["linear"], ["zoom"], 17, 11, 19, 14],
+      "text-max-width": 8,
+      "text-offset": [1.5, 0],
+      "text-variable-anchor": ["left", "right"],
+      "visibility": "visible"
+    },
+    "paint": {
+      "text-color": "rgba(0, 0, 0, 0.75)",
+      "text-halo-color": "rgba(255, 255, 255, 0.5)",
+      "text-halo-width": 1.5
+    }
+  },
+ 
+  {
+    "id": "places_region",
+    "type": "symbol",
+    "source": "<BMK_BM_SRC>",
+    "source-layer": "places",
+    "filter": ["==", "kind", "region"],
+    "layout": {
+      "symbol-sort-key": ["get", "sort_key"],
+      "text-field": "<LANG>",
+      "text-font": ["Noto Sans Regular"],
+      "text-size": ["interpolate", ["linear"], ["zoom"], 3, 11, 7, 16],
+      "text-radial-offset": 0.2,
+      "text-anchor": "center",
+      "text-transform": "uppercase"
+    },
+    "paint": {
+      "text-color": "rgba(0, 255, 0, 0.85)",
+      "text-halo-color": "rgba(0, 0, 0, 0.85)",
+      "text-halo-width": 0.75
+    }
+  },
+  {
+    "id": "places_locality",
+    "type": "symbol",
+    "source": "<BMK_BM_SRC>",
+    "source-layer": "places",
+    "filter": ["==", "kind", "locality"],
+    "layout": {
+      "icon-image": ["step", ["zoom"], "townspot", 8, ""],
+      "icon-size": 0.7,
+      "text-field": "<LANG>",
+      "text-font": [
+        "case",
+        ["<=", ["get", "min_zoom"], 5],
+        ["literal", ["Noto Sans Medium"]],
+        ["literal", ["Noto Sans Regular"]]
+      ],
+      "symbol-sort-key": [
+        "case",
+        ["has", "sort_key"],
+        ["get", "sort_key"],
+        ["get", "min_zoom"]
+      ],
+      "text-padding": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        5,
+        3,
+        8,
+        7,
+        12,
+        11
+      ],
+      "text-size": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        2,
+        [
+          "case",
+          ["<", ["get", "population_rank"], 13],
+          8,
+          [">=", ["get", "population_rank"], 13],
+          13,
+          0
+        ],
+        4,
+        [
+          "case",
+          ["<", ["get", "population_rank"], 13],
+          12,
+          [">=", ["get", "population_rank"], 13],
+          17,
+          0
+        ],
+        6,
+        [
+          "case",
+          ["<", ["get", "population_rank"], 12],
+          13,
+          [">=", ["get", "population_rank"], 12],
+          18,
+          0
+        ],
+        8,
+        [
+          "case",
+          ["<", ["get", "population_rank"], 11],
+          11,
+          [">=", ["get", "population_rank"], 11],
+          18,
+          0
+        ],
+        10,
+        [
+          "case",
+          ["<", ["get", "population_rank"], 9],
+          12,
+          [">=", ["get", "population_rank"], 9],
+          20,
+          0
+        ],
+        15,
+        [
+          "case",
+          ["<", ["get", "population_rank"], 8],
+          12,
+          [">=", ["get", "population_rank"], 8],
+          22,
+          0
+        ]
+      ],
+      "icon-padding": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        0,
+        0,
+        8,
+        6,
+        10,
+        8,
+        12,
+        6,
+        22,
+        2
+      ],
+      "text-justify": "auto",
+      "text-variable-anchor": [
+        "step",
+        ["zoom"],
+        ["literal", ["bottom", "left", "right", "top"]],
+        8,
+        ["literal", ["center"]]
+      ],
+      "text-radial-offset": 0.3,
+      "visibility": "visible"
+    },
+    "paint": {
+      "text-color": "rgba(0, 255, 0, 0.85)",
+      "text-halo-color": "rgba(0, 0, 0, 0.85)",
+      "text-halo-width": 0.75
+    }
+  },
+  {
+    "id": "places_country",
+    "type": "symbol",
+    "source": "<BMK_BM_SRC>",
+    "source-layer": "places",
+    "filter": ["==", "kind", "country"],
+    "layout": {
+      "symbol-sort-key": [
+        "case",
+        ["has", "sort_key"],
+        ["get", "sort_key"],
+        ["get", "min_zoom"]
+      ],
+      "text-field": "<LANG_COUNTRY>",
+      "text-font": ["Noto Sans Medium"],
+      "text-size": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        2,
+        [
+          "case",
+          ["<", ["get", "population_rank"], 10],
+          18,
+          [">=", ["get", "population_rank"], 10],
+          20,
+          0
+        ],
+        6,
+        [
+          "case",
+          ["<", ["get", "population_rank"], 9],
+          16,
+          [">=", ["get", "population_rank"], 8],
+          22,
+          0
+        ],
+        8,
+        [
+          "case",
+          ["<", ["get", "population_rank"], 7],
+          17,
+          [">=", ["get", "population_rank"], 7],
+          28,
+          0
+        ]
+      ],
+      "icon-padding": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        0,
+        2,
+        14,
+        2,
+        16,
+        20,
+        17,
+        2,
+        22,
+        2
+      ],
+      "text-transform": "none"
+    },
+    "paint": {
+      "text-color": "#000",
+      "text-halo-color": "rgba(0, 255, 0, 0.8)",
+      "text-halo-width": 1.25
+    }
+  }
+]
