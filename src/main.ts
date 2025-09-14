@@ -166,7 +166,7 @@ function removeUrlCustomStyle() {
     zoom: 3,
   });
 
-  map.showTileBoundaries = true;
+  // map.showTileBoundaries = true;
 
 
 

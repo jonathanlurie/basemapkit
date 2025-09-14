@@ -310,6 +310,130 @@ const stylePresets = {
       ]
     } as ColorEdit,
   } as PresetDefinition,
+
+  "spectre-mild-green": {
+    baseStyle: "spectre",
+    colorEdit: {
+      saturation: -0.2,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-red": {
+    baseStyle: "spectre",
+    colorEdit: {
+      hueRotation: -120,
+      saturation: -0.3,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-blue": {
+    baseStyle: "spectre",
+    colorEdit: {
+      hueRotation: 90,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-purple": {
+    baseStyle: "spectre",
+    colorEdit: {
+      hueRotation: 150,
+      saturation: -0.3,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-pink": {
+    baseStyle: "spectre",
+    colorEdit: {
+      hueRotation: 190,
+      saturation: -0.2,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-orange": {
+    baseStyle: "spectre",
+    colorEdit: {
+      hueRotation: 260,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-yellow": {
+    baseStyle: "spectre",
+    colorEdit: {
+      hueRotation: 290,
+      saturation: 0.1,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-reverse": {
+    baseStyle: "spectre",
+    colorEdit: {
+      negate: true,
+      hueRotation: 180,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-reverse-mild-green": {
+    baseStyle: "spectre",
+    colorEdit: {
+      negate: true,
+      hueRotation: 180,
+      saturation: -0.2,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-reverse-red": {
+    baseStyle: "spectre",
+    colorEdit: {
+      negate: true,
+      hueRotation: 60,
+      saturation: -0.3,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+
+  "spectre-reverse-blue": {
+    baseStyle: "spectre",
+    colorEdit: {
+      negate: true,
+      hueRotation: 270,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-reverse-purple": {
+    baseStyle: "spectre",
+    colorEdit: {
+      negate: true,
+      hueRotation: 270,
+      saturation: -0.3,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-reverse-pink": {
+    baseStyle: "spectre",
+    colorEdit: {
+      negate: true,
+      hueRotation: 10,
+      saturation: -0.2,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-reverse-orange": {
+    baseStyle: "spectre",
+    colorEdit: {
+      negate: true,
+      hueRotation: 80,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-reverse-yellow": {
+    baseStyle: "spectre",
+    colorEdit: {
+      negate: true,
+      hueRotation: 110,
+      saturation: 0.1,
+    } as ColorEdit,
+  } as PresetDefinition,
+  
   
 } as const;
 

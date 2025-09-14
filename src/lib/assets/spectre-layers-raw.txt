@@ -3,7 +3,7 @@
     "id": "background",
     "type": "background",
     "layout": {"visibility": "visible"},
-    "paint": {"background-color": "#333"}
+    "paint": {"background-color": "#888"}
   },
   {
     "id": "earth",
@@ -137,7 +137,7 @@
       "text-transform": "uppercase"
     },
     "paint": {
-      "text-color": "rgba(0, 0, 0, 0.5)"
+      "text-color": "rgba(0, 255, 0, 0.5)"
     }
   },
   {
@@ -149,14 +149,14 @@
     "layout": {
       "text-font": ["Noto Sans Italic"],
       "text-field": "<LANG>",
-      "text-size": 10,
+      "text-size": 11,
       "text-letter-spacing": 0.1,
       "text-max-width": 8
     },
     "paint": {
       "text-color": "rgba(0, 0, 0, 0.85)",
-      "text-halo-color": "rgba(255, 255, 255, 0.85)",
-      "text-halo-width": 1
+      "text-halo-color": "rgba(0, 255, 0, 0.85)",
+      "text-halo-width": 0.5
     }
   },
   {
@@ -182,7 +182,7 @@
       "text-letter-spacing": 0.1,
       "text-max-width": 9
     },
-    "paint": {"text-color": "rgba(0, 0, 0, 0.5)"}
+    "paint": {"text-color": "rgba(0, 255, 0, 0.6)"}
   },
   {
     "id": "pois",
@@ -256,7 +256,7 @@
     },
     "paint": {
       "text-color": "rgba(0, 0, 0, 0.75)",
-      "text-halo-color": "rgba(255, 255, 255, 0.5)",
+      "text-halo-color": "rgba(0, 255, 0, 0.65)",
       "text-halo-width": 1.5
     }
   },
@@ -271,14 +271,14 @@
       "symbol-sort-key": ["get", "sort_key"],
       "text-field": "<LANG>",
       "text-font": ["Noto Sans Regular"],
-      "text-size": ["interpolate", ["linear"], ["zoom"], 3, 11, 7, 16],
+      "text-size": ["interpolate", ["linear"], ["zoom"], 3, 13, 5, 16, 7, 20],
       "text-radial-offset": 0.2,
       "text-anchor": "center",
       "text-transform": "uppercase"
     },
     "paint": {
-      "text-color": "rgba(0, 255, 0, 0.85)",
-      "text-halo-color": "rgba(0, 0, 0, 0.85)",
+      "text-color": "rgba(0, 0, 0, 0.75)",
+      "text-halo-color": "rgba(0, 255, 0, 0.85)",
       "text-halo-width": 0.75
     }
   },
@@ -323,54 +323,54 @@
         [
           "case",
           ["<", ["get", "population_rank"], 13],
-          8,
+          10,
           [">=", ["get", "population_rank"], 13],
-          13,
+          15,
           0
         ],
         4,
         [
           "case",
           ["<", ["get", "population_rank"], 13],
-          12,
+          14,
           [">=", ["get", "population_rank"], 13],
-          17,
+          19,
           0
         ],
         6,
         [
           "case",
           ["<", ["get", "population_rank"], 12],
-          13,
+          15,
           [">=", ["get", "population_rank"], 12],
-          18,
+          20,
           0
         ],
         8,
         [
           "case",
           ["<", ["get", "population_rank"], 11],
-          11,
+          13,
           [">=", ["get", "population_rank"], 11],
-          18,
+          21,
           0
         ],
         10,
         [
           "case",
           ["<", ["get", "population_rank"], 9],
-          12,
+          13,
           [">=", ["get", "population_rank"], 9],
-          20,
+          23,
           0
         ],
         15,
         [
           "case",
           ["<", ["get", "population_rank"], 8],
-          12,
+          15,
           [">=", ["get", "population_rank"], 8],
-          22,
+          25,
           0
         ]
       ],
@@ -401,8 +401,8 @@
       "visibility": "visible"
     },
     "paint": {
-      "text-color": "rgba(0, 255, 0, 0.85)",
-      "text-halo-color": "rgba(0, 0, 0, 0.85)",
+      "text-color": "rgba(0, 0, 0, 0.6)",
+      "text-halo-color": "rgba(0, 255, 0, 0.85)",
       "text-halo-width": 0.75
     }
   },
@@ -471,9 +471,9 @@
       "text-transform": "none"
     },
     "paint": {
-      "text-color": "#000",
+      "text-color": "#000a",
       "text-halo-color": "rgba(0, 255, 0, 0.8)",
-      "text-halo-width": 1.25
+      "text-halo-width": 1
     }
   }
 ]
