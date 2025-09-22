@@ -21,9 +21,9 @@ const baseStyles = {
 } as const;
 
 type PresetDefinition = {
-  baseStyle: string,
-  colorEdit: ColorEdit,
-}
+  baseStyle: string;
+  colorEdit: ColorEdit;
+};
 
 const stylePresets = {
   "avenue-pop": {
@@ -163,10 +163,7 @@ const stylePresets = {
       exposure: 0.8,
       saturation: -1,
       negate: true,
-      contrast: [
-        0.5,
-        245
-      ],
+      contrast: [0.5, 245],
     } as ColorEdit,
   } as PresetDefinition,
 
@@ -187,14 +184,8 @@ const stylePresets = {
       exposure: 0.2,
       saturation: -1,
       negate: false,
-      multiplyColor: [
-        "#ffeeab",
-        0.45
-      ],
-      mixColor: [
-        "#ffeeab",
-        0.1
-      ]
+      multiplyColor: ["#ffeeab", 0.45],
+      mixColor: ["#ffeeab", 0.1],
     } as ColorEdit,
   } as PresetDefinition,
 
@@ -205,14 +196,8 @@ const stylePresets = {
       exposure: 0.2,
       saturation: -1,
       negate: true,
-        multiplyColor: [
-        "#ffeeab",
-        0.45
-      ],
-      mixColor: [
-        "#ffeeab",
-        0.1
-      ]
+      multiplyColor: ["#ffeeab", 0.45],
+      mixColor: ["#ffeeab", 0.1],
     } as ColorEdit,
   } as PresetDefinition,
 
@@ -223,14 +208,8 @@ const stylePresets = {
       exposure: 0.2,
       saturation: -1,
       negate: false,
-        multiplyColor: [
-        "#f0e9d1",
-        0.45
-      ],
-      mixColor: [
-        "#f0e9d1",
-        0.1
-      ]
+      multiplyColor: ["#f0e9d1", 0.45],
+      mixColor: ["#f0e9d1", 0.1],
     } as ColorEdit,
   } as PresetDefinition,
 
@@ -240,10 +219,7 @@ const stylePresets = {
       brightnessShift: -0.4,
       exposure: -0.2,
       saturation: 1,
-      contrast: [
-        0.5,
-        50
-      ],
+      contrast: [0.5, 50],
       negate: true,
     } as ColorEdit,
   } as PresetDefinition,
@@ -254,13 +230,9 @@ const stylePresets = {
       brightnessShift: -0.4,
       exposure: -0.2,
       saturation: 1,
-      contrast: [
-        0.5,
-        50
-      ],
+      contrast: [0.5, 50],
     } as ColorEdit,
   } as PresetDefinition,
-
 
   "journal-night": {
     baseStyle: "journal",
@@ -268,10 +240,7 @@ const stylePresets = {
       brightnessShift: -0.15,
       exposure: -2,
       saturation: -0.6,
-      multiplyColor: [
-        "#4444ff",
-        0.2
-      ],
+      multiplyColor: ["#4444ff", 0.2],
     } as ColorEdit,
   } as PresetDefinition,
 
@@ -282,10 +251,7 @@ const stylePresets = {
       exposure: -1.2,
       hueRotation: -5,
       saturation: -0.35,
-      multiplyColor: [
-        "#ff9900",
-        0.05
-      ],
+      multiplyColor: ["#ff9900", 0.05],
     } as ColorEdit,
   } as PresetDefinition,
 
@@ -296,18 +262,9 @@ const stylePresets = {
       brightnessShift: 0.03,
       exposure: -1.4,
       saturation: -0.3,
-      contrast: [
-        0.2,
-        180
-      ],
-      multiplyColor: [
-        "#ffc963",
-        0.25
-      ],
-      mixColor: [
-        "#ffc963",
-        0.08
-      ]
+      contrast: [0.2, 180],
+      multiplyColor: ["#ffc963", 0.25],
+      mixColor: ["#ffc963", 0.08],
     } as ColorEdit,
   } as PresetDefinition,
 
@@ -390,7 +347,6 @@ const stylePresets = {
     } as ColorEdit,
   } as PresetDefinition,
 
-
   "spectre-reverse-blue": {
     baseStyle: "spectre",
     colorEdit: {
@@ -433,8 +389,6 @@ const stylePresets = {
       saturation: 0.1,
     } as ColorEdit,
   } as PresetDefinition,
-  
-  
 } as const;
 
 /**
@@ -672,21 +626,20 @@ export type BuildStyleOptions = GetStyleOptions & {
  * Returns the list of styles available.
  */
 export function getStyleList(): string[] {
-  const list = []
+  const list = [];
 
   for (const baseStyle of Object.keys(baseStyles)) {
-    list.push(baseStyle)
+    list.push(baseStyle);
 
     const presetsForBaseStyle = Object.entries(stylePresets)
       .filter(([_, preset]) => preset.baseStyle === baseStyle)
       .map(([presetId]) => presetId);
 
-    list.push(...presetsForBaseStyle)
+    list.push(...presetsForBaseStyle);
   }
 
   return list;
 }
-
 
 /**
  * Get a style.

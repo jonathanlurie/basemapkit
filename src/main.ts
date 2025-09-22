@@ -1,9 +1,18 @@
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./style.css";
 import maplibregl from "maplibre-gl";
-import { Protocol, PMTiles } from "pmtiles";
+import {
+  Protocol,
+  // PMTiles
+} from "pmtiles";
 import packagejson from "../package.json";
-import { BASEMAPKIT_TERRAIN_SOURCE_ID, buildStyle, getStyle, getStyleList, type ColorEdit, type Lang } from "./lib/basemapkit";
+import {
+  buildStyle,
+  getStyle,
+  getStyleList,
+  type ColorEdit,
+  type Lang,
+} from "./lib/basemapkit";
 
 type CustomStyle = {
   baseStyleName: string;
@@ -108,7 +117,7 @@ function removeUrlCustomStyle() {
   const resetButton = document.getElementById("reset-style-bt") as HTMLButtonElement;
   const basemapkitVersionDiv = document.getElementById("basemapkit-version") as HTMLDivElement;
 
-  let currentStyleId = getStyleIdFromUrl() || "avenue"
+  const currentStyleId = getStyleIdFromUrl() || "avenue";
 
   basemapkitVersionDiv.innerText = packagejson.version;
 
@@ -141,8 +150,6 @@ function removeUrlCustomStyle() {
   const pmtilesTerrain = "https://fsn1.your-objectstorage.com/public-map-data/pmtiles/terrain-mapterhorn.pmtiles";
   const terrainTileEncoding = "terrarium";
 
-  
-
   const style = getStyle(currentStyleId, {
     pmtiles,
     sprite,
@@ -155,7 +162,6 @@ function removeUrlCustomStyle() {
   });
 
   console.log(style);
-  
 
   const map = new maplibregl.Map({
     container: appDiv,
@@ -168,18 +174,9 @@ function removeUrlCustomStyle() {
 
   // map.showTileBoundaries = true;
 
-
-
-
-
-
-
-
-
-
   // map.on('load', () => {
   //   console.log("showing building");
-    
+
   //   // const pbfSourceBuilding = "building"
   //   const pbfSourceBuilding = "buildings_intersecting_precip"
 
@@ -228,19 +225,6 @@ function removeUrlCustomStyle() {
   //   //   layout: { 'text-field': ['get', 'name'], 'text-size': 12 }
   //   // });
   // });
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   // Update the style based on the dropdown
   styleDD.addEventListener("change", (e: Event) => {
@@ -385,62 +369,56 @@ function removeUrlCustomStyle() {
   });
 })();
 
-const pmtileTerrain = new PMTiles("https://fsn1.your-objectstorage.com/public-map-data/pmtiles/terrain-mapterhorn.pmtiles");
+// const pmtileTerrain = new PMTiles(
+//   "https://fsn1.your-objectstorage.com/public-map-data/pmtiles/terrain-mapterhorn.pmtiles",
+// );
 
-async function debugTile(z: number, x: number, y: number) {
-  
+// async function debugTile(z: number, x: number, y: number) {
+//   const tileData = await pmtileTerrain.getZxy(z, x, y);
 
-  const tileData = await pmtileTerrain.getZxy(z, x, y);
+//   const header = await pmtileTerrain.getHeader();
+//   console.log(header);
 
-  const header = await pmtileTerrain.getHeader();
-  console.log(header);
-  
+//   if (!tileData) return null;
 
-   if (!tileData) return null;
-    
-    // Create a blob from the tile data
-    const blob = new Blob([tileData.data]);
-    const imageUrl = URL.createObjectURL(blob);
-    
-    // Create and load image
-    const img = new Image();
-    await new Promise((resolve, reject) => {
-    img.onload = resolve;
-    img.onerror = reject;
-    img.src = imageUrl;
-    });
-    
-    // Create canvas to extract pixel data
-    const canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-    const ctx = canvas.getContext("2d");
-    ctx?.drawImage(img, 0, 0);
-    
-    const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
-    
-    // Clean up
-    URL.revokeObjectURL(imageUrl);
-    
-    console.log(imageData);
-    
-    return {
-    image: img,
-    imageData,
-    getPixelValue: (x: number, y: number) => {
-      if (!imageData) return null;
-      const index = (y * canvas.width + x) * 4;
-      const r = imageData.data[index];
-      const g = imageData.data[index + 1];
-      const b = imageData.data[index + 2];
-      // Terrarium encoding formula
-      const elevation = r*256 + g + b/256 - 32768;
-      return { r, g, b, elevation };
-    }
-    };
-  console.log(tileData);
-  
+//   // Create a blob from the tile data
+//   const blob = new Blob([tileData.data]);
+//   const imageUrl = URL.createObjectURL(blob);
 
-}
+//   // Create and load image
+//   const img = new Image();
+//   await new Promise((resolve, reject) => {
+//     img.onload = resolve;
+//     img.onerror = reject;
+//     img.src = imageUrl;
+//   });
 
-console.log(debugTile);
+//   // Create canvas to extract pixel data
+//   const canvas = document.createElement("canvas");
+//   canvas.width = img.width;
+//   canvas.height = img.height;
+//   const ctx = canvas.getContext("2d");
+//   ctx?.drawImage(img, 0, 0);
+
+//   const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
+
+//   // Clean up
+//   URL.revokeObjectURL(imageUrl);
+
+//   console.log(imageData);
+
+//   return {
+//     image: img,
+//     imageData,
+//     getPixelValue: (x: number, y: number) => {
+//       if (!imageData) return null;
+//       const index = (y * canvas.width + x) * 4;
+//       const r = imageData.data[index];
+//       const g = imageData.data[index + 1];
+//       const b = imageData.data[index + 2];
+//       // Terrarium encoding formula
+//       const elevation = r * 256 + g + b / 256 - 32768;
+//       return { r, g, b, elevation };
+//     },
+//   };
+// }

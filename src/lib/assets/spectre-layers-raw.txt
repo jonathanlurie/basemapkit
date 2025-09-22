@@ -155,8 +155,7 @@
     },
     "paint": {
       "text-color": "rgba(0, 0, 0, 0.85)",
-      "text-halo-color": "rgba(0, 255, 0, 0.85)",
-      "text-halo-width": 0.5
+      "text-halo-color": "rgba(0, 255, 0, 0.85)"
     }
   },
   {
@@ -256,13 +255,13 @@
     },
     "paint": {
       "text-color": "rgba(0, 0, 0, 0.75)",
-      "text-halo-color": "rgba(0, 255, 0, 0.65)",
-      "text-halo-width": 1.5
+      "text-halo-color": "rgba(0, 255, 0, 0.65)"
     }
   },
  
   {
     "id": "places_region",
+    "minzoom": 3.5,
     "type": "symbol",
     "source": "<BMK_BM_SRC>",
     "source-layer": "places",
@@ -278,12 +277,28 @@
     },
     "paint": {
       "text-color": "rgba(0, 0, 0, 0.75)",
-      "text-halo-color": "rgba(0, 255, 0, 0.85)",
-      "text-halo-width": 0.75
+      "text-halo-color": "rgba(0, 255, 0, 0.85)"
     }
   },
   {
+    "id": "places_locality_circle",
+    "type": "circle",
+    "source": "<BMK_BM_SRC>",
+    "source-layer": "places",
+    "filter": ["==", "kind", "locality"],
+    "minzoom": 4,
+    "maxzoom": 8,
+    "paint": {
+      "circle-radius": {
+        "stops": [[4, 2.5], [8, 3.5]]
+      },
+      "circle-color": "rgba(0, 0, 0, 0.6)"
+    }
+  },
+
+  {
     "id": "places_locality",
+    "minzoom": 4,
     "type": "symbol",
     "source": "<BMK_BM_SRC>",
     "source-layer": "places",
@@ -374,21 +389,6 @@
           0
         ]
       ],
-      "icon-padding": [
-        "interpolate",
-        ["linear"],
-        ["zoom"],
-        0,
-        0,
-        8,
-        6,
-        10,
-        8,
-        12,
-        6,
-        22,
-        2
-      ],
       "text-justify": "auto",
       "text-variable-anchor": [
         "step",
@@ -401,9 +401,7 @@
       "visibility": "visible"
     },
     "paint": {
-      "text-color": "rgba(0, 0, 0, 0.6)",
-      "text-halo-color": "rgba(0, 255, 0, 0.85)",
-      "text-halo-width": 0.75
+      "text-color": "rgba(0, 0, 0, 0.7)"
     }
   },
   {
@@ -429,9 +427,9 @@
         [
           "case",
           ["<", ["get", "population_rank"], 10],
-          18,
+          12,
           [">=", ["get", "population_rank"], 10],
-          20,
+          14,
           0
         ],
         6,
@@ -452,28 +450,11 @@
           28,
           0
         ]
-      ],
-      "icon-padding": [
-        "interpolate",
-        ["linear"],
-        ["zoom"],
-        0,
-        2,
-        14,
-        2,
-        16,
-        20,
-        17,
-        2,
-        22,
-        2
-      ],
-      "text-transform": "none"
+      ]
     },
     "paint": {
       "text-color": "#000a",
-      "text-halo-color": "rgba(0, 255, 0, 0.8)",
-      "text-halo-width": 1
+      "text-halo-color": "rgba(0, 255, 0, 0.8)"
     }
   }
 ]
