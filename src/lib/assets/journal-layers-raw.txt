@@ -84,13 +84,13 @@
         4,
         0.05,
         7,
-        0.15,
+        0.1,
         10,
-        0.2,
+        0.12,
         15,
-        0.2,
+        0.1,
         17,
-        0.1
+        0.02
       ],
       "hillshade-shadow-color": "#000000",
       "hillshade-highlight-color": "#ffffff",
@@ -1162,9 +1162,9 @@
         [
           "case",
           ["<", ["get", "population_rank"], 13],
-          8,
+          10,
           [">=", ["get", "population_rank"], 13],
-          13,
+          15,
           0
         ],
         4,
@@ -1180,25 +1180,25 @@
         [
           "case",
           ["<", ["get", "population_rank"], 12],
-          13,
+          14,
           [">=", ["get", "population_rank"], 12],
-          18,
+          17,
           0
         ],
         8,
         [
           "case",
           ["<", ["get", "population_rank"], 11],
-          11,
+          13,
           [">=", ["get", "population_rank"], 11],
-          18,
+          20,
           0
         ],
         10,
         [
           "case",
           ["<", ["get", "population_rank"], 9],
-          12,
+          14,
           [">=", ["get", "population_rank"], 9],
           20,
           0
@@ -1207,7 +1207,7 @@
         [
           "case",
           ["<", ["get", "population_rank"], 8],
-          12,
+          14,
           [">=", ["get", "population_rank"], 8],
           22,
           0

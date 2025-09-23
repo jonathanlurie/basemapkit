@@ -347,18 +347,18 @@
         [
           "case",
           ["<", ["get", "population_rank"], 13],
-          14,
+          12,
           [">=", ["get", "population_rank"], 13],
-          19,
+          17,
           0
         ],
         6,
         [
           "case",
           ["<", ["get", "population_rank"], 12],
-          15,
+          14,
           [">=", ["get", "population_rank"], 12],
-          20,
+          17,
           0
         ],
         8,
@@ -367,25 +367,25 @@
           ["<", ["get", "population_rank"], 11],
           13,
           [">=", ["get", "population_rank"], 11],
-          21,
+          20,
           0
         ],
         10,
         [
           "case",
           ["<", ["get", "population_rank"], 9],
-          13,
+          14,
           [">=", ["get", "population_rank"], 9],
-          23,
+          20,
           0
         ],
         15,
         [
           "case",
           ["<", ["get", "population_rank"], 8],
-          15,
+          14,
           [">=", ["get", "population_rank"], 8],
-          25,
+          22,
           0
         ]
       ],

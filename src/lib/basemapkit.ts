@@ -11,12 +11,14 @@ import avenueLayersRaw from "./assets/avenue-layers-raw.txt?raw";
 import bureauLayersRaw from "./assets/bureau-layers-raw.txt?raw";
 import journalLayersRaw from "./assets/journal-layers-raw.txt?raw";
 import spectreLayersRaw from "./assets/spectre-layers-raw.txt?raw";
+import monochromeLayersRaw from "./assets/monochrome-layers-raw.txt?raw";
 import { getDefaultLanguage, isLanguageSupported } from "./language";
 
 const baseStyles = {
   avenue: avenueLayersRaw,
   bureau: bureauLayersRaw,
   journal: journalLayersRaw,
+  monochrome: monochromeLayersRaw,
   spectre: spectreLayersRaw,
 } as const;
 
