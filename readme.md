@@ -349,7 +349,7 @@ You can live play with these on [basemapkit.jnth.io](https://s.jnth.io/s/basemap
 And from this "color editor" were created the built-in styles available below...
 
 ## Available styles
-So far, we mentioned only the style **Avenue** style as it's the first and default one, but there are many others! And while **Avenue** takes pride in being a rich yet generalistic style, Basemapkit provides styles that are better suited for **data visualization**, that are minimalistic and leaves room to your own data. And all the styles come with extra *presets*, meaning variants, playing with color and contrasts, but more on this in the next section.  
+So far, we mentioned only the **Avenue** style as it's the first and default one, but there are many others! And while **Avenue** takes pride in being a rich yet generalistic style, Basemapkit provides styles that are better suited for **data visualization**, that are minimalistic and leaves room to your own data. And all the styles come with extra *presets*, meaning variants, playing with color and contrasts, but more on this in the next section.  
 
 First, here is the list of **base styles**:
 
@@ -401,10 +401,7 @@ const style = getStyle("spectre", options);
 ```
 [DEMO 🌍](https://basemapkit.jnth.io/?styleid=spectre)
 
-![](./public/screenshots/spectre.jpg)
-
-
-
+![](./public/screenshots/spectre-1.jpg)
 
 
 
