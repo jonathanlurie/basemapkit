@@ -362,7 +362,7 @@ const stylePresets = {
     baseStyle: "spectre",
     colorEdit: {
       negate: true,
-      hueRotation: 270,
+      hueRotation: -20,
       saturation: -0.3,
     } as ColorEdit,
   } as PresetDefinition,
