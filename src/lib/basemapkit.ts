@@ -22,12 +22,17 @@ const baseStyles = {
   spectre: spectreLayersRaw,
 } as const;
 
+/**
+ * Base style
+ */
+export type BasemapkitBaseStyle = keyof typeof baseStyles;
+
 type PresetDefinition = {
-  baseStyle: string;
+  baseStyle: BasemapkitBaseStyle;
   colorEdit: ColorEdit;
 };
 
-const stylePresets = {
+const presetStyles = {
   "avenue-pop": {
     baseStyle: "avenue",
     colorEdit: {
@@ -324,7 +329,7 @@ const stylePresets = {
     } as ColorEdit,
   } as PresetDefinition,
 
-  "spectre-reverse": {
+  "spectre-negative": {
     baseStyle: "spectre",
     colorEdit: {
       negate: true,
@@ -332,7 +337,7 @@ const stylePresets = {
     } as ColorEdit,
   } as PresetDefinition,
 
-  "spectre-reverse-mild-green": {
+  "spectre-negative-mild-green": {
     baseStyle: "spectre",
     colorEdit: {
       negate: true,
@@ -341,7 +346,7 @@ const stylePresets = {
     } as ColorEdit,
   } as PresetDefinition,
 
-  "spectre-reverse-red": {
+  "spectre-negative-red": {
     baseStyle: "spectre",
     colorEdit: {
       negate: true,
@@ -350,7 +355,7 @@ const stylePresets = {
     } as ColorEdit,
   } as PresetDefinition,
 
-  "spectre-reverse-blue": {
+  "spectre-negative-blue": {
     baseStyle: "spectre",
     colorEdit: {
       negate: true,
@@ -358,7 +363,7 @@ const stylePresets = {
     } as ColorEdit,
   } as PresetDefinition,
 
-  "spectre-reverse-purple": {
+  "spectre-negative-purple": {
     baseStyle: "spectre",
     colorEdit: {
       negate: true,
@@ -367,7 +372,7 @@ const stylePresets = {
     } as ColorEdit,
   } as PresetDefinition,
 
-  "spectre-reverse-pink": {
+  "spectre-negative-pink": {
     baseStyle: "spectre",
     colorEdit: {
       negate: true,
@@ -376,7 +381,7 @@ const stylePresets = {
     } as ColorEdit,
   } as PresetDefinition,
 
-  "spectre-reverse-orange": {
+  "spectre-negative-orange": {
     baseStyle: "spectre",
     colorEdit: {
       negate: true,
@@ -384,7 +389,7 @@ const stylePresets = {
     } as ColorEdit,
   } as PresetDefinition,
 
-  "spectre-reverse-yellow": {
+  "spectre-negative-yellow": {
     baseStyle: "spectre",
     colorEdit: {
       negate: true,
@@ -393,6 +398,16 @@ const stylePresets = {
     } as ColorEdit,
   } as PresetDefinition,
 } as const;
+
+/**
+ * Preset styles are base styles on which is applied a set of "colorEdit"
+ */
+export type BasemapkitPresetStyle = keyof typeof presetStyles;
+
+/**
+ * This is the full list of available styles, including base and preset styles
+ */
+export type BasemapkitStyle = BasemapkitBaseStyle & BasemapkitPresetStyle;
 
 /**
  * Options to modify colors of a base style
@@ -615,9 +630,9 @@ export const BASEMAPKIT_TERRAIN_SOURCE_ID = "__bmk_tr_src";
  */
 export type BuildStyleOptions = GetStyleOptions & {
   /**
-   * Name of the style to start from
+   * Name of the base style to start from
    */
-  baseStyleName: string;
+  baseStyleName: BasemapkitBaseStyle;
 
   /**
    * Optional color modification to apply to the provided style
@@ -634,7 +649,7 @@ export function getStyleList(): string[] {
   for (const baseStyle of Object.keys(baseStyles)) {
     list.push(baseStyle);
 
-    const presetsForBaseStyle = Object.entries(stylePresets)
+    const presetsForBaseStyle = Object.entries(presetStyles)
       .filter(([_, preset]) => preset.baseStyle === baseStyle)
       .map(([presetId]) => presetId);
 
@@ -647,7 +662,7 @@ export function getStyleList(): string[] {
 /**
  * Get a style.
  */
-export function getStyle(styleName: string, options: GetStyleOptions): StyleSpecification {
+export function getStyle(styleName: BasemapkitStyle, options: GetStyleOptions): StyleSpecification {
   // Check is style is raw
   if (styleName in baseStyles) {
     return buildStyle({
@@ -657,8 +672,8 @@ export function getStyle(styleName: string, options: GetStyleOptions): StyleSpec
   }
 
   // Or if it's a preset
-  if (styleName in stylePresets) {
-    const presetInfo = stylePresets[styleName as keyof typeof stylePresets];
+  if (styleName in presetStyles) {
+    const presetInfo = presetStyles[styleName as BasemapkitPresetStyle];
     return buildStyle({
       ...options,
       baseStyleName: presetInfo.baseStyle,

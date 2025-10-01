@@ -6,7 +6,17 @@ import {
   // PMTiles
 } from "pmtiles";
 import packagejson from "../package.json";
-import { buildStyle, getStyle, getStyleList, type ColorEdit, type Lang } from "./lib/basemapkit";
+import {
+  buildStyle,
+  getStyle,
+  getStyleList,
+  type BasemapkitStyle,
+  type BuildStyleOptions,
+  type ColorEdit,
+  type Lang,
+} from "./lib/basemapkit";
+
+const defaultStyle = "avenue" as BasemapkitStyle;
 
 type CustomStyle = {
   baseStyleName: string;
@@ -18,7 +28,7 @@ type CustomStyle = {
 };
 
 const defaultCustomStyle = `{
-  "baseStyleName": "avenue",
+  "baseStyleName": "${defaultStyle}",
   "lang": "en",
   "hidePOIs": false,
   "hideLabels": false,
@@ -46,7 +56,7 @@ const defaultCustomStyle = `{
 }
 `;
 
-function getStyleIdFromUrl(): string | null {
+function getStyleIdFromUrl(): BasemapkitStyle | null {
   const url = new URL(window.location.href);
   const searchParams = url.searchParams;
   const styleId = searchParams.get("styleid");
@@ -54,7 +64,7 @@ function getStyleIdFromUrl(): string | null {
   if (!styleId) return null;
 
   const styleIdFormatted = styleId.trim().toLowerCase();
-  return getStyleList().includes(styleIdFormatted) ? styleIdFormatted : null;
+  return getStyleList().includes(styleIdFormatted) ? (styleIdFormatted as BasemapkitStyle) : null;
 }
 
 function updateUrlStyleId(styleId: string) {
@@ -111,7 +121,7 @@ function removeUrlCustomStyle() {
   const resetButton = document.getElementById("reset-style-bt") as HTMLButtonElement;
   const basemapkitVersionDiv = document.getElementById("basemapkit-version") as HTMLDivElement;
 
-  const currentStyleId = getStyleIdFromUrl() || "avenue";
+  const currentStyleId = getStyleIdFromUrl() ?? defaultStyle;
 
   basemapkitVersionDiv.innerText = packagejson.version;
 
@@ -166,65 +176,11 @@ function removeUrlCustomStyle() {
     zoom: 3,
   });
 
-  // map.showTileBoundaries = true;
-
-  // map.on('load', () => {
-  //   console.log("showing building");
-
-  //   // const pbfSourceBuilding = "building"
-  //   const pbfSourceBuilding = "buildings_intersecting_precip"
-
-  //   // 1) Vector source pointing at your MVT tiles
-  //   map.addSource('my-mvt', {
-  //     type: 'vector',
-  //     // url: "http://127.0.0.1:8000/metadata.json",
-  //     // url: "https://api.maptiler.com/tiles/v3/tiles.json?key=2HjmsNaDXvgEkf4RQLaS",
-  //     // tiles: ["https://api.maptiler.com/tiles/v3/{z}/{x}/{y}.pbf?key=2HjmsNaDXvgEkf4RQLaS"],
-  //     tiles: ['http://127.0.0.1:8080/{z}/{x}/{y}.pbf'],
-  //     minzoom: 6,
-  //     maxzoom: 16,              // match what you exported
-  //     attribution: '© Your Data',
-  //   });
-
-  //   // // 2a) Fill polygons
-  //   map.addLayer({
-  //     id: 'my-fill',
-  //     type: 'fill',
-  //     source: 'my-mvt',
-  //     'source-layer': pbfSourceBuilding,
-  //     paint: {
-  //       'fill-color': '#ff0000',
-  //       'fill-opacity': 0.8
-  //     }
-  //   });
-
-  //   // 2b) Outline (for polygons) or use as a line layer for linework
-  //   // map.addLayer({
-  //   //   id: 'my-outline',
-  //   //   type: 'line',
-  //   //   source: 'my-mvt',
-  //   //   'source-layer': pbfSourceBuilding,
-  //   //   paint: {
-  //   //     'line-color': '#00ff00',
-  //   //     'line-width': 1
-  //   //   }
-  //   // });
-
-  //   // 2c) Labels (if you have a name property)
-  //   // map.addLayer({
-  //   //   id: 'my-labels',
-  //   //   type: 'symbol',
-  //   //   source: 'my-mvt',
-  //   //   'source-layer': 'buildings_intersecting_precip',
-  //   //   layout: { 'text-field': ['get', 'name'], 'text-size': 12 }
-  //   // });
-  // });
-
   // Update the style based on the dropdown
   styleDD.addEventListener("change", (e: Event) => {
     removeUrlCustomStyle();
     removeUrlStyleId();
-    const selectedStyle = (e.target as HTMLSelectElement).value;
+    const selectedStyle = (e.target as HTMLSelectElement).value as BasemapkitStyle;
 
     if (selectedStyle !== "custom") {
       updateUrlStyleId(selectedStyle);
@@ -248,7 +204,7 @@ function removeUrlCustomStyle() {
     styleEditor.classList.remove("hidden");
     // The custom mode always starts with the avenue default style
     map.setStyle(
-      getStyle("avenue", {
+      getStyle(defaultStyle, {
         pmtiles,
         sprite,
         glyphs,
@@ -283,7 +239,7 @@ function removeUrlCustomStyle() {
               },
             }
           : {}),
-      });
+      } as BuildStyleOptions);
 
       customStyle = styleFromUrl;
       codeEditor.value = JSON.stringify(styleFromUrl, null, 2);
@@ -330,7 +286,7 @@ function removeUrlCustomStyle() {
             },
           }
         : {}),
-    });
+    } as BuildStyleOptions);
 
     map.setStyle(style, { diff: false });
   });
@@ -357,7 +313,7 @@ function removeUrlCustomStyle() {
             },
           }
         : {}),
-    });
+    } as BuildStyleOptions);
 
     map.setStyle(style, { diff: false });
   });
