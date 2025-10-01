@@ -218,10 +218,11 @@ const stylePresets = {
   "bureau-ivory-negative": {
     baseStyle: "bureau",
     colorEdit: {
-      brightnessShift: -0.4,
-      exposure: -0.2,
-      saturation: 1,
-      contrast: [0.5, 50],
+      brightnessShift: 0.2,
+      exposure: 0.2,
+      saturation: -1,
+      multiplyColor: ["#f0e9d1", 0.45],
+      mixColor: ["#f0e9d1", 0.1],
       negate: true,
     } as ColorEdit,
   } as PresetDefinition,

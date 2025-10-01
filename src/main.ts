@@ -6,13 +6,7 @@ import {
   // PMTiles
 } from "pmtiles";
 import packagejson from "../package.json";
-import {
-  buildStyle,
-  getStyle,
-  getStyleList,
-  type ColorEdit,
-  type Lang,
-} from "./lib/basemapkit";
+import { buildStyle, getStyle, getStyleList, type ColorEdit, type Lang } from "./lib/basemapkit";
 
 type CustomStyle = {
   baseStyleName: string;
