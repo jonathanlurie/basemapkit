@@ -9,16 +9,20 @@ Basemaps for <a href="https://maplibre.org/maplibre-gl-js/docs/">Maplibre GL JS<
   <img src="https://img.shields.io/npm/v/basemapkit"></img>
 </p>
 
-**Basemapkit** generates customizable styles compatible with **Maplibre GL JS** that relies on the **Protomaps** Planet schemas when it comes to [vector layers and feature properties](https://docs.protomaps.com/basemaps/layers). You can download your own PMtiles copy of the planet on the official [Protomaps build page](https://maps.protomaps.com/builds/). 
+**Basemapkit** generates customizable styles compatible with **Maplibre GL JS** that relies on the **Protomaps** Planet schemas when it comes to [vector layers and feature properties](https://docs.protomaps.com/basemaps/layers). You can download your own PMtiles copy of the planet on the official [Protomaps build page](https://maps.protomaps.com/builds/).
 
+![](./public/screenshots/terrain-corsica.jpg)
 | |  |  |
 | :----------------: | :------: | ----: |
 | ![](./public/screenshots/eu-avenue.jpg) | ![](./public/screenshots/eu-avenue-pop.jpg) | ![](./public/screenshots/eu-avenue-night.jpg) |
 | ![](./public/screenshots/eu-avenue-bright.jpg) | ![](./public/screenshots/eu-avenue-saturated.jpg)| ![](./public/screenshots/eu-avenue-warm.jpg) |
 | ![](./public/screenshots/eu-avenue-vintage.jpg) | ![](./public/screenshots/eu-avenue-bnw.jpg) | ![](./public/screenshots/eu-avenue-blueprint.jpg) |
 | ![](./public/screenshots/terrain-zermatt.jpg) | ![](./public/screenshots/terrain-new-zealand.jpg) | ![](./public/screenshots/terrain-japan.jpg) |
+| ![](./public/screenshots/bureau-1.jpg) | ![](./public/screenshots/bureau-11.jpg) | ![](./public/screenshots/bureau-2.jpg) |
+| ![](./public/screenshots/monochrome.jpg) | ![](./public/screenshots/journal-1.jpg ) | ![](./public/screenshots/journal-2.jpg) |
+| ![](./public/screenshots/spectre-1.jpg) | ![](./public/screenshots/spectre-14.jpg) | ![](./public/screenshots/spectre-5.jpg) |
 
-![](./public/screenshots/terrain-corsica.jpg)
+![](./public/screenshots/monochrome-ushuaia.jpg)
 
 ## Getting started 👷
 ### Install
@@ -42,21 +46,21 @@ maplibregl.addProtocol("pmtiles", new Protocol().tile);
 
 // Build the Basemapkit style
 const style = getStyle(
-// One of the main syle:
-"avenue", 
-{
-  // URL to the pmtiles
-  pmtiles: "https://my-s3-bucket.com/planet.pmtiles",
+  // One of the main syle:
+  "avenue", 
+  {
+    // URL to the pmtiles
+    pmtiles: "https://my-s3-bucket.com/planet.pmtiles",
 
-  // URL to the sprites (for POIs)
-  sprite: "https://raw.githubusercontent.com/jonathanlurie/phosphor-mlgl-sprite/refs/heads/main/sprite/phosphor-diecut",
+    // URL to the sprites (for POIs)
+    sprite: "https://raw.githubusercontent.com/jonathanlurie/phosphor-mlgl-sprite/refs/heads/main/sprite/phosphor-diecut",
 
-  // URL to the glyphs (for labels)
-  glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf";
+    // URL to the glyphs (for labels)
+    glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf";
 
-  // Language (you can ommit to use the platform language)
-  lang: "en",
-});
+    // Language (you can ommit to use the platform language)
+    lang: "en",
+  });
 
 // Instantiate the Map:
 const map = new maplibregl.Map({
@@ -344,20 +348,68 @@ And here is the result:
 You can live play with these on [basemapkit.jnth.io](https://s.jnth.io/s/basemapkit) and selecting the style `🖌️ custom 🎨`.  
 And from this "color editor" were created the built-in styles available below...
 
+## Available styles
+So far, we mentioned only the style **Avenue** style as it's the first and default one, but there are many others! And while **Avenue** takes pride in being a rich yet generalistic style, Basemapkit provides styles that are better suited for **data visualization**, that are minimalistic and leaves room to your own data. And all the styles come with extra *presets*, meaning variants, playing with color and contrasts, but more on this in the next section.  
 
-## Style presets available
-Some custom `colorEdit` recipes are already built in Basemapkit and can be accessed directly from the `getStyle()` function.
+First, here is the list of **base styles**:
+
 ### `avenue` ⤵️
-This one is the default, with all the `colorEdit` options set to default:
+**Avenue** is the default style, rich and with a focus on rendering somewhat natural colors:
 ```ts
 // Create the style
 const style = getStyle("avenue", options);
 ```
+[DEMO 🌍](https://basemapkit.jnth.io/?styleid=avenue)
+
 ![](./public/screenshots/eu-avenue.jpg)
-![](./public/screenshots/nyc-avenue.jpg)
-![](./public/screenshots/jp-avenue.jpg)
-![](./public/screenshots/eiffel-avenue.jpg)
-![](./public/screenshots/alps-avenue.jpg)
+
+### `bureau` ⤵️
+**Bureau** is your dataviz companion! it has minimal clutter, same hue, (yet different shade) for land and water, the point is not to be realistic but to be a backdrop just present enough to give context.
+```ts
+// Create the style
+const style = getStyle("bureau", options);
+```
+[DEMO 🌍](https://basemapkit.jnth.io/?styleid=bureau)
+
+![](./public/screenshots/bureau-1.jpg)
+
+### `journal` ⤵️
+**Journal** borrows from both **Avenue** and **Bureau**. It's great for dataviz while preserving a natural feel.
+```ts
+// Create the style
+const style = getStyle("journal", options);
+```
+[DEMO 🌍](https://basemapkit.jnth.io/?styleid=journal)
+
+![](./public/screenshots/journal-1.jpg)
+
+### `monochrome` ⤵️
+**Monochrome** is a very contrasty, yet with a soft and velvety touch. It's great with a bright and colorful overlay!
+```ts
+// Create the style
+const style = getStyle("monochrome", options);
+```
+[DEMO 🌍](https://basemapkit.jnth.io/?styleid=monochrome)
+
+![](./public/screenshots/monochrome.jpg)
+
+### `spectre` ⤵️
+At first, **Spectre** may look a bit weird and unconventional, but it's actually a solid friend for eveything weather and climate! It has only the minimal, no road, no street label, no park, just extra bright boundaries.
+```ts
+// Create the style
+const style = getStyle("spectre", options);
+```
+[DEMO 🌍](https://basemapkit.jnth.io/?styleid=spectre)
+
+![](./public/screenshots/spectre.jpg)
+
+
+
+
+
+
+## Style presets available
+Some custom `colorEdit` recipes are already built in Basemapkit and can be accessed directly from the `getStyle()` function.
 
 ### `avenue-pop` ⤵️
 ```ts

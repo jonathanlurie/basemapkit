@@ -58,9 +58,8 @@
       "fill-opacity": 0.1
     }
   },
-
   {
-    "id": "earth-line",
+    "id": "earth_line",
     "type": "line",
     "source": "<BMK_BM_SRC>",
     "source-layer": "earth",
@@ -70,8 +69,27 @@
       "line-width": {
         "base": 1.6,
         "stops": [
-          [1, 1],
+          [1, 1.25],
           [6, 2]
+        ]
+      }
+    }
+  },
+  {
+    "id": "water_line",
+    "type": "line",
+    "source": "<BMK_BM_SRC>",
+    "source-layer": "water",
+    "filter": ["==", "$type", "Polygon"],
+
+    "layout": {"visibility": "visible"},
+    "paint": {
+      "line-color": "#0f0",
+      "line-width": {
+        "base": 1.6,
+        "stops": [
+          [1, 0.5],
+          [6, 1]
         ]
       }
     }
@@ -89,7 +107,7 @@
       "line-width": {
         "base": 1.6,
         "stops": [
-          [1, 1],
+          [1, 1.25],
           [6, 2]
         ]
       },
@@ -107,7 +125,7 @@
       "line-width": {
         "base": 1.6,
         "stops": [
-          [1, 0.75],
+          [1, 0.9],
           [6, 1.5]
         ]
       },
