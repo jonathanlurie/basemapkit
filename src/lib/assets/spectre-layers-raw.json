@@ -16,7 +16,17 @@
       "fill-opacity": 0.1
     }
   },
-
+  {
+    "id": "water",
+    "type": "fill",
+    "source": "<BMK_BM_SRC>",
+    "source-layer": "water",
+    "filter": ["==", "$type", "Polygon"],
+    "paint": {
+      "fill-color": "#000",
+      "fill-opacity": 0.1
+    }
+  },
   {
     "id": "hillshader",
     "type": "hillshade",
@@ -45,17 +55,6 @@
       "hillshade-highlight-color": "#ffffff",
       "hillshade-accent-color": "#ffffff",
       "hillshade-illumination-direction": ["literal", 310]
-    }
-  },
-  {
-    "id": "water",
-    "type": "fill",
-    "source": "<BMK_BM_SRC>",
-    "source-layer": "water",
-    "filter": ["==", "$type", "Polygon"],
-    "paint": {
-      "fill-color": "#000",
-      "fill-opacity": 0.1
     }
   },
   {

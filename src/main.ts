@@ -10,6 +10,7 @@ import {
   buildStyle,
   getStyle,
   getStyleList,
+  swapLayers,
   type BasemapkitStyle,
   type BuildStyleOptions,
   type ColorEdit,
@@ -317,6 +318,26 @@ function removeUrlCustomStyle() {
 
     map.setStyle(style, { diff: false });
   });
+
+
+  const style2 = getStyle("spectre", {
+    pmtiles,
+    sprite,
+    glyphs,
+    lang,
+    terrain: {
+      pmtiles: pmtilesTerrain,
+      encoding: terrainTileEncoding,
+    },
+  });
+
+  console.log(style2);
+  
+ const swappedEartWater = swapLayers("earth", "water", style2)
+
+ console.log(swappedEartWater);
+ 
+
 })();
 
 // const pmtileTerrain = new PMTiles(

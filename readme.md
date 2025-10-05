@@ -351,9 +351,7 @@ And from this "color editor" were created the built-in styles available below...
 ## Available styles
 So far, we mentioned only the **Avenue** style as it's the first and default one, but there are many others! And while **Avenue** takes pride in being a rich yet generalistic style, Basemapkit provides styles that are better suited for **data visualization**, that are minimalistic and leaves room to your own data. And all the styles come with extra *presets*, meaning variants, playing with color and contrasts, but more on this in the next section.  
 
-First, here is the list of **base styles**:
-
-### `avenue` ⤵️
+### Base style: `avenue`
 **Avenue** is the default style, rich and with a focus on rendering somewhat natural colors:
 ```ts
 // Create the style
@@ -363,7 +361,33 @@ const style = getStyle("avenue", options);
 
 ![](./public/screenshots/eu-avenue.jpg)
 
-### `bureau` ⤵️
+**Here are the available presets:**
+- `avenue-pop`  
+![](./public/screenshots/eu-avenue-pop.jpg)
+
+- `avenue-night`  
+![](./public/screenshots/eu-avenue-night.jpg)
+
+- `avenue-bright`  
+![](./public/screenshots/eu-avenue-bright.jpg)
+
+- `avenue-saturated`  
+![](./public/screenshots/eu-avenue-saturated.jpg)
+
+- `avenue-warm`  
+![](./public/screenshots/eu-avenue-warm.jpg)
+
+- `avenue-vintage`  
+![](./public/screenshots/eu-avenue-vintage.jpg)
+
+- `avenue-bnw`  
+![](./public/screenshots/eu-avenue-bnw.jpg)
+
+- `avenue-blueprint`  
+![](./public/screenshots/eu-avenue-blueprint.jpg)
+
+
+### Base style: `bureau`
 **Bureau** is your dataviz companion! it has minimal clutter, same hue, (yet different shade) for land and water, the point is not to be realistic but to be a backdrop just present enough to give context.
 ```ts
 // Create the style
@@ -373,7 +397,48 @@ const style = getStyle("bureau", options);
 
 ![](./public/screenshots/bureau-1.jpg)
 
-### `journal` ⤵️
+**Here are the available presets:**
+- `bureau-negative`  
+![](./public/screenshots/bureau-2.jpg)
+
+- `bureau-bnw`  
+![](./public/screenshots/bureau-3.jpg)
+
+- `bureau-purple`  
+![](./public/screenshots/bureau-4.jpg)
+
+- `bureau-bnw-negative`  
+![](./public/screenshots/bureau-5.jpg)
+
+- `bureau-bnw-dark`  
+![](./public/screenshots/bureau-6.jpg)
+
+- `bureau-bnw-bright`  
+![](./public/screenshots/bureau-7.jpg)
+
+- `bureau-bnw-negative-bright`  
+![](./public/screenshots/bureau-8.jpg)
+
+- `bureau-bnw-negative-dark`  
+![](./public/screenshots/bureau-9.jpg)
+
+- `bureau-sand`  
+![](./public/screenshots/bureau-10.jpg)
+
+- `bureau-sand-negative`  
+![](./public/screenshots/bureau-11.jpg)
+
+- `bureau-ivory`  
+![](./public/screenshots/bureau-12.jpg)
+
+- `bureau-ivory-negative`  
+![](./public/screenshots/bureau-13.jpg)
+
+- `bureau-navy`  
+![](./public/screenshots/bureau-14.jpg)
+
+
+### Base style: `journal`
 **Journal** borrows from both **Avenue** and **Bureau**. It's great for dataviz while preserving a natural feel.
 ```ts
 // Create the style
@@ -383,7 +448,18 @@ const style = getStyle("journal", options);
 
 ![](./public/screenshots/journal-1.jpg)
 
-### `monochrome` ⤵️
+**Here are the available presets:**
+- `journal-night`  
+![](./public/screenshots/journal-2.jpg)
+
+- `journal-teal`  
+![](./public/screenshots/journal-3.jpg)
+
+- `journal-vintage`  
+![](./public/screenshots/journal-4.jpg)
+
+
+### Base style: `monochrome`
 **Monochrome** is a very contrasty, yet with a soft and velvety touch. It's great with a bright and colorful overlay!
 ```ts
 // Create the style
@@ -393,8 +469,11 @@ const style = getStyle("monochrome", options);
 
 ![](./public/screenshots/monochrome.jpg)
 
-### `spectre` ⤵️
-At first, **Spectre** may look a bit weird and unconventional, but it's actually a solid friend for eveything weather and climate! It has only the minimal, no road, no street label, no park, just extra bright boundaries.
+(No extra preset, but you can still extend it and make your own with `buildStyle()`)
+
+
+### Base style: `spectre`
+At first, **Spectre** may look a bit weird and unconventional, but it's actually a solid friend for everything weather and climate! It has only the minimal, no road, no street label, no park, just extra bright boundaries.
 ```ts
 // Create the style
 const style = getStyle("spectre", options);
@@ -403,96 +482,66 @@ const style = getStyle("spectre", options);
 
 ![](./public/screenshots/spectre-1.jpg)
 
+Spectre comes with many extra presets, mostly to change the hue of the coastline and boundaries, but also to swap which of the land or sea is darker. Here is the full list:
 
+- `spectre-mild-green`  
+![](./public/screenshots/spectre-2.jpg)
 
-## Style presets available
-Some custom `colorEdit` recipes are already built in Basemapkit and can be accessed directly from the `getStyle()` function.
+- `spectre-red`  
+![](./public/screenshots/spectre-3.jpg)
 
-### `avenue-pop` ⤵️
-```ts
-// Create the style
-const style = getStyle("avenue-pop", options);
-```
-![](./public/screenshots/eu-avenue-pop.jpg)
-![](./public/screenshots/nyc-avenue-pop.jpg)
-![](./public/screenshots/jp-avenue-pop.jpg)
-![](./public/screenshots/eiffel-avenue-pop.jpg)
-![](./public/screenshots/alps-avenue-pop.jpg)
- 
- 
-### `avenue-night` ⤵️
-```ts
-// Create the style
-const style = getStyle("avenue-night", options);
-```
-![](./public/screenshots/eu-avenue-night.jpg)
-![](./public/screenshots/nyc-avenue-night.jpg)
-![](./public/screenshots/jp-avenue-night.jpg)
-![](./public/screenshots/eiffel-avenue-night.jpg)
-![](./public/screenshots/alps-avenue-night.jpg)
- 
-### `avenue-bright` ⤵️
-```ts
-// Create the style
-const style = getStyle("avenue-bright", options);
-```
-![](./public/screenshots/eu-avenue-bright.jpg)
-![](./public/screenshots/nyc-avenue-bright.jpg)
-![](./public/screenshots/jp-avenue-bright.jpg)
-![](./public/screenshots/eiffel-avenue-bright.jpg)
-![](./public/screenshots/alps-avenue-bright.jpg)
+- `spectre-blue`  
+![](./public/screenshots/spectre-4.jpg)
 
-### `avenue-saturated` ⤵️
-```ts
-// Create the style
-const style = getStyle("avenue-saturated", options);
-```
-![](./public/screenshots/eu-avenue-saturated.jpg)
-![](./public/screenshots/nyc-avenue-saturated.jpg)
-![](./public/screenshots/jp-avenue-saturated.jpg)
-![](./public/screenshots/eiffel-avenue-saturated.jpg)
-![](./public/screenshots/alps-avenue-saturated.jpg)
+- `spectre-purple`  
+![](./public/screenshots/spectre-5.jpg)
 
-### `avenue-warm` ⤵️
-```ts
-// Create the style
-const style = getStyle("avenue-warm", options);
-```
-![](./public/screenshots/eu-avenue-warm.jpg)
-![](./public/screenshots/nyc-avenue-warm.jpg)
-![](./public/screenshots/jp-avenue-warm.jpg)
-![](./public/screenshots/eiffel-avenue-warm.jpg)
-![](./public/screenshots/alps-avenue-warm.jpg)
+- `spectre-pink`  
+![](./public/screenshots/spectre-6.jpg)
 
-### `avenue-vintage` ⤵️
-```ts
-// Create the style
-const style = getStyle("avenue-vintage", options);
-```
-![](./public/screenshots/eu-avenue-vintage.jpg)
-![](./public/screenshots/nyc-avenue-vintage.jpg)
-![](./public/screenshots/jp-avenue-vintage.jpg)
-![](./public/screenshots/eiffel-avenue-vintage.jpg)
-![](./public/screenshots/alps-avenue-vintage.jpg)
- 
-### `avenue-bnw` ⤵️
-```ts
-// Create the style
-const style = getStyle("avenue-bnw", options);
-```
-![](./public/screenshots/eu-avenue-bnw.jpg)
-![](./public/screenshots/nyc-avenue-bnw.jpg)
-![](./public/screenshots/jp-avenue-bnw.jpg)
-![](./public/screenshots/eiffel-avenue-bnw.jpg)
-![](./public/screenshots/alps-avenue-bnw.jpg)
+- `spectre-orange`  
+![](./public/screenshots/spectre-7.jpg)
 
-### `avenue-blueprint` ⤵️
+- `spectre-yellow`  
+![](./public/screenshots/spectre-8.jpg)
+
+- `spectre-negative`  
+![](./public/screenshots/spectre-9.jpg)
+
+- `spectre-negative-mild-green`  
+![](./public/screenshots/spectre-10.jpg)
+
+- `spectre-negative-red`  
+![](./public/screenshots/spectre-11.jpg)
+
+- `spectre-negative-blue`  
+![](./public/screenshots/spectre-12.jpg)
+
+- `spectre-negative-purple`  
+![](./public/screenshots/spectre-13.jpg)
+
+- `spectre-negative-pink`  
+![](./public/screenshots/spectre-14.jpg)
+
+- `spectre-negative-orange`  
+![](./public/screenshots/spectre-15.jpg)
+
+- `spectre-negative-yellow`  
+![](./public/screenshots/spectre-16.jpg)
+
+# Extra API
+The extra API goes beyond just providing style, yet, it's still minimal and only related to "obtain a style as one need it".
+
+## Swapping two layers
+It does exactely what you think: swapping layers. But it does it in a non-destructive way. This can be quite handy when using `spectre` or `spectre-negative` if you prefer to have a dark/light overlay on top of either land or water area when you add your own data layer.
+
 ```ts
-// Create the style
-const style = getStyle("avenue-blueprint", options);
+import { swapLayers } from "basemapkit";
+
+...
+const myStyle = getStyle("spectre", options);
+
+// In the "spectre" style, the layer "eart" is underneath the layer "water".
+// Let's swap those two:
+const mySwappedStyle = swapLayers("earth", "water", myStyle);
 ```
-![](./public/screenshots/eu-avenue-blueprint.jpg)
-![](./public/screenshots/nyc-avenue-blueprint.jpg)
-![](./public/screenshots/jp-avenue-blueprint.jpg)
-![](./public/screenshots/eiffel-avenue-blueprint.jpg)
-![](./public/screenshots/alps-avenue-blueprint.jpg)

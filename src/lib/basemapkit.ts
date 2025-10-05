@@ -7,11 +7,11 @@ import type {
   RasterDEMSourceSpecification,
 } from "maplibre-gl";
 import { applyBrightnessRGB, applyContrastRGB, applyMultiplicationRGB, findColor, type RGBArray } from "./colorchange";
-import avenueLayersRaw from "./assets/avenue-layers-raw.txt?raw";
-import bureauLayersRaw from "./assets/bureau-layers-raw.txt?raw";
-import journalLayersRaw from "./assets/journal-layers-raw.txt?raw";
-import spectreLayersRaw from "./assets/spectre-layers-raw.txt?raw";
-import monochromeLayersRaw from "./assets/monochrome-layers-raw.txt?raw";
+import avenueLayersRaw from "./assets/avenue-layers-raw.json?raw";
+import bureauLayersRaw from "./assets/bureau-layers-raw.json?raw";
+import journalLayersRaw from "./assets/journal-layers-raw.json?raw";
+import spectreLayersRaw from "./assets/spectre-layers-raw.json?raw";
+import monochromeLayersRaw from "./assets/monochrome-layers-raw.json?raw";
 import { getDefaultLanguage, isLanguageSupported } from "./language";
 
 const baseStyles = {
@@ -407,7 +407,7 @@ export type BasemapkitPresetStyle = keyof typeof presetStyles;
 /**
  * This is the full list of available styles, including base and preset styles
  */
-export type BasemapkitStyle = BasemapkitBaseStyle & BasemapkitPresetStyle;
+export type BasemapkitStyle = BasemapkitBaseStyle | BasemapkitPresetStyle;
 
 /**
  * Options to modify colors of a base style
@@ -940,4 +940,29 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
   };
 
   return style;
+}
+
+/**
+ * Swap two layers within a style. This creates a clone
+ */
+export function swapLayers(layerA: string, layerB: string, style: StyleSpecification): StyleSpecification {
+  const layerIds = style.layers.map((layer) => layer.id);
+
+  if (layerA === layerB) {
+    throw new Error("The provided layers must have different IDs.")
+  }
+
+  const indexLayerA = layerIds.indexOf(layerA);
+  const indexLayerB = layerIds.indexOf(layerB);
+
+  if (indexLayerA === -1 || indexLayerB === -1) {
+    throw new Error(`Cannot swap layers ${layerA} and ${layerB} as both must exist in the provided style.`);
+  }
+
+  const styleClone = structuredClone(style);
+  const contentLayerA = styleClone.layers[indexLayerA];
+  const contentLayerB = styleClone.layers[indexLayerB];
+  styleClone.layers.splice(indexLayerA, 1, contentLayerB);
+  styleClone.layers.splice(indexLayerB, 1, contentLayerA);
+  return styleClone;
 }
