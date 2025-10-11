@@ -1990,6 +1990,22 @@
     }
   },
   {
+    "id": "places_locality_circle",
+    "type": "circle",
+    "source": "<BMK_BM_SRC>",
+    "source-layer": "places",
+    "filter": ["==", "kind", "locality"],
+    "maxzoom": 8,
+    "paint": {
+      "circle-radius": {
+        "stops": [[4, 2.5], [8, 3.5]]
+      },
+      "circle-color": "rgb(255, 255, 255)",
+      "circle-stroke-width": 1.75,
+      "circle-stroke-color": "rgb(134, 134, 134)"
+    }
+  },
+  {
     "id": "places_locality",
     "type": "symbol",
     "source": "<BMK_BM_SRC>",

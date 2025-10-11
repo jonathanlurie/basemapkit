@@ -5,16 +5,35 @@ import type {
   LayerSpecification,
   SymbolLayerSpecification,
   RasterDEMSourceSpecification,
+  PropertyValueSpecification,
 } from "maplibre-gl";
 import { applyBrightnessRGB, applyContrastRGB, applyMultiplicationRGB, findColor, type RGBArray } from "./colorchange";
-import avenueLayersRaw from "./assets/avenue-layers-raw.txt?raw";
+import avenueLayersRaw from "./assets/avenue-layers-raw.json?raw";
+import bureauLayersRaw from "./assets/bureau-layers-raw.json?raw";
+import journalLayersRaw from "./assets/journal-layers-raw.json?raw";
+import spectreLayersRaw from "./assets/spectre-layers-raw.json?raw";
+import monochromeLayersRaw from "./assets/monochrome-layers-raw.json?raw";
 import { getDefaultLanguage, isLanguageSupported } from "./language";
 
 const baseStyles = {
   avenue: avenueLayersRaw,
+  bureau: bureauLayersRaw,
+  journal: journalLayersRaw,
+  monochrome: monochromeLayersRaw,
+  spectre: spectreLayersRaw,
 } as const;
 
-const stylePresets = {
+/**
+ * Base style
+ */
+export type BasemapkitBaseStyle = keyof typeof baseStyles;
+
+type PresetDefinition = {
+  baseStyle: BasemapkitBaseStyle;
+  colorEdit: ColorEdit;
+};
+
+const presetStyles = {
   "avenue-pop": {
     baseStyle: "avenue",
     colorEdit: {
@@ -28,7 +47,7 @@ const stylePresets = {
       multiplyColor: ["#ff0000", 0],
       mixColor: ["#ff0000", 0.02],
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "avenue-saturated": {
     baseStyle: "avenue",
@@ -36,7 +55,7 @@ const stylePresets = {
       exposure: -1,
       saturation: 0.1,
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "avenue-night": {
     baseStyle: "avenue",
@@ -46,7 +65,7 @@ const stylePresets = {
       multiplyColor: ["#171075", 0.6],
       contrast: [0.8, 160],
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "avenue-bright": {
     baseStyle: "avenue",
@@ -56,7 +75,7 @@ const stylePresets = {
       hueRotation: 15,
       contrast: [0.4, 220],
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "avenue-bnw": {
     baseStyle: "avenue",
@@ -65,7 +84,7 @@ const stylePresets = {
       saturation: -1,
       contrast: [0.6, 160],
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "avenue-blueprint": {
     baseStyle: "avenue",
@@ -75,7 +94,7 @@ const stylePresets = {
       contrast: [0.75, 160],
       mixColor: ["#3355bb", 0.15],
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "avenue-warm": {
     baseStyle: "avenue",
@@ -84,7 +103,7 @@ const stylePresets = {
       mixColor: ["#ff8800", 0.1],
       contrast: [0.1, 200],
     } as ColorEdit,
-  },
+  } as PresetDefinition,
 
   "avenue-vintage": {
     baseStyle: "avenue",
@@ -94,8 +113,302 @@ const stylePresets = {
       hueRotation: -5,
       contrast: [0.2, 200],
     } as ColorEdit,
-  },
+  } as PresetDefinition,
+
+  "bureau-negative": {
+    baseStyle: "bureau",
+    colorEdit: {
+      negate: true,
+      hueRotation: 180,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "bureau-bnw": {
+    baseStyle: "bureau",
+    colorEdit: {
+      saturation: -1,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "bureau-purple": {
+    baseStyle: "bureau",
+    colorEdit: {
+      negate: false,
+      brightness: -0.2,
+      hueRotation: 40,
+      saturation: -0.4,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "bureau-bnw-negative": {
+    baseStyle: "bureau",
+    colorEdit: {
+      negate: true,
+      saturation: -1,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "bureau-bnw-dark": {
+    baseStyle: "bureau",
+    colorEdit: {
+      brightness: -0.6,
+      saturation: -1,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "bureau-bnw-bright": {
+    baseStyle: "bureau",
+    colorEdit: {
+      brightnessShift: 0.3,
+      saturation: -1,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "bureau-bnw-negative-bright": {
+    baseStyle: "bureau",
+    colorEdit: {
+      brightnessShift: 0.35,
+      exposure: 0.8,
+      saturation: -1,
+      negate: true,
+      contrast: [0.5, 245],
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "bureau-bnw-negative-dark": {
+    baseStyle: "bureau",
+    colorEdit: {
+      brightnessShift: -0.2,
+      brightness: -0.3,
+      saturation: -1,
+      negate: true,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "bureau-sand": {
+    baseStyle: "bureau",
+    colorEdit: {
+      brightnessShift: 0.2,
+      exposure: 0.2,
+      saturation: -1,
+      negate: false,
+      multiplyColor: ["#ffeeab", 0.45],
+      mixColor: ["#ffeeab", 0.1],
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "bureau-sand-negative": {
+    baseStyle: "bureau",
+    colorEdit: {
+      brightnessShift: 0.2,
+      exposure: 0.2,
+      saturation: -1,
+      negate: true,
+      multiplyColor: ["#ffeeab", 0.45],
+      mixColor: ["#ffeeab", 0.1],
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "bureau-ivory": {
+    baseStyle: "bureau",
+    colorEdit: {
+      brightnessShift: 0.2,
+      exposure: 0.2,
+      saturation: -1,
+      negate: false,
+      multiplyColor: ["#f0e9d1", 0.45],
+      mixColor: ["#f0e9d1", 0.1],
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "bureau-ivory-negative": {
+    baseStyle: "bureau",
+    colorEdit: {
+      brightnessShift: 0.2,
+      exposure: 0.2,
+      saturation: -1,
+      multiplyColor: ["#f0e9d1", 0.45],
+      mixColor: ["#f0e9d1", 0.1],
+      negate: true,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "bureau-navy": {
+    baseStyle: "bureau",
+    colorEdit: {
+      brightnessShift: -0.4,
+      exposure: -0.2,
+      saturation: 1,
+      contrast: [0.5, 50],
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "journal-night": {
+    baseStyle: "journal",
+    colorEdit: {
+      brightnessShift: -0.15,
+      exposure: -2,
+      saturation: -0.6,
+      multiplyColor: ["#4444ff", 0.2],
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "journal-teal": {
+    baseStyle: "journal",
+    colorEdit: {
+      brightnessShift: 0.02,
+      exposure: -1.2,
+      hueRotation: -5,
+      saturation: -0.35,
+      multiplyColor: ["#ff9900", 0.05],
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "journal-vintage": {
+    baseStyle: "journal",
+    colorEdit: {
+      brightness: 0.02,
+      brightnessShift: 0.03,
+      exposure: -1.4,
+      saturation: -0.3,
+      contrast: [0.2, 180],
+      multiplyColor: ["#ffc963", 0.25],
+      mixColor: ["#ffc963", 0.08],
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-mild-green": {
+    baseStyle: "spectre",
+    colorEdit: {
+      saturation: -0.2,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-red": {
+    baseStyle: "spectre",
+    colorEdit: {
+      hueRotation: -120,
+      saturation: -0.3,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-blue": {
+    baseStyle: "spectre",
+    colorEdit: {
+      hueRotation: 90,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-purple": {
+    baseStyle: "spectre",
+    colorEdit: {
+      hueRotation: 150,
+      saturation: -0.3,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-pink": {
+    baseStyle: "spectre",
+    colorEdit: {
+      hueRotation: 190,
+      saturation: -0.2,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-orange": {
+    baseStyle: "spectre",
+    colorEdit: {
+      hueRotation: 260,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-yellow": {
+    baseStyle: "spectre",
+    colorEdit: {
+      hueRotation: 290,
+      saturation: 0.1,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-negative": {
+    baseStyle: "spectre",
+    colorEdit: {
+      negate: true,
+      hueRotation: 180,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-negative-mild-green": {
+    baseStyle: "spectre",
+    colorEdit: {
+      negate: true,
+      hueRotation: 180,
+      saturation: -0.2,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-negative-red": {
+    baseStyle: "spectre",
+    colorEdit: {
+      negate: true,
+      hueRotation: 60,
+      saturation: -0.3,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-negative-blue": {
+    baseStyle: "spectre",
+    colorEdit: {
+      negate: true,
+      hueRotation: 270,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-negative-purple": {
+    baseStyle: "spectre",
+    colorEdit: {
+      negate: true,
+      hueRotation: -20,
+      saturation: -0.3,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-negative-pink": {
+    baseStyle: "spectre",
+    colorEdit: {
+      negate: true,
+      hueRotation: 10,
+      saturation: -0.2,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-negative-orange": {
+    baseStyle: "spectre",
+    colorEdit: {
+      negate: true,
+      hueRotation: 80,
+    } as ColorEdit,
+  } as PresetDefinition,
+
+  "spectre-negative-yellow": {
+    baseStyle: "spectre",
+    colorEdit: {
+      negate: true,
+      hueRotation: 110,
+      saturation: 0.1,
+    } as ColorEdit,
+  } as PresetDefinition,
 } as const;
+
+/**
+ * Preset styles are base styles on which is applied a set of "colorEdit"
+ */
+export type BasemapkitPresetStyle = keyof typeof presetStyles;
+
+/**
+ * This is the full list of available styles, including base and preset styles
+ */
+export type BasemapkitStyle = BasemapkitBaseStyle | BasemapkitPresetStyle;
 
 /**
  * Options to modify colors of a base style
@@ -318,9 +631,9 @@ export const BASEMAPKIT_TERRAIN_SOURCE_ID = "__bmk_tr_src";
  */
 export type BuildStyleOptions = GetStyleOptions & {
   /**
-   * Name of the style to start from
+   * Name of the base style to start from
    */
-  baseStyleName: string;
+  baseStyleName: BasemapkitBaseStyle;
 
   /**
    * Optional color modification to apply to the provided style
@@ -332,24 +645,36 @@ export type BuildStyleOptions = GetStyleOptions & {
  * Returns the list of styles available.
  */
 export function getStyleList(): string[] {
-  return Object.keys(baseStyles).concat(Object.keys(stylePresets));
+  const list = [];
+
+  for (const baseStyle of Object.keys(baseStyles)) {
+    list.push(baseStyle);
+
+    const presetsForBaseStyle = Object.entries(presetStyles)
+      .filter(([_, preset]) => preset.baseStyle === baseStyle)
+      .map(([presetId]) => presetId);
+
+    list.push(...presetsForBaseStyle);
+  }
+
+  return list;
 }
 
 /**
  * Get a style.
  */
-export function getStyle(styleName: string, options: GetStyleOptions): StyleSpecification {
+export function getStyle(styleName: BasemapkitStyle, options: GetStyleOptions): StyleSpecification {
   // Check is style is raw
   if (styleName in baseStyles) {
     return buildStyle({
       ...options,
-      baseStyleName: styleName,
+      baseStyleName: styleName as BasemapkitBaseStyle,
     });
   }
 
   // Or if it's a preset
-  if (styleName in stylePresets) {
-    const presetInfo = stylePresets[styleName as keyof typeof stylePresets];
+  if (styleName in presetStyles) {
+    const presetInfo = presetStyles[styleName as BasemapkitPresetStyle];
     return buildStyle({
       ...options,
       baseStyleName: presetInfo.baseStyle,
@@ -616,4 +941,110 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
   };
 
   return style;
+}
+
+/**
+ * Swap two layers within a style. This creates a clone
+ */
+export function swapLayers(
+  /**
+   * The ID of a layer within the provided style
+   */
+  layerA: string, 
+  /**
+   * The ID of another layer within the provided style
+   */
+  layerB: string, 
+  
+  /**
+   * Style to make a copy off
+   */
+  style: StyleSpecification
+): StyleSpecification {
+  const layerIds = style.layers.map((layer) => layer.id);
+
+  if (layerA === layerB) {
+    throw new Error("The provided layers must have different IDs.")
+  }
+
+  const indexLayerA = layerIds.indexOf(layerA);
+  const indexLayerB = layerIds.indexOf(layerB);
+
+  if (indexLayerA === -1 || indexLayerB === -1) {
+    throw new Error(`Cannot swap layers ${layerA} and ${layerB} as both must exist in the provided style.`);
+  }
+
+  const styleClone = structuredClone(style);
+  const contentLayerA = styleClone.layers[indexLayerA];
+  const contentLayerB = styleClone.layers[indexLayerB];
+  styleClone.layers.splice(indexLayerA, 1, contentLayerB);
+  styleClone.layers.splice(indexLayerB, 1, contentLayerA);
+  return styleClone;
+}
+
+/**
+ * Edit the opacity of a layer, with a number of an advanced expression.
+ * This creates a clone of the style object.
+ */
+export function setLayerOpacity(layerId: string, opacity: PropertyValueSpecification<number>, style: StyleSpecification): StyleSpecification {
+  const layerIds = style.layers.map((layer) => layer.id);
+  const layerIndex = layerIds.indexOf(layerId);
+
+  if (layerIndex === -1) {
+    throw new Error(`The layer with ID ${layerId} does not exist in the provided style.`)
+  }
+
+  const layerClone = structuredClone(style);
+  const layerData = layerClone.layers[layerIndex];
+  const layerType = layerData.type;
+
+  if (!(layerData.paint && typeof layerData.paint === "object")) {
+    layerData.paint = {};
+  }
+
+  switch(layerType) {
+    case "fill":
+    layerData.paint["fill-opacity"] = opacity;
+    break;
+
+    case "line":
+    layerData.paint["line-opacity"] = opacity;
+    break;
+
+    case "symbol":
+    layerData.paint["icon-opacity"] = opacity;
+    layerData.paint["text-opacity"] = opacity;
+    break;
+
+    case "circle":
+    layerData.paint["circle-opacity"] = opacity;
+    layerData.paint["circle-stroke-opacity"] = opacity;
+    break;
+
+    case "heatmap":
+    layerData.paint["heatmap-opacity"] = opacity;
+    break;
+
+    case "fill-extrusion":
+    layerData.paint["fill-extrusion-opacity"] = opacity;
+    break;
+
+    case "raster":
+    layerData.paint["raster-opacity"] = opacity;
+    break;
+
+    case "hillshade":
+    layerData.paint["hillshade-exaggeration"] = opacity;
+    break;
+
+    case "color-relief":
+    layerData.paint["color-relief-opacity"] = opacity;
+    break;
+
+    case "background":
+    layerData.paint["background-opacity"] = opacity;
+    break;
+  }
+
+  return layerClone;
 }

@@ -1,9 +1,22 @@
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./style.css";
 import maplibregl from "maplibre-gl";
-import { Protocol } from "pmtiles";
+import {
+  Protocol,
+  // PMTiles
+} from "pmtiles";
 import packagejson from "../package.json";
-import { buildStyle, getStyle, getStyleList, type ColorEdit, type Lang } from "./lib/basemapkit";
+import {
+  buildStyle,
+  getStyle,
+  getStyleList,
+  type BasemapkitStyle,
+  type BuildStyleOptions,
+  type ColorEdit,
+  type Lang,
+} from "./lib/basemapkit";
+
+const defaultStyle = "avenue" as BasemapkitStyle;
 
 type CustomStyle = {
   baseStyleName: string;
@@ -15,7 +28,7 @@ type CustomStyle = {
 };
 
 const defaultCustomStyle = `{
-  "baseStyleName": "avenue",
+  "baseStyleName": "${defaultStyle}",
   "lang": "en",
   "hidePOIs": false,
   "hideLabels": false,
@@ -43,7 +56,32 @@ const defaultCustomStyle = `{
 }
 `;
 
-function getStyleFromUrl(): CustomStyle | null {
+function getStyleIdFromUrl(): BasemapkitStyle | null {
+  const url = new URL(window.location.href);
+  const searchParams = url.searchParams;
+  const styleId = searchParams.get("styleid");
+
+  if (!styleId) return null;
+
+  const styleIdFormatted = styleId.trim().toLowerCase();
+  return getStyleList().includes(styleIdFormatted) ? (styleIdFormatted as BasemapkitStyle) : null;
+}
+
+function updateUrlStyleId(styleId: string) {
+  const url = new URL(window.location.href);
+  const searchParams = url.searchParams;
+  searchParams.set("styleid", styleId.trim().toLowerCase());
+  history.pushState(null, "", url);
+}
+
+function removeUrlStyleId() {
+  const url = new URL(window.location.href);
+  const searchParams = url.searchParams;
+  searchParams.delete("styleid");
+  history.pushState(null, "", url);
+}
+
+function getCustomStyleFromUrl(): CustomStyle | null {
   const url = new URL(window.location.href);
   const searchParams = url.searchParams;
   const styleStr = searchParams.get("customstyle");
@@ -59,14 +97,14 @@ function getStyleFromUrl(): CustomStyle | null {
   }
 }
 
-function updateUrlStyle(s: CustomStyle) {
+function updateUrlCustomStyle(s: CustomStyle) {
   const url = new URL(window.location.href);
   const searchParams = url.searchParams;
   searchParams.set("customstyle", encodeURIComponent(JSON.stringify(s)));
   history.pushState(null, "", url);
 }
 
-function removeUrlStyle() {
+function removeUrlCustomStyle() {
   const url = new URL(window.location.href);
   const searchParams = url.searchParams;
   searchParams.delete("customstyle");
@@ -83,6 +121,8 @@ function removeUrlStyle() {
   const resetButton = document.getElementById("reset-style-bt") as HTMLButtonElement;
   const basemapkitVersionDiv = document.getElementById("basemapkit-version") as HTMLDivElement;
 
+  const currentStyleId = (getStyleIdFromUrl() ?? defaultStyle);
+
   basemapkitVersionDiv.innerText = packagejson.version;
 
   for (const styleId of getStyleList()) {
@@ -98,6 +138,8 @@ function removeUrlStyle() {
   styleDdOption.innerText = "🖌️ custom 🎨";
   styleDD.appendChild(styleDdOption);
 
+  styleDD.value = currentStyleId;
+
   if (!appDiv) {
     return;
   }
@@ -112,33 +154,34 @@ function removeUrlStyle() {
   const pmtilesTerrain = "https://fsn1.your-objectstorage.com/public-map-data/pmtiles/terrain-mapterhorn.pmtiles";
   const terrainTileEncoding = "terrarium";
 
+  const style = getStyle(currentStyleId, {
+    pmtiles,
+    sprite,
+    glyphs,
+    lang,
+    terrain: {
+      pmtiles: pmtilesTerrain,
+      encoding: terrainTileEncoding,
+    },
+  });
+
   const map = new maplibregl.Map({
     container: appDiv,
     maxPitch: 89,
     hash: true,
-    style: getStyle("avenue", {
-      pmtiles,
-      sprite,
-      glyphs,
-      lang,
-
-      terrain: {
-        pmtiles: pmtilesTerrain,
-        encoding: terrainTileEncoding,
-      },
-    }),
+    style,
     center: [0, 0],
     zoom: 3,
   });
 
-  // map.showTileBoundaries = true;
-
   // Update the style based on the dropdown
   styleDD.addEventListener("change", (e: Event) => {
-    removeUrlStyle();
-    const selectedStyle = (e.target as HTMLSelectElement).value;
+    removeUrlCustomStyle();
+    removeUrlStyleId();
+    const selectedStyle = (e.target as HTMLSelectElement).value as BasemapkitStyle | "custom";
 
     if (selectedStyle !== "custom") {
+      updateUrlStyleId(selectedStyle);
       map.setStyle(
         getStyle(selectedStyle, {
           pmtiles,
@@ -159,7 +202,7 @@ function removeUrlStyle() {
     styleEditor.classList.remove("hidden");
     // The custom mode always starts with the avenue default style
     map.setStyle(
-      getStyle("avenue", {
+      getStyle(defaultStyle, {
         pmtiles,
         sprite,
         glyphs,
@@ -177,7 +220,7 @@ function removeUrlStyle() {
   let customStyle: CustomStyle | null = JSON.parse(defaultCustomStyle) as CustomStyle;
 
   // Trying to load style from URL
-  const styleFromUrl = getStyleFromUrl();
+  const styleFromUrl = getCustomStyleFromUrl();
   if (styleFromUrl) {
     try {
       const style = buildStyle({
@@ -194,16 +237,16 @@ function removeUrlStyle() {
               },
             }
           : {}),
-      });
+      } as BuildStyleOptions);
 
       customStyle = styleFromUrl;
       codeEditor.value = JSON.stringify(styleFromUrl, null, 2);
       map.setStyle(style, { diff: false });
-      // updateUrlStyle(customStyle);
+      // updateUrlCustomStyle(customStyle);
       styleDD.value = "custom";
       styleEditor.classList.remove("hidden");
     } catch (e) {
-      removeUrlStyle();
+      removeUrlCustomStyle();
       console.error(e);
     }
   }
@@ -223,7 +266,7 @@ function removeUrlStyle() {
   });
 
   resetButton.addEventListener("pointerup", () => {
-    removeUrlStyle();
+    removeUrlCustomStyle();
     codeEditor.value = defaultCustomStyle;
     customStyle = JSON.parse(defaultCustomStyle) as CustomStyle;
 
@@ -241,18 +284,18 @@ function removeUrlStyle() {
             },
           }
         : {}),
-    });
+    } as BuildStyleOptions);
 
     map.setStyle(style, { diff: false });
   });
 
   validateStyleBt.addEventListener("pointerup", () => {
     if (!customStyle) {
-      removeUrlStyle();
+      removeUrlCustomStyle();
       return;
     }
 
-    updateUrlStyle(customStyle);
+    updateUrlCustomStyle(customStyle);
 
     const style = buildStyle({
       ...customStyle,
@@ -268,8 +311,9 @@ function removeUrlStyle() {
             },
           }
         : {}),
-    });
+    } as BuildStyleOptions);
 
     map.setStyle(style, { diff: false });
   });
+
 })();
