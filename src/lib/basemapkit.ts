@@ -5,6 +5,8 @@ import type {
   LayerSpecification,
   SymbolLayerSpecification,
   RasterDEMSourceSpecification,
+  FillLayerSpecification,
+  PropertyValueSpecification,
 } from "maplibre-gl";
 import { applyBrightnessRGB, applyContrastRGB, applyMultiplicationRGB, findColor, type RGBArray } from "./colorchange";
 import avenueLayersRaw from "./assets/avenue-layers-raw.json?raw";
@@ -662,7 +664,7 @@ export function getStyleList(): string[] {
 /**
  * Get a style.
  */
-export function getStyle(styleName: BasemapkitStyle, options: GetStyleOptions): StyleSpecification {
+export function getStyle(styleName: BasemapkitBaseStyle, options: GetStyleOptions): StyleSpecification {
   // Check is style is raw
   if (styleName in baseStyles) {
     return buildStyle({
@@ -945,7 +947,21 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
 /**
  * Swap two layers within a style. This creates a clone
  */
-export function swapLayers(layerA: string, layerB: string, style: StyleSpecification): StyleSpecification {
+export function swapLayers(
+  /**
+   * The ID of a layer within the provided style
+   */
+  layerA: string, 
+  /**
+   * The ID of another layer within the provided style
+   */
+  layerB: string, 
+  
+  /**
+   * Style to make a copy off
+   */
+  style: StyleSpecification
+): StyleSpecification {
   const layerIds = style.layers.map((layer) => layer.id);
 
   if (layerA === layerB) {
@@ -965,4 +981,71 @@ export function swapLayers(layerA: string, layerB: string, style: StyleSpecifica
   styleClone.layers.splice(indexLayerA, 1, contentLayerB);
   styleClone.layers.splice(indexLayerB, 1, contentLayerA);
   return styleClone;
+}
+
+/**
+ * Edit the opacity of a layer, with a number of an advanced expression.
+ * This creates a clone of the style object.
+ */
+export function setLayerOpacity(layerId: string, opacity: PropertyValueSpecification<number>, style: StyleSpecification): StyleSpecification {
+  const layerIds = style.layers.map((layer) => layer.id);
+  const layerIndex = layerIds.indexOf(layerId);
+
+  if (layerIndex === -1) {
+    throw new Error(`The layer with ID ${layerId} does not exist in the provided style.`)
+  }
+
+  const layerClone = structuredClone(style);
+  const layerData = layerClone.layers[layerIndex];
+  const layerType = layerData.type;
+
+  if (!(layerData.paint && typeof layerData.paint === "object")) {
+    layerData.paint = {};
+  }
+
+  switch(layerType) {
+    case "fill":
+    layerData.paint["fill-opacity"] = opacity;
+    break;
+
+    case "line":
+    layerData.paint["line-opacity"] = opacity;
+    break;
+
+    case "symbol":
+    layerData.paint["icon-opacity"] = opacity;
+    layerData.paint["text-opacity"] = opacity;
+    break;
+
+    case "circle":
+    layerData.paint["circle-opacity"] = opacity;
+    layerData.paint["circle-stroke-opacity"] = opacity;
+    break;
+
+    case "heatmap":
+    layerData.paint["heatmap-opacity"] = opacity;
+    break;
+
+    case "fill-extrusion":
+    layerData.paint["fill-extrusion-opacity"] = opacity;
+    break;
+
+    case "raster":
+    layerData.paint["raster-opacity"] = opacity;
+    break;
+
+    case "hillshade":
+    layerData.paint["hillshade-exaggeration"] = opacity;
+    break;
+
+    case "color-relief":
+    layerData.paint["color-relief-opacity"] = opacity;
+    break;
+
+    case "background":
+    layerData.paint["background-opacity"] = opacity;
+    break;
+  }
+
+  return layerClone;
 }

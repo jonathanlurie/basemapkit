@@ -536,7 +536,7 @@ The extra API goes beyond just providing style, yet, it's still minimal and only
 It does exactely what you think: swapping layers. But it does it in a non-destructive way. This can be quite handy when using `spectre` or `spectre-negative` if you prefer to have a dark/light overlay on top of either land or water area when you add your own data layer.
 
 ```ts
-import { swapLayers } from "basemapkit";
+import { swapLayers, getStyle } from "basemapkit";
 
 ...
 const myStyle = getStyle("spectre", options);
@@ -545,3 +545,39 @@ const myStyle = getStyle("spectre", options);
 // Let's swap those two:
 const mySwappedStyle = swapLayers("earth", "water", myStyle);
 ```
+
+## Set layer opacity
+While the opacity of a layer is addressable with `map.setPaintProperty(...)`, this can only be done after the layer is mounted (in a `style.load` or `load` event callback) and the one would have to know the `type` of layer, since the opacity property has a different name for each type.  
+
+Basemapkit exposes the function `setLayerOpacity()`, which let you set the opacity of a layer *before* it is mounted, and it also resolves the opacity property name for you:
+
+```ts
+import { setLayerOpacity, getStyle } from "basemapkit";
+
+...
+const myStyle = getStyle("spectre", options);
+const opaqueOceanStyle = setLayerOpacity("water", 1, myStyle);
+```
+
+You can also provide a style expression if you want the opacity to depend on zoom level or another property. For instance, to have the country labels to progressively appear between z3 and z4:
+```ts
+import { setLayerOpacity, getStyle } from "basemapkit";
+
+...
+const myStyle = getStyle("spectre", options);
+
+style = setLayerOpacity("places_country", 
+[
+  "interpolate",
+  ["exponential", 2],
+  ["zoom"],
+  3, 0,
+  4, 1
+],
+style);
+```
+
+The function `setLayerOpacity()` create a deep clone and apply the modification on it so it does not alter the provided style.
+
+# License
+MIT.

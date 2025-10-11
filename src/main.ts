@@ -10,6 +10,7 @@ import {
   buildStyle,
   getStyle,
   getStyleList,
+  setLayerOpacity,
   swapLayers,
   type BasemapkitStyle,
   type BuildStyleOptions,
@@ -122,7 +123,7 @@ function removeUrlCustomStyle() {
   const resetButton = document.getElementById("reset-style-bt") as HTMLButtonElement;
   const basemapkitVersionDiv = document.getElementById("basemapkit-version") as HTMLDivElement;
 
-  const currentStyleId = getStyleIdFromUrl() ?? defaultStyle;
+  const currentStyleId = (getStyleIdFromUrl() ?? defaultStyle);
 
   basemapkitVersionDiv.innerText = packagejson.version;
 
@@ -165,8 +166,6 @@ function removeUrlCustomStyle() {
       encoding: terrainTileEncoding,
     },
   });
-
-  console.log(style);
 
   const map = new maplibregl.Map({
     container: appDiv,
@@ -319,77 +318,4 @@ function removeUrlCustomStyle() {
     map.setStyle(style, { diff: false });
   });
 
-
-  const style2 = getStyle("spectre", {
-    pmtiles,
-    sprite,
-    glyphs,
-    lang,
-    terrain: {
-      pmtiles: pmtilesTerrain,
-      encoding: terrainTileEncoding,
-    },
-  });
-
-  console.log(style2);
-  
- const swappedEartWater = swapLayers("earth", "water", style2)
-
- console.log(swappedEartWater);
- 
-
 })();
-
-// const pmtileTerrain = new PMTiles(
-//   "https://fsn1.your-objectstorage.com/public-map-data/pmtiles/terrain-mapterhorn.pmtiles",
-// );
-
-// async function debugTile(z: number, x: number, y: number) {
-//   const tileData = await pmtileTerrain.getZxy(z, x, y);
-
-//   const header = await pmtileTerrain.getHeader();
-//   console.log(header);
-
-//   if (!tileData) return null;
-
-//   // Create a blob from the tile data
-//   const blob = new Blob([tileData.data]);
-//   const imageUrl = URL.createObjectURL(blob);
-
-//   // Create and load image
-//   const img = new Image();
-//   await new Promise((resolve, reject) => {
-//     img.onload = resolve;
-//     img.onerror = reject;
-//     img.src = imageUrl;
-//   });
-
-//   // Create canvas to extract pixel data
-//   const canvas = document.createElement("canvas");
-//   canvas.width = img.width;
-//   canvas.height = img.height;
-//   const ctx = canvas.getContext("2d");
-//   ctx?.drawImage(img, 0, 0);
-
-//   const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
-
-//   // Clean up
-//   URL.revokeObjectURL(imageUrl);
-
-//   console.log(imageData);
-
-//   return {
-//     image: img,
-//     imageData,
-//     getPixelValue: (x: number, y: number) => {
-//       if (!imageData) return null;
-//       const index = (y * canvas.width + x) * 4;
-//       const r = imageData.data[index];
-//       const g = imageData.data[index + 1];
-//       const b = imageData.data[index + 2];
-//       // Terrarium encoding formula
-//       const elevation = r * 256 + g + b / 256 - 32768;
-//       return { r, g, b, elevation };
-//     },
-//   };
-// }
