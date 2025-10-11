@@ -10,8 +10,6 @@ import {
   buildStyle,
   getStyle,
   getStyleList,
-  setLayerOpacity,
-  swapLayers,
   type BasemapkitStyle,
   type BuildStyleOptions,
   type ColorEdit,
@@ -180,7 +178,7 @@ function removeUrlCustomStyle() {
   styleDD.addEventListener("change", (e: Event) => {
     removeUrlCustomStyle();
     removeUrlStyleId();
-    const selectedStyle = (e.target as HTMLSelectElement).value as BasemapkitStyle;
+    const selectedStyle = (e.target as HTMLSelectElement).value as BasemapkitStyle | "custom";
 
     if (selectedStyle !== "custom") {
       updateUrlStyleId(selectedStyle);

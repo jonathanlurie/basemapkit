@@ -5,7 +5,6 @@ import type {
   LayerSpecification,
   SymbolLayerSpecification,
   RasterDEMSourceSpecification,
-  FillLayerSpecification,
   PropertyValueSpecification,
 } from "maplibre-gl";
 import { applyBrightnessRGB, applyContrastRGB, applyMultiplicationRGB, findColor, type RGBArray } from "./colorchange";
@@ -664,12 +663,12 @@ export function getStyleList(): string[] {
 /**
  * Get a style.
  */
-export function getStyle(styleName: BasemapkitBaseStyle, options: GetStyleOptions): StyleSpecification {
+export function getStyle(styleName: BasemapkitStyle, options: GetStyleOptions): StyleSpecification {
   // Check is style is raw
   if (styleName in baseStyles) {
     return buildStyle({
       ...options,
-      baseStyleName: styleName,
+      baseStyleName: styleName as BasemapkitBaseStyle,
     });
   }
 
