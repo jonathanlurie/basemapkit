@@ -354,7 +354,19 @@
     "source-layer": "buildings",
     "filter": ["in", "kind", "building", "building_part"],
     "layout": {"visibility": "visible"},
-    "paint": {"fill-opacity": 0.08, "fill-color": "#000"}
+    "minzoom": 14,
+    "paint": {
+      "fill-opacity": [
+        "interpolate",
+        ["exponential", 1.6],
+        ["zoom"],
+        14,
+        0,
+        15,
+        0.08
+      ],
+      "fill-color": "#000"
+    }
   },
   {
     "id": "roads_pier",
@@ -858,8 +870,8 @@
       "visibility": "visible"
     },
     "paint": {
-      "text-color": "rgba(0, 0, 0, 0.75)",
-      "text-halo-color": "rgba(255, 255, 255, 0.5)",
+      "text-color": "rgb(0, 0, 0)",
+      "text-halo-color": "rgb(255, 255, 255)",
       "text-halo-width": 1
     }
   },
@@ -878,9 +890,7 @@
       "text-transform": "uppercase"
     },
     "paint": {
-      "text-color": "rgba(0, 0, 0, 0.7)",
-      "text-halo-width": 1,
-      "text-halo-color": "rgba(0, 0, 0, 0)"
+      "text-color": "rgba(0, 0, 0, 0.7)"
     }
   },
   {
@@ -943,8 +953,8 @@
       "visibility": "visible"
     },
     "paint": {
-      "text-color": "rgba(0, 0, 0, 0.75)",
-      "text-halo-color": "rgba(255, 255, 255, 0.5)",
+      "text-color": "rgb(0, 0, 0)",
+      "text-halo-color": "rgb(255, 255, 255)",
       "text-halo-width": 1
     }
   },
@@ -1012,15 +1022,15 @@
       "text-font": ["Noto Sans Regular"],
       "text-justify": "auto",
       "text-field": "<LANG>",
-      "text-size": ["interpolate", ["linear"], ["zoom"], 17, 11, 19, 14],
+      "text-size": ["interpolate", ["linear"], ["zoom"], 17, 12, 19, 14],
       "text-max-width": 8,
       "text-offset": [1.5, 0],
       "text-variable-anchor": ["left", "right"],
       "visibility": "visible"
     },
     "paint": {
-      "text-color": "rgba(0, 0, 0, 0.75)",
-      "text-halo-color": "rgba(255, 255, 255, 0.5)",
+      "text-color": "rgb(0, 0, 0)",
+      "text-halo-color": "rgb(255, 255, 255)",
       "text-halo-width": 1.5
     }
   },
@@ -1056,21 +1066,21 @@
       ],
       "text-size": [
         "interpolate",
-        ["exponential", 1.2],
+        ["exponential", 2],
         ["zoom"],
         11,
-        8,
+        11,
         14,
-        14,
+        16,
         18,
         24
       ],
       "text-transform": "uppercase"
     },
     "paint": {
-      "text-color": "rgba(0, 0, 0, 0.75)",
-      "text-halo-color": "rgba(255, 255, 255, 0.5)",
-      "text-halo-width": 1
+      "text-color": "rgb(0, 0, 0)",
+      "text-halo-color": "rgba(255, 255, 255, 0.9)",
+      "text-halo-width": 1.2
     }
   },
   {
@@ -1089,7 +1099,7 @@
       "text-transform": "uppercase"
     },
     "paint": {
-      "text-halo-color": "rgba(0, 0, 0, 0.75)",
+      "text-halo-color": "rgb(0, 0, 0)",
       "text-halo-width": 1,
       "text-color": "#ffffff"
     }
@@ -1231,8 +1241,8 @@
       "visibility": "visible"
     },
     "paint": {
-      "text-color": "rgba(0, 0, 0, 0.85)",
-      "text-halo-color": "rgba(255, 255, 255, 0.85)",
+      "text-color": "rgb(0, 0, 0)",
+      "text-halo-color": "rgb(255, 255, 255)",
       "text-halo-width": 1
     }
   },
@@ -1301,9 +1311,9 @@
       "text-transform": "none"
     },
     "paint": {
-      "text-color": "rgba(0, 0, 0, 0.9)",
-      "text-halo-color": "rgba(255, 255, 255, 0.7)",
-      "text-halo-width": 1.5
+      "text-color": "rgb(0, 0, 0)",
+      "text-halo-color": "rgb(255, 255, 255)",
+      "text-halo-width": 1.1
     }
   }
 ]
