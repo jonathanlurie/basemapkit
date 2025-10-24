@@ -15,6 +15,15 @@
     "paint": {"fill-color": "#202226"}
   },
   {
+    "id": "landuse_pedestrian",
+    "type": "fill",
+    "source": "<BMK_BM_SRC>",
+    "source-layer": "landuse",
+    "filter": ["in", "kind", "pedestrian", "dam"],
+    "layout": {"visibility": "visible"},
+    "paint": {"fill-color": "#f7f7f7"}
+  },
+  {
     "id": "parks",
     "type": "fill",
     "source": "<BMK_BM_SRC>",
@@ -366,7 +375,19 @@
     "source-layer": "buildings",
     "filter": ["in", "kind", "building", "building_part"],
     "layout": {"visibility": "visible"},
-    "paint": {"fill-opacity": 0.08, "fill-color": "#000"}
+    "minzoom": 14,
+    "paint": {
+      "fill-opacity": [
+        "interpolate",
+        ["exponential", 1.6],
+        ["zoom"],
+        14,
+        0,
+        15,
+        0.05
+      ],
+      "fill-color": "#000"
+    }
   },
   {
     "id": "roads_pier",
