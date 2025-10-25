@@ -120,7 +120,7 @@ function removeUrlCustomStyle() {
   const resetButton = document.getElementById("reset-style-bt") as HTMLButtonElement;
   const basemapkitVersionDiv = document.getElementById("basemapkit-version") as HTMLDivElement;
   const zoomDisplay = document.getElementById("zoom-display") as HTMLDivElement;
-  const currentStyleId = (getStyleIdFromUrl() ?? defaultStyle);
+  const currentStyleId = getStyleIdFromUrl() ?? defaultStyle;
   basemapkitVersionDiv.innerText = packagejson.version;
 
   for (const styleId of getStyleList()) {
@@ -176,7 +176,7 @@ function removeUrlCustomStyle() {
     if (!zoomDisplay) {
       return;
     }
-    zoomDisplay.innerText = map.getZoom().toFixed(2)
+    zoomDisplay.innerText = map.getZoom().toFixed(2);
   });
 
   // Update the style based on the dropdown
@@ -320,5 +320,4 @@ function removeUrlCustomStyle() {
 
     map.setStyle(style, { diff: false });
   });
-
 })();

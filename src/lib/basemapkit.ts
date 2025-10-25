@@ -950,21 +950,21 @@ export function swapLayers(
   /**
    * The ID of a layer within the provided style
    */
-  layerA: string, 
+  layerA: string,
   /**
    * The ID of another layer within the provided style
    */
-  layerB: string, 
-  
+  layerB: string,
+
   /**
    * Style to make a copy off
    */
-  style: StyleSpecification
+  style: StyleSpecification,
 ): StyleSpecification {
   const layerIds = style.layers.map((layer) => layer.id);
 
   if (layerA === layerB) {
-    throw new Error("The provided layers must have different IDs.")
+    throw new Error("The provided layers must have different IDs.");
   }
 
   const indexLayerA = layerIds.indexOf(layerA);
@@ -986,12 +986,16 @@ export function swapLayers(
  * Edit the opacity of a layer, with a number of an advanced expression.
  * This creates a clone of the style object.
  */
-export function setLayerOpacity(layerId: string, opacity: PropertyValueSpecification<number>, style: StyleSpecification): StyleSpecification {
+export function setLayerOpacity(
+  layerId: string,
+  opacity: PropertyValueSpecification<number>,
+  style: StyleSpecification,
+): StyleSpecification {
   const layerIds = style.layers.map((layer) => layer.id);
   const layerIndex = layerIds.indexOf(layerId);
 
   if (layerIndex === -1) {
-    throw new Error(`The layer with ID ${layerId} does not exist in the provided style.`)
+    throw new Error(`The layer with ID ${layerId} does not exist in the provided style.`);
   }
 
   const layerClone = structuredClone(style);
@@ -1002,48 +1006,48 @@ export function setLayerOpacity(layerId: string, opacity: PropertyValueSpecifica
     layerData.paint = {};
   }
 
-  switch(layerType) {
+  switch (layerType) {
     case "fill":
-    layerData.paint["fill-opacity"] = opacity;
-    break;
+      layerData.paint["fill-opacity"] = opacity;
+      break;
 
     case "line":
-    layerData.paint["line-opacity"] = opacity;
-    break;
+      layerData.paint["line-opacity"] = opacity;
+      break;
 
     case "symbol":
-    layerData.paint["icon-opacity"] = opacity;
-    layerData.paint["text-opacity"] = opacity;
-    break;
+      layerData.paint["icon-opacity"] = opacity;
+      layerData.paint["text-opacity"] = opacity;
+      break;
 
     case "circle":
-    layerData.paint["circle-opacity"] = opacity;
-    layerData.paint["circle-stroke-opacity"] = opacity;
-    break;
+      layerData.paint["circle-opacity"] = opacity;
+      layerData.paint["circle-stroke-opacity"] = opacity;
+      break;
 
     case "heatmap":
-    layerData.paint["heatmap-opacity"] = opacity;
-    break;
+      layerData.paint["heatmap-opacity"] = opacity;
+      break;
 
     case "fill-extrusion":
-    layerData.paint["fill-extrusion-opacity"] = opacity;
-    break;
+      layerData.paint["fill-extrusion-opacity"] = opacity;
+      break;
 
     case "raster":
-    layerData.paint["raster-opacity"] = opacity;
-    break;
+      layerData.paint["raster-opacity"] = opacity;
+      break;
 
     case "hillshade":
-    layerData.paint["hillshade-exaggeration"] = opacity;
-    break;
+      layerData.paint["hillshade-exaggeration"] = opacity;
+      break;
 
     case "color-relief":
-    layerData.paint["color-relief-opacity"] = opacity;
-    break;
+      layerData.paint["color-relief-opacity"] = opacity;
+      break;
 
     case "background":
-    layerData.paint["background-opacity"] = opacity;
-    break;
+      layerData.paint["background-opacity"] = opacity;
+      break;
   }
 
   return layerClone;
