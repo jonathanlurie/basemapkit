@@ -139,8 +139,29 @@ body, html {
   top: 0;
   left: 0;
   pointer-events: none;
-  color: #000000;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #444;
   font-family: monospace;
   z-index: 2;
   padding: 5px;
+  margin: 10px;
+  border-radius: 4px;
+}
+
+#basemapkit-version::before {
+  content: "v";
+}
+
+#zoom-display {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  padding: 5px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #444;
+  font-family: monospace;
+  z-index: 2;
+  pointer-events: none;
 }

@@ -3,7 +3,7 @@
     "id": "background",
     "type": "background",
     "layout": {"visibility": "visible"},
-    "paint": {"background-color": "#f7f7f7"}
+    "paint": {"background-color": "#f0f0f0"}
   },
   {
     "id": "water",
@@ -21,7 +21,7 @@
     "source-layer": "landuse",
     "filter": ["in", "kind", "pedestrian", "dam"],
     "layout": {"visibility": "visible"},
-    "paint": {"fill-color": "#f7f7f7"}
+    "paint": {"fill-color": "#f0f0f0"}
   },
   {
     "id": "parks",
@@ -164,109 +164,6 @@
     "paint": {
       "line-width": 0.5,
       "line-color": "#202226"
-    }
-  },
-  {
-    "id": "roads_tunnels_other_casing",
-    "type": "line",
-    "source": "<BMK_BM_SRC>",
-    "source-layer": "roads",
-    "filter": ["all", ["has", "is_tunnel"], ["in", "kind", "other", "path"]],
-    "paint": {
-      "line-color": "#e0e0e0",
-      "line-gap-width": [
-        "interpolate",
-        ["exponential", 1.6],
-        ["zoom"],
-        14,
-        0,
-        20,
-        7
-      ]
-    }
-  },
-  {
-    "id": "roads_tunnels_minor_casing",
-    "type": "line",
-    "source": "<BMK_BM_SRC>",
-    "source-layer": "roads",
-    "filter": ["all", ["has", "is_tunnel"], ["==", "kind", "minor_road"]],
-    "paint": {
-      "line-color": "#e0e0e0",
-      "line-dasharray": [3, 2],
-      "line-gap-width": [
-        "interpolate",
-        ["exponential", 1.6],
-        ["zoom"],
-        11,
-        0,
-        12.5,
-        0.5,
-        15,
-        2,
-        18,
-        11
-      ],
-      "line-width": [
-        "interpolate",
-        ["exponential", 1.6],
-        ["zoom"],
-        12,
-        0,
-        12.5,
-        1
-      ]
-    }
-  },
-  {
-    "id": "roads_tunnels_link_casing",
-    "type": "line",
-    "source": "<BMK_BM_SRC>",
-    "source-layer": "roads",
-    "filter": ["all", ["has", "is_tunnel"], ["has", "is_link"]],
-    "paint": {
-      "line-color": "#e0e0e0",
-      "line-dasharray": [3, 2],
-      "line-gap-width": [
-        "interpolate",
-        ["exponential", 1.6],
-        ["zoom"],
-        13,
-        0,
-        13.5,
-        1,
-        18,
-        11
-      ],
-      "line-width": [
-        "interpolate",
-        ["exponential", 1.6],
-        ["zoom"],
-        12,
-        0,
-        12.5,
-        1
-      ]
-    }
-  },
-  {
-    "id": "roads_tunnels_other",
-    "type": "line",
-    "source": "<BMK_BM_SRC>",
-    "source-layer": "roads",
-    "filter": ["all", ["has", "is_tunnel"], ["in", "kind", "other", "path"]],
-    "paint": {
-      "line-color": "#d5d5d5",
-      "line-dasharray": [4.5, 0.5],
-      "line-width": [
-        "interpolate",
-        ["exponential", 1.6],
-        ["zoom"],
-        14,
-        0,
-        20,
-        7
-      ]
     }
   },
   {
@@ -655,59 +552,6 @@
       ],
       "line-color": "#000",
       "line-opacity": 0.4
-    }
-  },
-  {
-    "id": "roads_bridges_other_casing",
-    "type": "line",
-    "source": "<BMK_BM_SRC>",
-    "source-layer": "roads",
-    "minzoom": 12,
-    "filter": ["all", ["has", "is_bridge"], ["in", "kind", "other", "path"]],
-    "paint": {
-      "line-color": "#e0e0e0",
-      "line-gap-width": [
-        "interpolate",
-        ["exponential", 1.6],
-        ["zoom"],
-        14,
-        0,
-        20,
-        7
-      ]
-    }
-  },
-  {
-    "id": "roads_bridges_minor_casing",
-    "type": "line",
-    "source": "<BMK_BM_SRC>",
-    "source-layer": "roads",
-    "minzoom": 12,
-    "filter": ["all", ["has", "is_bridge"], ["==", "kind", "minor_road"]],
-    "paint": {
-      "line-color": "#e0e0e0",
-      "line-gap-width": [
-        "interpolate",
-        ["exponential", 1.6],
-        ["zoom"],
-        11,
-        0,
-        12.5,
-        0.5,
-        15,
-        2,
-        18,
-        11
-      ],
-      "line-width": [
-        "interpolate",
-        ["exponential", 1.6],
-        ["zoom"],
-        13,
-        0,
-        13.5,
-        0.8
-      ]
     }
   },
   {
@@ -1114,7 +958,7 @@
       "symbol-sort-key": ["get", "sort_key"],
       "text-field": "<LANG>",
       "text-font": ["Noto Sans Regular"],
-      "text-size": ["interpolate", ["linear"], ["zoom"], 3, 11, 7, 16],
+      "text-size": ["interpolate", ["linear"], ["zoom"], 3, 12, 7, 18],
       "text-radial-offset": 0.2,
       "text-anchor": "center",
       "text-transform": "uppercase"
@@ -1191,45 +1035,45 @@
         [
           "case",
           ["<", ["get", "population_rank"], 13],
-          12,
+          14,
           [">=", ["get", "population_rank"], 13],
-          17,
+          18,
           0
         ],
         6,
         [
           "case",
           ["<", ["get", "population_rank"], 12],
-          14,
+          15,
           [">=", ["get", "population_rank"], 12],
-          17,
+          18,
           0
         ],
         8,
         [
           "case",
           ["<", ["get", "population_rank"], 11],
-          13,
+          15,
           [">=", ["get", "population_rank"], 11],
-          20,
+          21,
           0
         ],
         10,
         [
           "case",
           ["<", ["get", "population_rank"], 9],
-          14,
+          16,
           [">=", ["get", "population_rank"], 9],
-          20,
+          21,
           0
         ],
         15,
         [
           "case",
           ["<", ["get", "population_rank"], 8],
-          14,
+          16,
           [">=", ["get", "population_rank"], 8],
-          22,
+          23,
           0
         ]
       ],

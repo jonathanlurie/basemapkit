@@ -112,17 +112,15 @@ function removeUrlCustomStyle() {
 }
 
 (() => {
-  const appDiv = document.querySelector<HTMLDivElement>("#app");
-
+  const appDiv = document.getElementById("app") as HTMLDivElement;
   const styleDD = document.getElementById("style-dd") as HTMLSelectElement;
   const styleEditor = document.getElementById("style-editor") as HTMLDivElement;
   const validateStyleBt = document.getElementById("validate-style-bt") as HTMLButtonElement;
   const codeEditor = document.getElementById("code-editor") as HTMLTextAreaElement;
   const resetButton = document.getElementById("reset-style-bt") as HTMLButtonElement;
   const basemapkitVersionDiv = document.getElementById("basemapkit-version") as HTMLDivElement;
-
+  const zoomDisplay = document.getElementById("zoom-display") as HTMLDivElement;
   const currentStyleId = (getStyleIdFromUrl() ?? defaultStyle);
-
   basemapkitVersionDiv.innerText = packagejson.version;
 
   for (const styleId of getStyleList()) {
@@ -172,6 +170,13 @@ function removeUrlCustomStyle() {
     style,
     center: [0, 0],
     zoom: 3,
+  });
+
+  map.on("zoom", () => {
+    if (!zoomDisplay) {
+      return;
+    }
+    zoomDisplay.innerText = map.getZoom().toFixed(2)
   });
 
   // Update the style based on the dropdown

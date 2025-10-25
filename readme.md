@@ -2,7 +2,10 @@
   <img src="./public/logo.svg" alt="Basemapkit logo" width="400px"></img>
 </p>
 <p align="center">
-Basemaps for <a href="https://maplibre.org/maplibre-gl-js/docs/">Maplibre GL JS</a> + <a href="https://protomaps.com/">Protomaps</a>
+Basemaps for the people!</a>
+</p>
+<p align="center">
+Compatible with <a href="https://maplibre.org/maplibre-gl-js/docs/">Maplibre GL JS</a> + <a href="https://protomaps.com/">Protomaps</a>
 </p>
 
 <p align="center">
