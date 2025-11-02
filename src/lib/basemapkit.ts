@@ -614,6 +614,12 @@ export type GetStyleOptions = {
      */
     exaggeration?: number;
   };
+
+  /**
+   * Use the globe projection if `true`, Mercator if `false`.
+   * Default: `true`
+   */
+  globe?: boolean;
 };
 
 /**
@@ -804,6 +810,8 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
   const negate = colorOptions.negate ?? false;
   const brightnessShift = colorOptions.brightnessShift ?? 0;
   const exposure = colorOptions.exposure ?? 0;
+  const useGlobeProjection = options.globe ?? true;
+  const projection = { type: useGlobeProjection ? "globe" : "mercator" };
 
   const shouldApplyColorTransform =
     brightness !== 0 ||
@@ -927,7 +935,7 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
         : {}),
     },
     layers: layers,
-    projection: { type: ["interpolate", ["linear"], ["zoom"], 7, "vertical-perspective", 8, "mercator"] },
+    projection,
 
     // Add the terrain if the terrain source is provided and the exaggeration is superior to 0
     ...(terrainSourceUrl && terrainExaggeration

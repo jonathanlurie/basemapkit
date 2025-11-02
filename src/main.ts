@@ -25,6 +25,7 @@ type CustomStyle = {
   hideLabels: boolean;
   colorEdit: ColorEdit;
   hillshading: boolean;
+  globe: boolean;
 };
 
 const defaultCustomStyle = `{
@@ -52,7 +53,8 @@ const defaultCustomStyle = `{
       0
     ]
   },
-  "hillshading": true
+  "hillshading": true,
+  "globe": true
 }
 `;
 
@@ -161,6 +163,7 @@ function removeUrlCustomStyle() {
       pmtiles: pmtilesTerrain,
       encoding: terrainTileEncoding,
     },
+    globe: true,
   });
 
   const map = new maplibregl.Map({
@@ -242,6 +245,7 @@ function removeUrlCustomStyle() {
               },
             }
           : {}),
+        globe: styleFromUrl.globe,
       } as BuildStyleOptions);
 
       customStyle = styleFromUrl;
@@ -289,6 +293,7 @@ function removeUrlCustomStyle() {
             },
           }
         : {}),
+      globe: customStyle.globe,
     } as BuildStyleOptions);
 
     map.setStyle(style, { diff: false });
@@ -316,6 +321,7 @@ function removeUrlCustomStyle() {
             },
           }
         : {}),
+      globe: customStyle.globe,
     } as BuildStyleOptions);
 
     map.setStyle(style, { diff: false });
