@@ -249,7 +249,22 @@ getStyle(
 
 Note that the corresponding layers are removed from the style and not just made invisible. If hiding POIs or label, the options `sprite` and `glyph` are unnecessary.
 
-## Getting creative with `buildStyle()`
+## Globe or Mercator projection 🌐
+By default, the styles available in basempkit are all showing Earth as a globe, but Mercator projection can still be used.  use
+The option `globe` (boolean) can be set to `false` in the functions `getStyle()` and `buildStyle()`. Just like that:
+
+```ts
+getStyle(
+  "avenue", 
+  {
+    pmtiles: "...",
+    sprite: "...",
+    glyphs: "...",
+    globe: false,
+  });
+```
+
+## Getting creative with `buildStyle()` 🎨
 In addition to language and hiding POIs/labels, Basmapkit exposes some methods to modify the colors of the original style (`avenue`) to create *presets*. When the style is generated with some non-default `colorEdit`, a brand new Maplibre style is created and can be directly injected into a Maplibre `Map` instance's `.setStyle()` method, or even written as a static json file.
 
 ```ts
@@ -351,7 +366,7 @@ And here is the result:
 You can live play with these on [basemapkit.jnth.io](https://s.jnth.io/s/basemapkit) and selecting the style `🖌️ custom 🎨`.  
 And from this "color editor" were created the built-in styles available below...
 
-## Available styles
+## Available styles 📚
 So far, we mentioned only the **Avenue** style as it's the first and default one, but there are many others! And while **Avenue** takes pride in being a rich yet generalistic style, Basemapkit provides styles that are better suited for **data visualization**, that are minimalistic and leaves room to your own data. And all the styles come with extra *presets*, meaning variants, playing with color and contrasts, but more on this in the next section.  
 
 ### Base style: `avenue`
@@ -532,7 +547,7 @@ Spectre comes with many extra presets, mostly to change the hue of the coastline
 - `spectre-negative-yellow`  
 ![](./public/screenshots/spectre-16.jpg)
 
-# Extra API
+# Extra API 🪄
 The extra API goes beyond just providing style, yet, it's still minimal and only related to "obtain a style as one need it".
 
 ## Swapping two layers
