@@ -13,6 +13,7 @@ import bureauLayersRaw from "./assets/bureau-layers-raw.json?raw";
 import journalLayersRaw from "./assets/journal-layers-raw.json?raw";
 import spectreLayersRaw from "./assets/spectre-layers-raw.json?raw";
 import monochromeLayersRaw from "./assets/monochrome-layers-raw.json?raw";
+import atmosphereLayersRaw from "./assets/atmosphere-layers-raw.json?raw";
 import { getDefaultLanguage, isLanguageSupported } from "./language";
 
 const baseStyles = {
@@ -21,6 +22,7 @@ const baseStyles = {
   journal: journalLayersRaw,
   monochrome: monochromeLayersRaw,
   spectre: spectreLayersRaw,
+  atmosphere: atmosphereLayersRaw,
 } as const;
 
 /**
