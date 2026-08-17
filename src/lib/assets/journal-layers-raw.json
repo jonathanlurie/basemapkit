@@ -70,7 +70,7 @@
     "filter": ["all", ["==", "kind", "military"]],
     "paint": {
       "line-dasharray": [2, 2],
-      "line-opacity": {"stops": [[6, 0.25], [10, 0.5]]},
+      "line-layer-opacity": {"stops": [[6, 0.25], [10, 0.5]]},
       "line-width": {"stops": [[6, 1], [10, 2]], "base": 1.6}
     }
   },
@@ -142,7 +142,7 @@
         18,
         30
       ],
-      "line-opacity": 0.7
+      "line-layer-opacity": 0.7
     }
   },
   {
@@ -154,7 +154,7 @@
     "filter": ["==", "kind_detail", "taxiway"],
     "layout": {"visibility": "visible"},
     "paint": {
-      "line-opacity": 0.85,
+      "line-layer-opacity": 0.85,
       "line-color": "#fff",
       "line-width": [
         "interpolate",
@@ -192,7 +192,7 @@
     "source-layer": "roads",
     "filter": ["all", ["has", "is_tunnel"], ["in", "kind", "other", "path"]],
     "paint": {
-      "line-opacity": 0.1,
+      "line-layer-opacity": 0.1,
       "line-color": "#000",
       "line-dasharray": [4.5, 0.5],
       "line-width": [
@@ -213,7 +213,7 @@
     "source-layer": "roads",
     "filter": ["all", ["has", "is_tunnel"], ["==", "kind", "minor_road"]],
     "paint": {
-      "line-opacity": 0.1,
+      "line-layer-opacity": 0.1,
       "line-color": "#000",
       "line-width": [
         "interpolate",
@@ -249,7 +249,7 @@
         18,
         11
       ],
-      "line-opacity": 0.1
+      "line-layer-opacity": 0.1
     }
   },
   {
@@ -259,7 +259,7 @@
     "source-layer": "roads",
     "filter": ["all", ["has", "is_tunnel"], ["==", "kind", "major_road"]],
     "paint": {
-      "line-opacity": 0.1,
+      "line-layer-opacity": 0.1,
       "line-color": "#000",
       "line-width": [
         "interpolate",
@@ -304,7 +304,7 @@
         15
       ],
       "line-color": "#000",
-      "line-opacity": 0.1
+      "line-layer-opacity": 0.1
     }
   },
   {
@@ -335,7 +335,7 @@
     "source-layer": "roads",
     "filter": ["==", "kind_detail", "pier"],
     "paint": {
-      "line-opacity": 0.85,
+      "line-layer-opacity": 0.85,
       "line-color": "#FFF",
       "line-width": [
         "interpolate",
@@ -376,7 +376,7 @@
         9
       ],
       "line-color": "#ffffff",
-      "line-opacity": 0.85
+      "line-layer-opacity": 0.85
     }
   },
   {
@@ -398,7 +398,7 @@
         11
       ],
       "line-color": "#ffffff",
-      "line-opacity": 0.85
+      "line-layer-opacity": 0.85
     }
   },
   {
@@ -424,7 +424,7 @@
         8
       ],
       "line-color": "#ffffff",
-      "line-opacity": 0.85
+      "line-layer-opacity": 0.85
     }
   },
   {
@@ -455,7 +455,7 @@
         11
       ],
       "line-color": "#ffffff",
-      "line-opacity": 0.85
+      "line-layer-opacity": 0.85
     }
   },
   {
@@ -486,7 +486,7 @@
         18,
         15
       ],
-      "line-opacity": 0.85,
+      "line-layer-opacity": 0.85,
       "line-color": "#ffffff"
     }
   },
@@ -520,7 +520,7 @@
         15
       ],
       "line-color": "#ffffff",
-      "line-opacity": 0.85
+      "line-layer-opacity": 0.85
     }
   },
   {
@@ -532,7 +532,7 @@
     "layout": {"visibility": "visible"},
     "paint": {
       "line-dasharray": [0.3, 0.75],
-      "line-opacity": 0.2,
+      "line-layer-opacity": 0.2,
       "line-color": "#000",
       "line-width": [
         "interpolate",
@@ -574,7 +574,7 @@
         7
       ],
       "line-color": "#000",
-      "line-opacity": 0.4
+      "line-layer-opacity": 0.4
     }
   },
   {
@@ -594,7 +594,7 @@
         ["literal", [2, 2]]
       ],
       "line-color": "#000",
-      "line-opacity": 0.4
+      "line-layer-opacity": 0.4
     }
   },
   {
@@ -606,7 +606,7 @@
     "filter": ["all", ["has", "is_bridge"], ["in", "kind", "other", "path"]],
     "layout": {"visibility": "visible"},
     "paint": {
-      "line-opacity": 0.85,
+      "line-layer-opacity": 0.85,
       "line-color": "#fff",
       "line-dasharray": [2, 1],
       "line-width": [
@@ -628,7 +628,7 @@
     "minzoom": 12,
     "filter": ["all", ["has", "is_bridge"], ["==", "kind", "minor_road"]],
     "paint": {
-      "line-opacity": 0.85,
+      "line-layer-opacity": 0.85,
       "line-color": "#ffffff",
       "line-width": [
         "interpolate",
@@ -665,7 +665,7 @@
         18,
         11
       ],
-      "line-opacity": 0.85
+      "line-layer-opacity": 0.85
     }
   },
   {
@@ -690,7 +690,7 @@
         18,
         13
       ],
-      "line-opacity": 0.85
+      "line-layer-opacity": 0.85
     }
   },
   {
@@ -714,7 +714,7 @@
       ],
       "line-color": "#ffffff",
       "line-dasharray": [3, 1.5],
-      "line-opacity": 0.5
+      "line-layer-opacity": 0.5
     }
   },
   {
@@ -745,7 +745,7 @@
         18,
         15
       ],
-      "line-opacity": 0.85
+      "line-layer-opacity": 0.85
     }
   },
   {
