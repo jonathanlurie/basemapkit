@@ -55,7 +55,7 @@
     "filter": ["all", ["==", "kind", "military"]],
     "paint": {
       "line-dasharray": [2, 2],
-      "line-opacity": {"stops": [[6, 0.25], [10, 0.5]]},
+      "line-layer-opacity": {"stops": [[6, 0.25], [10, 0.5]]},
       "line-width": {"stops": [[6, 1], [10, 2]], "base": 1.6}
     }
   },
@@ -127,7 +127,7 @@
         18,
         30
       ],
-      "line-opacity": 0.7
+      "line-layer-opacity": 0.7
     }
   },
   {
@@ -208,7 +208,7 @@
         18,
         11
       ],
-      "line-opacity": 0.7
+      "line-layer-opacity": 0.7
     }
   },
   {
@@ -262,7 +262,7 @@
         15
       ],
       "line-color": "#ffffff",
-      "line-opacity": 0.7
+      "line-layer-opacity": 0.7
     }
   },
   {
@@ -333,7 +333,7 @@
         9
       ],
       "line-color": "#ffffff",
-      "line-opacity": 0.7
+      "line-layer-opacity": 0.7
     }
   },
   {
@@ -355,7 +355,7 @@
         11
       ],
       "line-color": "#ffffff",
-      "line-opacity": 0.7
+      "line-layer-opacity": 0.7
     }
   },
   {
@@ -381,7 +381,7 @@
         8
       ],
       "line-color": "#ffffff",
-      "line-opacity": 0.7
+      "line-layer-opacity": 0.7
     }
   },
   {
@@ -412,7 +412,7 @@
         11
       ],
       "line-color": "#ffffff",
-      "line-opacity": 0.7
+      "line-layer-opacity": 0.7
     }
   },
   {
@@ -443,7 +443,7 @@
         18,
         15
       ],
-      "line-opacity": 0.7,
+      "line-layer-opacity": 0.7,
       "line-color": "#ffffff"
     }
   },
@@ -477,7 +477,7 @@
         15
       ],
       "line-color": "#ffffff",
-      "line-opacity": 0.7
+      "line-layer-opacity": 0.7
     }
   },
   {
@@ -489,7 +489,7 @@
     "layout": {"visibility": "visible"},
     "paint": {
       "line-dasharray": [0.3, 0.75],
-      "line-opacity": 0.7,
+      "line-layer-opacity": 0.7,
       "line-color": "#ffffff",
       "line-width": [
         "interpolate",
@@ -531,7 +531,7 @@
         7
       ],
       "line-color": "#000",
-      "line-opacity": 0.4
+      "line-layer-opacity": 0.4
     }
   },
   {
@@ -551,7 +551,7 @@
         ["literal", [2, 2]]
       ],
       "line-color": "#000",
-      "line-opacity": 0.4
+      "line-layer-opacity": 0.4
     }
   },
   {
@@ -620,7 +620,7 @@
         18,
         11
       ],
-      "line-opacity": 0.7
+      "line-layer-opacity": 0.7
     }
   },
   {
@@ -645,7 +645,7 @@
         18,
         13
       ],
-      "line-opacity": 0.7
+      "line-layer-opacity": 0.7
     }
   },
   {
@@ -669,7 +669,7 @@
       ],
       "line-color": "#ffffff",
       "line-dasharray": [3, 1.5],
-      "line-opacity": 0.5
+      "line-layer-opacity": 0.5
     }
   },
   {
@@ -700,7 +700,7 @@
         18,
         15
       ],
-      "line-opacity": 0.7
+      "line-layer-opacity": 0.7
     }
   },
   {

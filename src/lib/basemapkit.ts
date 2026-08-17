@@ -13,6 +13,7 @@ import bureauLayersRaw from "./assets/bureau-layers-raw.json?raw";
 import journalLayersRaw from "./assets/journal-layers-raw.json?raw";
 import spectreLayersRaw from "./assets/spectre-layers-raw.json?raw";
 import monochromeLayersRaw from "./assets/monochrome-layers-raw.json?raw";
+import atmosphereLayersRaw from "./assets/atmosphere-layers-raw.json?raw";
 import { getDefaultLanguage, isLanguageSupported } from "./language";
 
 const baseStyles = {
@@ -21,6 +22,7 @@ const baseStyles = {
   journal: journalLayersRaw,
   monochrome: monochromeLayersRaw,
   spectre: spectreLayersRaw,
+  atmosphere: atmosphereLayersRaw,
 } as const;
 
 /**
@@ -597,7 +599,7 @@ export type GetStyleOptions = {
     tilejson?: string;
 
     /**
-     * Encoding of the terrain raster data. Default: "mapbox"
+     * Encoding of the terrain raster data. Default: "terrarium"
      */
     encoding?: "mapbox" | "terrarium";
 
@@ -755,7 +757,7 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
       terrainExaggeration = options.terrain.exaggeration ?? 0;
     }
 
-    terrainEncoding = options.terrain.encoding ?? "mapbox";
+    terrainEncoding = options.terrain.encoding ?? "terrarium";
   }
 
   let layers = JSON.parse(translatedLayersStr) as unknown as LayerSpecification[];

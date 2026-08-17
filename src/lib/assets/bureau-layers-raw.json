@@ -42,7 +42,7 @@
     "filter": ["all", ["==", "kind", "military"]],
     "paint": {
       "line-dasharray": [2, 2],
-      "line-opacity": {"stops": [[6, 0.25], [10, 0.5]]},
+      "line-layer-opacity": {"stops": [[6, 0.25], [10, 0.5]]},
       "line-width": {"stops": [[6, 1], [10, 2]], "base": 1.6}
     }
   },
@@ -114,7 +114,7 @@
         18,
         30
       ],
-      "line-opacity": 0.3
+      "line-layer-opacity": 0.3
     }
   },
   {
@@ -151,7 +151,7 @@
     "paint": {
       "line-width": 0.5,
       "line-color": "#000000",
-      "line-opacity": 0.35
+      "line-layer-opacity": 0.35
     }
   },
   {
@@ -216,7 +216,7 @@
         18,
         11
       ],
-      "line-opacity": 0.3
+      "line-layer-opacity": 0.3
     }
   },
   {
@@ -270,7 +270,7 @@
         15
       ],
       "line-color": "#ffffff",
-      "line-opacity": 0.3
+      "line-layer-opacity": 0.3
     }
   },
   {
@@ -341,7 +341,7 @@
         9
       ],
       "line-color": "#ffffff",
-      "line-opacity": 0.3
+      "line-layer-opacity": 0.3
     }
   },
   {
@@ -363,7 +363,7 @@
         11
       ],
       "line-color": "#ffffff",
-      "line-opacity": 0.3
+      "line-layer-opacity": 0.3
     }
   },
   {
@@ -389,7 +389,7 @@
         8
       ],
       "line-color": "#ffffff",
-      "line-opacity": 0.3
+      "line-layer-opacity": 0.3
     }
   },
   {
@@ -420,7 +420,7 @@
         11
       ],
       "line-color": "#ffffff",
-      "line-opacity": 0.3
+      "line-layer-opacity": 0.3
     }
   },
   {
@@ -451,7 +451,7 @@
         18,
         15
       ],
-      "line-opacity": 0.3,
+      "line-layer-opacity": 0.3,
       "line-color": "#ffffff"
     }
   },
@@ -485,7 +485,7 @@
         15
       ],
       "line-color": "#ffffff",
-      "line-opacity": 0.3
+      "line-layer-opacity": 0.3
     }
   },
   {
@@ -497,7 +497,7 @@
     "layout": {"visibility": "visible"},
     "paint": {
       "line-dasharray": [0.3, 0.75],
-      "line-opacity": 0.3,
+      "line-layer-opacity": 0.3,
       "line-color": "#ffffff",
       "line-width": [
         "interpolate",
@@ -521,7 +521,7 @@
     "filter": ["<=", "kind_detail", 2],
     "layout": {"visibility": "visible"},
     "paint": {
-      "line-opacity": 0.5,
+      "line-layer-opacity": 0.5,
       "line-width": [
         "interpolate",
         ["exponential", 1.6],
@@ -559,7 +559,7 @@
         ["literal", [2, 2]]
       ],
       "line-color": "#000000",
-      "line-opacity": 0.5
+      "line-layer-opacity": 0.5
     }
   },
   {
@@ -628,7 +628,7 @@
         18,
         11
       ],
-      "line-opacity": 0.3
+      "line-layer-opacity": 0.3
     }
   },
   {
@@ -653,7 +653,7 @@
         18,
         13
       ],
-      "line-opacity": 0.3
+      "line-layer-opacity": 0.3
     }
   },
   {
@@ -677,7 +677,7 @@
       ],
       "line-color": "#ffffff",
       "line-dasharray": [3, 1.5],
-      "line-opacity": 0.5
+      "line-layer-opacity": 0.5
     }
   },
   {
@@ -708,7 +708,7 @@
         18,
         15
       ],
-      "line-opacity": 0.3
+      "line-layer-opacity": 0.3
     }
   },
   {

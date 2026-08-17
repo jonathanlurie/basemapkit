@@ -1,7 +1,7 @@
 {
   "name": "basemapkit",
   "private": false,
-  "version": "0.5.1",
+  "version": "0.5.2",
   "type": "module",
   "types": "dist/basemapkit.d.ts",
   "exports": {
@@ -21,26 +21,31 @@
     "map style"
   ],
   "homepage": "https://github.com/jonathanlurie/basemapkit",
+  "author": "Jonathan Lurie",
+  "description": "Maplibre Basemaps for the people! ✊ Basemaps for Protomaps / pmtiles 🗺️",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "build-lib": "rm -rf ./dist/* && tsc && vite build -c vite.config-lib.ts",
     "biome": "biome check --max-diagnostics=1000",
-    "biome:fix": "biome check --max-diagnostics=1000 --write"
+    "biome:fix": "biome check --max-diagnostics=1000 --write",
+    "prepare": "husky",
+    "type-check": "tsc --noEmit"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0",
     "@types/node": "^24.0.13",
+    "husky": "^9.1.7",
     "typescript": "~5.8.3",
     "vite": "^6.3.5",
     "vite-plugin-dts": "^4.5.4"
   },
   "dependencies": {
-    "@protomaps/basemaps": "^5.4.1",
+    "@protomaps/basemaps": "^5.7.2",
     "color": "^5.0.0",
-    "maplibre-gl": "^5.6.0",
-    "pmtiles": "^4.3.0"
+    "maplibre-gl": "^6.4.0",
+    "pmtiles": "^4.5.0"
   },
   "license": "MIT"
 }
