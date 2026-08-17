@@ -24,8 +24,7 @@ Compatible with <a href="https://maplibre.org/maplibre-gl-js/docs/">Maplibre GL 
 | ![](./public/screenshots/bureau-1.jpg) | ![](./public/screenshots/bureau-11.jpg) | ![](./public/screenshots/bureau-2.jpg) |
 | ![](./public/screenshots/monochrome.jpg) | ![](./public/screenshots/journal-1.jpg ) | ![](./public/screenshots/journal-2.jpg) |
 | ![](./public/screenshots/spectre-1.jpg) | ![](./public/screenshots/spectre-14.jpg) | ![](./public/screenshots/spectre-5.jpg) |
-
-![](./public/screenshots/monochrome-ushuaia.jpg)
+| ![](./public/screenshots/monochrome-ushuaia.jpg) | ![](./public/screenshots/atmosphere-1.jpg) |  | 
 
 ## Getting started 👷
 ### Install
@@ -546,6 +545,21 @@ Spectre comes with many extra presets, mostly to change the hue of the coastline
 
 - `spectre-negative-yellow`  
 ![](./public/screenshots/spectre-16.jpg)
+
+### Base style: `atmosphere`
+The **Atmosphere** style was first inpired by a [series of post by ECMWF](https://atmosphere.copernicus.eu/lowest-global-biomass-burning-emissions-record-during-first-half-2026) about aerosol spreadings. I like the neutral gray, the very thin borders and coastal line, the very dominant hillshading.
+
+The inspo:
+![](./public/screenshots/ecmwf-inspo.png)
+
+```ts
+// Create the style
+const style = getStyle("atmosphere", options);
+```
+[DEMO 🌍](https://basemapkit.jnth.io/?styleid=atmosphere)
+
+![](./public/screenshots/atmosphere-1.jpg)
+![](./public/screenshots/atmosphere-2.jpg)
 
 # Extra API 🪄
 The extra API goes beyond just providing style, yet, it's still minimal and only related to "obtain a style as one need it".

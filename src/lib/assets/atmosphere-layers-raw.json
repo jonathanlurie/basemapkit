@@ -20,7 +20,7 @@
     "source": "<BMK_BM_SRC>",
     "source-layer": "earth",
     "layout": {"visibility": "visible"},
-    "paint": {"line-width": 2, "line-color": "#fff", "line-opacity": 0.6}
+    "paint": {"line-width": 2.5, "line-color": "#fff", "line-opacity": 0.8}
   },
   {
     "id": "earth",

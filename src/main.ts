@@ -175,6 +175,8 @@ function removeUrlCustomStyle() {
     zoom: 3,
   });
 
+  console.log(map)
+
   map.on("zoom", () => {
     if (!zoomDisplay) {
       return;
