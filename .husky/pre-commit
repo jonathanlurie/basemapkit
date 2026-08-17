@@ -1,0 +1,2 @@
+npm run biome:fix
+npx tsc --noEmit

@@ -39,7 +39,10 @@ The following example instantiates a Maplibre `Map`, then initializes the Protom
 ```ts
 import "maplibre-gl/dist/maplibre-gl.css";
 
-import maplibregl from "maplibre-gl";
+// Since Maplibre-gl v6:
+import * as maplibregl from "maplibre-gl";
+import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
+
 import { Protocol } from "pmtiles";
 import { getStyle, getStyleList } from "basemapkit";
 

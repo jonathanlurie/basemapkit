@@ -1,6 +1,11 @@
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./style.css";
-import maplibregl from "maplibre-gl";
+import * as maplibregl from "maplibre-gl";
+
+import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
+
+maplibregl.setWorkerUrl(workerUrl);
+
 import {
   Protocol,
   // PMTiles
@@ -175,7 +180,7 @@ function removeUrlCustomStyle() {
     zoom: 3,
   });
 
-  console.log(map)
+  console.log(map);
 
   map.on("zoom", () => {
     if (!zoomDisplay) {

@@ -599,7 +599,7 @@ export type GetStyleOptions = {
     tilejson?: string;
 
     /**
-     * Encoding of the terrain raster data. Default: "mapbox"
+     * Encoding of the terrain raster data. Default: "terrarium"
      */
     encoding?: "mapbox" | "terrarium";
 
@@ -757,7 +757,7 @@ export function buildStyle(options: BuildStyleOptions): StyleSpecification {
       terrainExaggeration = options.terrain.exaggeration ?? 0;
     }
 
-    terrainEncoding = options.terrain.encoding ?? "mapbox";
+    terrainEncoding = options.terrain.encoding ?? "terrarium";
   }
 
   let layers = JSON.parse(translatedLayersStr) as unknown as LayerSpecification[];
